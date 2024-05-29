@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { ContentGetterService } from './content-getter.service';
+import {ContentResponse} from "../objects/ContentResponse";
 
 describe('ContentGetterService', () => {
   let service: ContentGetterService;
@@ -14,9 +15,12 @@ describe('ContentGetterService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should generate url',  () => {
-    let actualContentIdUrl = service.getContentUrlById("101");
-    expect(actualContentIdUrl).toBe(window.location.protocol + "//" + window.location.host + '/assets/img/101.png');
+  it("should get Data", async () => {
+    service.getContentData("22").then((data) =>
+        expect(data).toEqual(new ContentResponse("aTitle","aCreator",
+        window.location.protocol + "//" + window.location.host + "/assets/img/22.png",
+        window.location.protocol + "//" + window.location.host + "/assets/img/thumb-22.png",
+        data.createdDate,"desc","22")))
   });
 
 

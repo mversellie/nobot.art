@@ -1,1 +1,25 @@
-<img [src]="contentUrl"/>
+
+<div class="px-4 py-5 my-5 text-center">
+    <img id="content-frame" [src]="contentData.thumbnail"/>
+    <hr/>
+    <div class="my-2">
+        <div class="p-5 bg-body-tertiary">
+            <div class="container py-2">
+                <div class="row justify-content-start">
+                    <div class="col-4">
+                        <h1>{{ contentData.title }}</h1>
+                    </div>
+                </div><hr />
+                <div class="row justify-content-start">
+                    <div class="col-2">
+                        <p>{{ contentData.creator }}</p>
+                    </div>
+                </div><hr />
+                <div class="row justify-content-start">
+                    <div class="col-2">
+                        <p>{{ contentData.description }}</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,6 +1,6 @@
 #body-id {
     display:flex;
-    margin-top: 2.45%;
+    height: 100%;
 }
 
 #left-menu{
@@ -11,13 +11,13 @@
 }
 
 #footer-id {
-        position: absolute;
         bottom: 0;
         width: 100%;     /* Footer height */
 }
 
 .full-vert{
     height: 100%;
+    margin-top: 0px;
 }
 
 

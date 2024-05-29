@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ContentGetterService} from "../services/content-getter.service";
+import {ContentResponse} from "../objects/ContentResponse";
 
 @Component({
   selector: 'app-content-page',
@@ -11,11 +12,12 @@ import {ContentGetterService} from "../services/content-getter.service";
 })
 export class ContentPageComponent {
 
-  contentUrl: String = "";
+  contentData : ContentResponse =
+      new ContentResponse("","", "","", new Date(),"","");
 
   constructor(private route:ActivatedRoute,private contentService:ContentGetterService) {
-    this.route.params.subscribe( params => this.contentUrl =
-        contentService.getContentUrlById(params["contentItemId"]));
+    this.route.params.subscribe( params =>
+        contentService.getContentData(params["contentItemId"]).then((data:ContentResponse) => this.contentData = data));
   }
 
 }
