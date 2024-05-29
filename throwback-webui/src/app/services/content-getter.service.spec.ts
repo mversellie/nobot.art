@@ -13,4 +13,11 @@ describe('ContentGetterService', () => {
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should generate url',  () => {
+    let actualContentIdUrl = service.getContentUrlById("101");
+    expect(actualContentIdUrl).toBe(window.location.protocol + "//" + window.location.host + '/assets/img/101.png');
+  });
+
+
 });

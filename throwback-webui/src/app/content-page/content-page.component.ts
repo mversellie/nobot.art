@@ -11,10 +11,11 @@ import {ContentGetterService} from "../services/content-getter.service";
 })
 export class ContentPageComponent {
 
-  contentId:String = "";
+  contentUrl: String = "";
 
   constructor(private route:ActivatedRoute,private contentService:ContentGetterService) {
-    this.route.params.subscribe( params => this.contentId = params["contentItemId"]);
+    this.route.params.subscribe( params => this.contentUrl =
+        contentService.getContentUrlById(params["contentItemId"]));
   }
 
 }

@@ -1,0 +1,5 @@
+database:
+  type: SQLite
+  url: "../test.db"
+  username:
+  password:
