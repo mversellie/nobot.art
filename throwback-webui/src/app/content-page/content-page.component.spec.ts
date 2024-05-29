@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ContentPageComponent } from './content-page.component';
+import {ActivatedRoute} from "@angular/router";
+import { of} from "rxjs";
 
 describe('ContentPageComponent', () => {
   let component: ContentPageComponent;
@@ -8,7 +10,11 @@ describe('ContentPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ContentPageComponent]
+      imports: [ContentPageComponent], providers: [ {provide:ActivatedRoute, useValue:
+          {params :  of(
+            {contentItemId : "12"}
+              )
+          }}]
     })
     .compileComponents();
     
