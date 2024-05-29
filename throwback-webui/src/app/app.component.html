@@ -1,0 +1,17 @@
+<div class="full-vert">
+<app-header/>
+<div id="body-id" class="d-flex flex-nowrap">
+    <div id="sidebar-id" class="d-flex flex-column p-5 flex-shrink-0 text-bg-dark">
+        <app-sidebar/>
+    </div>
+    <div id="main-section" class="d-flex align-self-center flex-column p-5" style="width: 100%">
+        <hr/>
+        <main>
+            <router-outlet />
+        </main>
+    </div>
+</div>
+    <div id="footer-id">
+<app-footer/>
+    </div>
+</div>

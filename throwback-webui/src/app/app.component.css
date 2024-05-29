@@ -1,0 +1,23 @@
+#body-id {
+    display:flex;
+    margin-top: 2.45%;
+}
+
+#left-menu{
+}
+
+#main-section {
+    border-width: 50px;
+}
+
+#footer-id {
+        position: absolute;
+        bottom: 0;
+        width: 100%;     /* Footer height */
+}
+
+.full-vert{
+    height: 100%;
+}
+
+
