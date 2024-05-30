@@ -2,12 +2,13 @@ import { TestBed } from '@angular/core/testing';
 
 import { ContentGetterService } from './content-getter.service';
 import {ContentResponse} from "../objects/ContentResponse";
+import { provideHttpClient} from "@angular/common/http";
 
 describe('ContentGetterService', () => {
   let service: ContentGetterService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({providers:[provideHttpClient()]});
     service = TestBed.inject(ContentGetterService);
   });
 
@@ -16,11 +17,11 @@ describe('ContentGetterService', () => {
   });
 
   it("should get Data", async () => {
-    service.getContentData("22").then((data) =>
+    service.getContentData("22").subscribe((data) =>
         expect(data).toEqual(new ContentResponse("aTitle","aCreator",
         window.location.protocol + "//" + window.location.host + "/assets/img/22.png",
         window.location.protocol + "//" + window.location.host + "/assets/img/thumb-22.png",
-        data.createdDate,"desc","22")))
+        data.createdDate,"desc","22")));
   });
 
 

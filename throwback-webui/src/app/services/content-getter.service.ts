@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
+import { HttpClient } from  '@angular/common/http';
+import {Observable} from "rxjs";
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentGetterService {
-  constructor() { }
+  constructor(private http:HttpClient) { }
 
-  getContentData(id:String):Promise<ContentResponse> {
-    return new Promise( (resolve, reject) => resolve(new ContentResponse("aTitle","aCreator",
-        window.location.protocol + "//" + window.location.host + "/assets/img/" + id + ".png",
-        window.location.protocol + "//" + window.location.host + "/assets/img/thumb-" + id + ".png",
-        new Date(),"desc",id)))
+  getContentData(id:String):Observable<ContentResponse> {
+    const url = "http://127.0.0.1:5000/content/" + id ;
+    return this.http.get<ContentResponse>(url).pipe()
   }
 }
