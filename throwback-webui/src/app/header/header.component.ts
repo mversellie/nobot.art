@@ -1,10 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../services/authentication.service";
+import {UserService} from "../services/user.service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [
+  imports: [ CommonModule
   ],
   template: `<nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
@@ -18,11 +20,11 @@ import {AuthenticationService} from "../services/authentication.service";
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
-          <li class="nav-item">
-            <button class="nav-link" [hidden]="!authService.isLoggedIn()" (click)="authService.login()">Login</button>
+          <li class="nav-item" *ngIf="authService.isLoggedIn()==false">
+            <button class="nav-link"  (click)="authService.login()">Login</button>
           </li>
-          <li class="nav-item">
-            <button class="nav-link" [hidden]="authService.isLoggedIn()">Log out</button>
+          <li class="nav-item" *ngIf="authService.isLoggedIn()">
+            <button class="nav-link"  (click)="authService.logout()">Log out</button>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
@@ -46,7 +48,7 @@ import {AuthenticationService} from "../services/authentication.service";
 })
 export class HeaderComponent implements OnInit{
 
-  constructor(public authService : AuthenticationService) {
+  constructor(public authService : AuthenticationService,public userService : UserService) {
   }
 
   ngOnInit() {

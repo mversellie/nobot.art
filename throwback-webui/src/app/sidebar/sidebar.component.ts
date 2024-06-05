@@ -1,14 +1,18 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from "../services/authentication.service";
+import {UserService} from "../services/user.service";
+import {CommonModule} from "@angular/common";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [
+  imports: [ CommonModule
   ],
   template: `<div class="text-bg-dark" style="width: 280px;">
     <a href="/" class="d-flex align-items-center text-white text-decoration-none">
       <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-      <span class="fs-4">Sidebar</span>
+      <span class="fs-4" *ngIf="!authService.isLoggedIn()">Login</span>
+      <span class="fs-4" *ngIf="authService.isLoggedIn()">{{userService.username()}}</span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
@@ -28,6 +32,9 @@ import {Component, OnInit} from '@angular/core';
   </div>`
 })
 export class SidebarComponent implements OnInit {
+
+  constructor(public authService:AuthenticationService,public userService:UserService) {
+  }
 
 
   ngOnInit() {

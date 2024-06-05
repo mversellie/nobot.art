@@ -1,11 +1,12 @@
-import {Injectable, signal, Signal} from '@angular/core';
+import {Injectable, signal, Signal, WritableSignal} from '@angular/core';
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
+import {filter, fromEvent, map} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
-  isLoggedIn:Signal<boolean>
+  isLoggedIn: WritableSignal<boolean> = signal(this.isTokenPresentAndValid())
 
   AuthCodeFlowConfig: AuthConfig = {
     // Url of the Identity Provider
@@ -37,20 +38,34 @@ export class AuthenticationService {
   };
 
   constructor(private oauthService: OAuthService) {
+    fromEvent<StorageEvent>(window, "storage").subscribe((event:StorageEvent) => {
+      if((event.storageArea === sessionStorage) && (event.key === "id_token")){
+        console.log("updating is logged in")
+        this.isLoggedIn.set(!(event.newValue == undefined || event.newValue == null))
+      }}
+    )
     this.oauthService.configure(this.AuthCodeFlowConfig)
     this.oauthService.loadDiscoveryDocumentAndTryLogin()
-    this.isLoggedIn = signal(this.isTokenPresentAndValid())
+
+
     console.log("is loggedIn:" + this.isLoggedIn())
   }
 
   login(){
     this.oauthService.initCodeFlow();
+    if(this.isTokenPresentAndValid()){
+      this.isLoggedIn.set(true)
+    }
+  }
+
+  logout(){
+    this.oauthService.revokeTokenAndLogout().then((result) => console.log(result));
   }
 
 
   isTokenPresentAndValid(){
     console.log("token:" + sessionStorage.getItem("id_token"))
-    return undefined != sessionStorage.getItem("id_token") || null != sessionStorage.getItem("id_token")
+    return !(undefined == sessionStorage.getItem("id_token") || null == sessionStorage.getItem("id_token"))
   }
 
 }

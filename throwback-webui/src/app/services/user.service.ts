@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal} from '@angular/core';
+import {computed, Injectable, Signal, WritableSignal} from '@angular/core';
 import  {jwtDecode, JwtPayload} from "jwt-decode";
 import {AuthenticationService} from "./authentication.service";
 
@@ -6,7 +6,7 @@ import {AuthenticationService} from "./authentication.service";
   providedIn: 'root'
 })
 export class UserService {
-  idToken:Signal<string|null> = computed(() => {
+  idToken: Signal<string | null> = computed(() => {
     if(this.authService.isLoggedIn()) {
       return sessionStorage.getItem("id_token")
     }
@@ -22,7 +22,7 @@ export class UserService {
       return null
     }
   })
-  username:Signal<string> = computed(() => {
+  username: Signal<string> = computed(() => {
     if(this.tokenData() != null) {
       // @ts-ignore
       return this.tokenData()['preferred_username']
