@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {AuthenticationService} from "../services/authentication.service";
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,10 @@ import {Component, OnInit} from '@angular/core';
             <a class="nav-link active" aria-current="page" href="#">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
+            <button class="nav-link" [hidden]="!authService.isLoggedIn()" (click)="authService.login()">Login</button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link" [hidden]="authService.isLoggedIn()">Log out</button>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
@@ -41,6 +45,9 @@ import {Component, OnInit} from '@angular/core';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit{
+
+  constructor(public authService : AuthenticationService) {
+  }
 
   ngOnInit() {
   }

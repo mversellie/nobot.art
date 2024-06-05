@@ -4,7 +4,7 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 
-from user_service import UserService
+from user_auth_interface import UserPlatformConnectionInterface
 
 
 class KeycloakSettings:
@@ -15,7 +15,7 @@ class KeycloakSettings:
         self.client_secret= secret
 
 
-class KeycloakService(UserService):
+class KeycloakService(UserPlatformConnectionInterface):
 
     def __init__(self,settings:KeycloakSettings):
         self.settings=settings
@@ -49,7 +49,8 @@ class KeycloakService(UserService):
             ]
         }
         response = requests.post(url,headers = headers,data=json.dumps(user_data))
-        return response.ok
+        loc_sections = (response.__dict__['headers']['Location']).split('/')
+        return loc_sections[len(loc_sections) - 1]
 
     def get_keycloak_user(self,username:string):
         url = self.settings.host +  "/admin/realms/" + self.settings.realm + "/users"

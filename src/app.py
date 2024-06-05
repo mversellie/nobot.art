@@ -3,6 +3,9 @@ import content_service
 
 app = Flask(__name__)
 
+def __init__(self):
+    pass
+
 @app.errorhandler(404)
 def not_found_error(error):
     print("404")

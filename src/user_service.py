@@ -1,17 +1,16 @@
-import string
-from abc import abstractmethod
+from keycloak_service import KeycloakService
+from settings_service import get_settings
+from user_auth_interface import UserPlatformConnectionInterface
 
 
 class UserService:
 
-    @abstractmethod
-    def __init__(self,connection_settings):
-        pass
+    keycloakService:UserPlatformConnectionInterface
 
-    @abstractmethod
-    def get_generic_user(self, username:string):
-        pass
+    def __init__(self, settings_filename):
+        self.settings = get_settings("settings.yml")
+        self.keycloakService:UserPlatformConnectionInterface = KeycloakService(self.settings['keycloak'])
 
-    @abstractmethod
-    def create_generic_user(self,username:string,email:string,password:string):
-        pass
+
+    def create_user(self,username,password,email):
+        self.keycloakService.create_generic_user(username,password,email)
