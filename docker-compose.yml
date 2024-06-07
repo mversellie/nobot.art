@@ -1,0 +1,39 @@
+services:
+  keycloak:
+    env_file:
+      - path: ./docker.env
+    required: true
+    image: quay.io/keycloak/keycloak:24.0
+    volumes:
+      - ./throwback-event-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
+    environment:
+      KC_LOG_LEVEL: debug
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${KC_DB_NAME}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_DB_SCHEMA: ${KC_DB_SCHEMA}
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME_STRICT_HTTPS: 'false'
+      KC_HOSTNAME_STRICT: 'false'
+      HTTP_ADDRESS_FORWARDING: 'true'
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      THROWBACK_UI_URL: ${THROWBACK_UI_URL}
+      THROWBACK_API_URL: ${THROWBACK_API_URL}
+    command:  start-dev
+    ports:
+        - '8080:8080'
+  keycloakdb:
+    env_file:
+      - path: ./docker.env
+        required: true
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${KC_DB_NAME}
+      POSTGRES_USER: ${KC_DB_USERNAME}
+      POSTGRES_PASSWORD: ${KC_DB_USERNAME}
+volumes:
+  postgres_data:
