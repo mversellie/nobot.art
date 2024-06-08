@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+
+    <changeSet author="Marco" id="make throwback_users table">
+        <createTable tableName="throwback_users">
+            <column name="throwback_id" type="varchar(36)">
+                <constraints nullable="false" />
+            </column>
+            <column name="username" type="varchar(80)">
+                <constraints nullable="false" />
+            </column>
+            <column name="provider_id" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="provider_platform_id"  type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="email" type="varchar(200)" >
+                <constraints nullable="false" />
+            </column>
+            <column name="joined" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

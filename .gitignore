@@ -1,3 +1,5 @@
 /.idea
 *.iml
-test.db
+test.mv.db
+test.trace.db
+venv
