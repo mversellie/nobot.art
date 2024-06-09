@@ -1,6 +1,6 @@
 database:
   type: SQLite
-  url: "test.db"
+  url: "../test.db"
   username:
   password:
 keycloak:

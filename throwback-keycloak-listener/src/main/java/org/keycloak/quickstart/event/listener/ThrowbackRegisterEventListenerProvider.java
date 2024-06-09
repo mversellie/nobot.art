@@ -84,9 +84,10 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
                             .providerPlatformId(1)
                             .build();
             String throwbackApiLocation = System.getenv("THROWBACK_API_URL");
-            String registerUrl = throwbackApiLocation + "/api/users";
+            String registerUrl = throwbackApiLocation + "/users";
             HttpPost post = new HttpPost(registerUrl);
-            StringEntity body = new StringEntity(new ObjectMapper().writeValueAsString(userDataToSend));
+            String bodyToSend = new ObjectMapper().writeValueAsString(userDataToSend);
+            StringEntity body = new StringEntity(bodyToSend);
             post.setEntity(body);
             post.addHeader("content-type", "application/json");
             httpClient.execute(post);

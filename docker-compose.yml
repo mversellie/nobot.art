@@ -1,13 +1,10 @@
 services:
   keycloak:
-    env_file:
-      - path: ./docker.env
-    required: true
     image: quay.io/keycloak/keycloak:24.0
     volumes:
-      - ./throwback-event-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
+      - ./throwback-keycloak-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
     environment:
-      KC_LOG_LEVEL: debug
+      KC_LOG_LEVEL: info
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${KC_DB_NAME}
       KC_DB_USERNAME: ${KC_DB_USERNAME}
@@ -25,9 +22,6 @@ services:
     ports:
         - '8080:8080'
   keycloakdb:
-    env_file:
-      - path: ./docker.env
-        required: true
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data

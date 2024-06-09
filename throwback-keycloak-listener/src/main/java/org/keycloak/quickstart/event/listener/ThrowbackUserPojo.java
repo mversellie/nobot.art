@@ -36,5 +36,4 @@ public class ThrowbackUserPojo {
     private String providerId;
     private Integer providerPlatformId;
     private String email;
-    private Timestamp joined;
 }
