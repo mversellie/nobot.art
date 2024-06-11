@@ -8,3 +8,8 @@ keycloak:
   realm: "throwback-art"
   host: "http://containers.burgerspace.net:44929"
   client_secret: "daJ4H8j7mg3rIAYb67Zfq9P11e21MQOy"
+s3:
+  url: "localhost:9000"
+  bucket: "main"
+  secret: "E6RDLAw1BNTB85nNDxCIKcfa0M4AGGOVj1hnIt5x"
+  access: "K9uxBVsC8Fey6ZqNgzU0"

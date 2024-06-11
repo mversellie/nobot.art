@@ -55,7 +55,7 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
         if(event.getType().equals(EventType.REGISTER)){
             String userId = event.getUserId();
             String realmId = event.getRealmId();
-            RealmModel realm = this.model.getRealmByName(realmId);
+            RealmModel realm = this.model.getRealm(realmId);
             UserModel user = this.session.users().getUserById(realm, userId);
             shipUserToThrowback(user);
         }

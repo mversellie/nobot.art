@@ -1,0 +1,52 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:24.0
+    volumes:
+      - ../throwback-keycloak-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
+      - ${LOCALHOST_KEY}:/opt/keycloak/ssl/private.key
+      - ${LOCALHOST_CERT}:/opt/keycloak/ssl/public.crt
+    environment:
+      KC_LOG_LEVEL: info
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${KC_DB_NAME}
+      KC_DB_USERNAME: ${KC_DB_USERNAME}
+      KC_DB_PASSWORD: ${KC_DB_PASSWORD}
+      KC_DB_SCHEMA: ${KC_DB_SCHEMA}
+      KC_HOSTNAME: ${KC_HOSTNAME}
+      KC_HOSTNAME_STRICT_HTTPS: true
+      KC_HOSTNAME_STRICT: true
+      HTTP_ADDRESS_FORWARDING: true
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      THROWBACK_API_URL: ${THROWBACK_API_URL}
+      KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl/private.key
+      KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl/public.crt
+    command:  start-dev
+    ports:
+      - '8080:8080'
+      - '8443:8443'
+  keycloakdb:
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${KC_DB_NAME}
+      POSTGRES_USER: ${KC_DB_USERNAME}
+      POSTGRES_PASSWORD: ${KC_DB_USERNAME}
+  minio:
+    image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    hostname: localhost
+    volumes:
+      - minio_data:/data
+      - ${LOCALHOST_KEY}:/root/.minio/certs/private.key
+      - ${LOCALHOST_CERT}:/root/.minio/certs/public.crt
+volumes:
+  postgres_data:
+  minio_data:

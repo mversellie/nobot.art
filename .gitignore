@@ -5,3 +5,5 @@ test.trace.db
 venv
 test.db
 throwback-keycloak-listener/target
+jwt.public
+docker/ssl/*

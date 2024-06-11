@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>burgerspace.net</groupId>
-    <artifactId>throwback-database</artifactId>
+    <artifactId>throwback-art</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>

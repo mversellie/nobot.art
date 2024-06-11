@@ -9,10 +9,10 @@
     <changeSet author="Marco" id="make throwback_users table">
         <createTable tableName="throwback_users">
             <column name="throwback_id" type="varchar(36)">
-                <constraints nullable="false" />
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_USERS" />
             </column>
             <column name="username" type="varchar(80)">
-                <constraints nullable="false" />
+                <constraints unique="true" nullable="false" />
             </column>
             <column name="provider_id" type="varchar(100)">
                 <constraints nullable="false" />
@@ -21,7 +21,7 @@
                 <constraints nullable="false" />
             </column>
             <column name="email" type="varchar(200)" >
-                <constraints nullable="false" />
+                <constraints unique="true" nullable="false" />
             </column>
             <column name="joined" type="timestamp">
                 <constraints nullable="false" />

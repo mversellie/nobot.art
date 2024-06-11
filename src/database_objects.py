@@ -20,3 +20,17 @@ class ThrowbackUser(Model):
     class Meta:
         database=db
         table_name = 'throwback_users'
+
+class ThrowbackContent(Model):
+    name = CharField()
+    width = IntegerField()
+    height = IntegerField()
+    content_id = CharField(unique=True)
+    creator = CharField()
+    description = CharField()
+    extension = CharField()
+    created = TimestampField(null=True)
+    filename = CharField()
+    class Meta:
+        database = db
+        table_name = 'throwback_content'

@@ -1,6 +1,6 @@
-import {Injectable, signal, Signal, WritableSignal} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
-import {filter, fromEvent, map} from "rxjs";
+import { fromEvent} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +10,7 @@ export class AuthenticationService {
 
   AuthCodeFlowConfig: AuthConfig = {
     // Url of the Identity Provider
-    issuer: 'https://keycloak.burgerspace.net:8443/realms/throwback-art',
+    issuer: 'https://localhost:8443/realms/throwback-art',
 
     // URL of the SPA to redirect the user to after login
     redirectUri: window.location.origin + '/',
