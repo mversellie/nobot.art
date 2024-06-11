@@ -6,4 +6,6 @@ venv
 test.db
 throwback-keycloak-listener/target
 jwt.public
-docker/ssl/*
+ssl/certs/*
+ssl/index*
+ssl/serial*
