@@ -2,7 +2,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:24.0
     volumes:
-      - ../throwback-keycloak-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
+      - ../keycloak/throwback-keycloak-listener/target/throwback-listener.jar:/opt/keycloak/providers/throwback-listener.jar
       - ${LOCALHOST_KEY}:/opt/keycloak/ssl/private.key
       - ${LOCALHOST_CERT}:/opt/keycloak/ssl/public.crt
     environment:

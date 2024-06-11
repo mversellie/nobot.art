@@ -1,14 +1,17 @@
 from flask import Flask, request
 from content_service import ContentService, FileToSave
 from user_service import CreateUserRequest, UserService
+from keycloak_jwt_service import KeycloakJWTService
 import jwt
-from werkzeug import secure_filename
+
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 jwt_public_file = open("../jwt.public", "r")
 jwt_public = jwt_public_file.read()
 jwt_public_file.close()
 content_service = ContentService()
+jwt_service = KeycloakJWTService();
 
 
 @app.errorhandler(404)
@@ -30,20 +33,20 @@ def getContentById(content_id):
 def receive_new_content():
     try:
         jwt_token = request.headers["Authorization"].split(" ")[1]
-        unlocked_token = jwt.decode(jwt_token, jwt_public, algorithm="RS256")
-        content_name = request.form().get("name")
-        description = request.form.get("description")
+        unlocked_token = jwt_service.decode_jwt(jwt_token)
+        easy_form = request.form.to_dict()
+        content_name = easy_form["name"]
+        description = easy_form["description"]
         file = request.files["upload"]
         username = unlocked_token["preferred_username"]
-        file_to_save = content_service.FileToSave(name = content_name, file_data = file, creator = username,
+        file_to_save = FileToSave(name = content_name, file_data = file, creator = username,
                                                   description = description, filename = secure_filename(file.filename))
         content_service.save_content(file_to_save)
-        response = app.response_class(
-            status=200
-        )
+        response = app.response_class(status=200)
         response.headers.add('Access-Control-Allow-Origin', '*')
         return response
-    except jwt.exceptions.InvalidTokenError:
+    except jwt.exceptions.InvalidTokenError as e:
+        print(e)
         response = app.response_class(
             status=403
         )

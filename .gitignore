@@ -4,7 +4,7 @@ test.mv.db
 test.trace.db
 venv
 test.db
-throwback-keycloak-listener/target
+keycloak/throwback-keycloak-listener/target
 jwt.public
 ssl/certs/*
 ssl/index*
