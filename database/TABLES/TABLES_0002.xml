@@ -14,7 +14,13 @@
             <column name="creator" type="varchar(80)">
                 <constraints nullable="false" />
             </column>
+            <column name="url_safe_name" type="varchar(80)">
+                <constraints nullable="false" />
+            </column>
             <column name="filename" type="varchar(80)">
+                <constraints nullable="false" />
+            </column>
+            <column name="filename_S3" type="varchar(80)">
                 <constraints nullable="false" />
             </column>
             <column name="extension" type="varchar(10)">

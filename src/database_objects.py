@@ -11,7 +11,7 @@ class BaseModel(Model):
 
 
 class ThrowbackUser(Model):
-    throwback_id = CharField(unique=True)
+    throwback_id = PrimaryKeyField()
     username = CharField(unique=True)
     provider_id = CharField(unique=True)
     provider_platform_id = IntegerField()
@@ -25,12 +25,14 @@ class ThrowbackContent(Model):
     name = CharField()
     width = IntegerField()
     height = IntegerField()
-    content_id = CharField(unique=True)
+    content_id = PrimaryKeyField()
     creator = CharField()
     description = CharField()
     extension = CharField()
     created = TimestampField(null=True)
     filename = CharField()
+    filename_S3 = CharField()
+    url_safe_name = CharField()
     class Meta:
         database = db
         table_name = 'throwback_content'

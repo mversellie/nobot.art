@@ -3,22 +3,12 @@ from datetime import date
 
 
 class ContentResponse:
-    contentId:string
-    title:string
-    creator:string
-    link:string
-    thumbnail:string
-    createdDate:date
-    description:string
 
-    def __init__(self,title:string,creator:string,link:string,thumbnail:string,
-                 created_date:date,desc:string,id:string):
+    def __init__(self, title:string, creator:string, s3_filename:string,
+                 created_date:string, desc:string):
         self.title = title
-        self.contentId = id
-        self.link = link
-        self.desc = desc
+        self.filename = s3_filename
         self.creator = creator
         self.description = desc
-        self.thumbnail = thumbnail
         self.createdDate = created_date
 

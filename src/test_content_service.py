@@ -1,6 +1,6 @@
+import content_service
 import json
 import unittest
-import content_service
 
 
 class TestContentService(unittest.TestCase):
