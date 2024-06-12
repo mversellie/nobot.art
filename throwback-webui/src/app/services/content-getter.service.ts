@@ -10,8 +10,8 @@ import {Observable} from "rxjs";
 export class ContentGetterService {
   constructor(private http:HttpClient) { }
 
-  getContentData(id:String):Observable<ContentResponse> {
-    const url = "http://127.0.0.1:5000/content/" + id ;
+  getContentData(user:String,content_name:String):Observable<ContentResponse> {
+    const url = "http://localhost:5000/content/" + user + "/" + content_name ;
     return this.http.get<ContentResponse>(url).pipe()
   }
 }

@@ -14,9 +14,10 @@ import {of} from "rxjs";
 export class ContentPageComponent {
 
   paramMapObs:ParamMap | null = null ;
+  imageUrl:string = ""
 
   contentData : ContentResponse =
-      new ContentResponse("","", "","", new Date(),"","");
+      new ContentResponse("","", "", new Date(),"");
 
   constructor(private route:ActivatedRoute, private contentService:ContentGetterService) {
 
@@ -27,17 +28,25 @@ export class ContentPageComponent {
     });
 
     of(this.paramMapObs).subscribe( (map:ParamMap | null ) => {
-      let urlToShip = "-1";
+      let contentUsername = "-1";
+      let contentName = "-1";
       if(map != null){
-        if(map.get("contentItemId") !== null){
+        if(map.get("contentUsername") !== null){
           // @ts-ignore
-          urlToShip = map.get("contentItemId");
+          contentUsername = map.get("contentUsername");
+        }
+
+        if(map.get("contentName") !== null){
+          // @ts-ignore
+          contentName = map.get("contentName");
         }
       }
 
-      this.contentService.getContentData(urlToShip).subscribe(
+      this.contentService.getContentData(contentUsername,contentName).subscribe(
           (data:ContentResponse) => {
-            this.contentData = data}
+            this.contentData = data;
+            this.imageUrl= "https://127.0.0.1:9000/main/" + data.filename
+          }
       )
     })
   }

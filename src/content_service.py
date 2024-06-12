@@ -46,9 +46,9 @@ class ContentService:
         contents = ThrowbackContent.select().where(
             (ThrowbackContent.url_safe_name == title) & (ThrowbackContent.creator == user))
         for content in contents:
-            gack = ContentResponse(content.name,content.creator, content.filename_S3,
+            return ContentResponse(content.name,content.creator, content.filename_S3,
                                    content.created, content.description)
-            return gack
+        raise ContentNotFoundException("Not found")
 
     def save_content(self,file:FileToSave):
         file_image_bytes = file.file_data
