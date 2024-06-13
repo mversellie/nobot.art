@@ -8,8 +8,8 @@ import {NotFoundComponent} from "./not-found/not-found.component";
 
 export const routes: Routes = [
     {path:'login',component:EmptyComponent,canActivate:[loggedInGuard]},
-    {path:'content/create',component:UploadContentPageComponent,canActivate:[loggedInGuard]},
-    {path:'content/:contentUsername/:contentName',component:ContentPageComponent},
+    {path:'create',component:UploadContentPageComponent,canActivate:[loggedInGuard]},
+    {path:':contentUsername/:contentName',component:ContentPageComponent},
     {path:'404',component:NotFoundComponent},
     {path:'',component:HomePageComponent}
     ];
