@@ -13,6 +13,13 @@ app = Flask(__name__)
 content_service = ContentService()
 jwt_service = KeycloakJWTService()
 
+@app.after_request
+def after_request(response):
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
+    return response
+
 @app.errorhandler(404)
 def not_found_error(error):
     return handle_basic_error(404,error)
@@ -35,30 +42,28 @@ def receive_new_content():
     jwt_token = request.headers["Authorization"].split(" ")[1]
     unlocked_token = jwt_service.decode_jwt(jwt_token)
     file_to_save:FileToSave = request.form.to_dict()
-    file_to_save.file_data = request.files["upload"]
-    file_to_save["username"] = unlocked_token["preferred_username"]
+    file_to_save["file_data"] = request.files.get("upload")
+    file_to_save["creator"] = unlocked_token["preferred_username"]
     file_to_save["filename"] = secure_filename(request.files["upload"].filename)
-    content_service.save_content(file_to_save)
+    content_service.save_content(FileToSave.dict_con(file_to_save))
     return blank_ok()
+
 
 def handle_basic_error(code:int,error):
     print(error)
     response = app.response_class(status=code)
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 def good_json(body):
     response = app.response_class(
-        response= json.dumps(body),
+        response= json.dumps(body.__dict__),
         status=200,
         mimetype='application/json'
     )
-    response.headers.add('Access-Control-Allow-Origin', '*')
     return response
 
 def blank_ok():
-    response = app.response_class(status=code)
-    response.headers.add('Access-Control-Allow-Origin', '*')
+    response = app.response_class(status=200)
     return response
 
 if __name__ == "__main__":

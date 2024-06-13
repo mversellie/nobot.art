@@ -33,6 +33,7 @@ class ThrowbackContent(Model):
     filename = CharField()
     filename_S3 = CharField()
     url_safe_name = CharField()
+    mature = BooleanField()
     class Meta:
         database = db
         table_name = 'throwback_content'

@@ -41,6 +41,7 @@
             <column name="created" type="timestamp">
                 <constraints nullable="false" />
             </column>
+            <column name="mature" type="boolean" defaultValueBoolean="false"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

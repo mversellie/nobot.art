@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {ActivatedRoute, ParamMap} from "@angular/router";
+import {Component, inject} from '@angular/core';
+import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {ContentGetterService} from "../services/content-getter.service";
 import {ContentResponse} from "../objects/ContentResponse";
 import {of} from "rxjs";
@@ -19,7 +19,7 @@ export class ContentPageComponent {
   contentData : ContentResponse =
       new ContentResponse("","", "", new Date(),"");
 
-  constructor(private route:ActivatedRoute, private contentService:ContentGetterService) {
+  constructor(private route:ActivatedRoute, private contentService:ContentGetterService,private router:Router) {
 
     console.log("content page loaded")
 
@@ -44,6 +44,7 @@ export class ContentPageComponent {
 
       this.contentService.getContentData(contentUsername,contentName).subscribe(
           (data:ContentResponse) => {
+            console.log(data)
             this.contentData = data;
             this.imageUrl= "https://127.0.0.1:9000/main/" + data.filename
           }

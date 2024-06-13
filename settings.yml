@@ -4,10 +4,6 @@ database:
   username:
   password:
 keycloak:
-  client_id: "admin-cli"
-  realm: "throwback-art"
-  host: "http://containers.burgerspace.net:44929"
-  client_secret: "daJ4H8j7mg3rIAYb67Zfq9P11e21MQOy"
   jwks_uri: "https://localhost:8443/realms/throwback-art/protocol/openid-connect/certs"
 s3:
   url: "localhost:9000"

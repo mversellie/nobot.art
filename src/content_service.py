@@ -17,12 +17,33 @@ from src.custom_exceptions import ContentNotFoundException
 
 class FileToSave:
 
-    def __init__(self,name:string,file_data:FileStorage,creator:string, description:string,filename:string):
-        self.name=name
-        self.file_data = file_data
-        self.creator = creator
-        self.description = description
-        self.filename = filename
+    name:string
+    file_data:FileStorage
+    creator:string
+    description:string
+    filename:string
+
+    def __init__(self):
+        pass
+
+    def long_con(name:string,file_data:FileStorage,creator:string, description:string,filename:string):
+        base:FileToSave = FileToSave()
+        base.name=name
+        base.file_data = file_data
+        base.creator = creator
+        base.description = description
+        base.filename = filename
+        return base
+
+    def dict_con(inputDict:dict):
+        base:FileToSave = FileToSave()
+        base.name=inputDict["name"]
+        base.file_data = inputDict["file_data"]
+        base.creator = inputDict["creator"]
+        base.description = inputDict["description"]
+        base.filename = inputDict["filename"]
+        return base
+
 
 
 class ContentService:
@@ -86,4 +107,4 @@ class ContentService:
                                                 name = file.name,created = cur_time,content_id = file_id,
                                                         url_safe_name = secure_filename(file.name),
                                                         filename_S3=full_storage_name)
-            database_content_to_save.save()
+            database_content_to_save.save(force_insert=True)

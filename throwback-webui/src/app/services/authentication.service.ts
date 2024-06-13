@@ -46,9 +46,6 @@ export class AuthenticationService {
     )
     this.oauthService.configure(this.AuthCodeFlowConfig)
     this.oauthService.loadDiscoveryDocumentAndTryLogin()
-
-
-    console.log("is loggedIn:" + this.isLoggedIn())
   }
 
   login(){
@@ -64,8 +61,11 @@ export class AuthenticationService {
 
 
   isTokenPresentAndValid(){
-    console.log("token:" + sessionStorage.getItem("id_token"))
     return !(undefined == sessionStorage.getItem("id_token") || null == sessionStorage.getItem("id_token"))
+  }
+
+  getToken(){
+    return "Bearer " + sessionStorage.getItem("id_token");
   }
 
 }
