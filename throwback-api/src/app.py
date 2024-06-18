@@ -4,6 +4,7 @@ from flask import Flask, request
 from content.content_service import ContentService, FileToSave
 from keycloak_jwt_service import KeycloakJWTService
 import jwt
+from user.user_service import CreateUserRequest, UserService
 
 from werkzeug.utils import secure_filename
 
@@ -48,6 +49,13 @@ def receive_new_content():
     content_service.save_content(FileToSave.dict_con(file_to_save))
     return blank_ok()
 
+@app.route('/users', methods=['POST'])
+def handleUsers():
+    user_request:CreateUserRequest = request.get_json()
+    print(user_request)
+    user_service: UserService = UserService()
+    user_service.create_user_from_keycloak(user_request)
+    return blank_ok()
 
 def handle_basic_error(code:int,error):
     print(error)
