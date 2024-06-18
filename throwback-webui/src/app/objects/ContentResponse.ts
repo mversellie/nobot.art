@@ -2,7 +2,7 @@ export class ContentResponse{
     title:String = "";
     creator: String = "";
     filename: String = "";
-    createdDate:Date = new Date();
+    createdDate:Date|undefined = new Date();
     description:String = "";
 
 

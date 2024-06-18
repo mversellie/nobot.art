@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {ContentGetterService} from "../services/content-getter.service";
+import {ContentService} from "../services/content.service";
 import {NgOptimizedImage} from "@angular/common";
 
 @Component({
@@ -19,7 +19,7 @@ export class UploadContentPageComponent {
   // @ts-ignore
   filesToUpload:FileList;
 
-  constructor(private contentService:ContentGetterService) {
+  constructor(private contentService:ContentService) {
     this.contentForm = new FormGroup({
       fileData:new FormControl(),
       contentName:new FormControl(),

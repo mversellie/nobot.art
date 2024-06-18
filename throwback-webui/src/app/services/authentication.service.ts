@@ -1,6 +1,7 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
 import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
 import { fromEvent} from "rxjs";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -8,42 +9,24 @@ import { fromEvent} from "rxjs";
 export class AuthenticationService {
   isLoggedIn: WritableSignal<boolean> = signal(this.isTokenPresentAndValid())
 
-  AuthCodeFlowConfig: AuthConfig = {
-    // Url of the Identity Provider
-    issuer: 'https://localhost:8443/realms/throwback-art',
-
-    // URL of the SPA to redirect the user to after login
-    redirectUri: window.location.origin + '/',
-
-    // The SPA's id. The SPA is registerd with this id at the auth-server
-    // clientId: 'server.code',
-    clientId: 'throwback-spa',
-
-    // Just needed if your auth server demands a secret. In general, this
-    // is a sign that the auth server is not configured with SPAs in mind
-    // and it might not enforce further best practices vital for security
-    // such applications.
-    // dummyClientSecret: 'secret',
-
-    responseType: 'code',
-    requireHttps:false,
-
-    // set the scope for the permissions the client should request
-    // The first four are defined by OIDC.
-    // Important: Request offline_access to get a refresh token
-    // The api scope is a usecase specific one
-    scope: 'openid offline_access',
-
-    showDebugInformation: true,
-  };
+  AuthCodeFlowConfig: AuthConfig;
 
   constructor(private oauthService: OAuthService) {
     fromEvent<StorageEvent>(window, "storage").subscribe((event:StorageEvent) => {
       if((event.storageArea === sessionStorage) && (event.key === "id_token")){
         console.log("updating is logged in")
-        this.isLoggedIn.set(!(event.newValue == undefined || event.newValue == null))
+        this.isLoggedIn.set(!(event.newValue == undefined || false))
       }}
     )
+    this.AuthCodeFlowConfig= {
+      issuer: environment["oauth-url"],
+      redirectUri: window.location.origin + '/',
+      clientId: environment["oauth-client"],responseType: 'code',
+      requireHttps:false,
+      scope: 'openid offline_access',
+
+      showDebugInformation: true,
+    };
     this.oauthService.configure(this.AuthCodeFlowConfig)
     this.oauthService.loadDiscoveryDocumentAndTryLogin()
   }

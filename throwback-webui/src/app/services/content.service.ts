@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from "rxjs";
+import {map, Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
+import {environment} from "../../environments/environment";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class ContentGetterService {
+export class ContentService {
   constructor(private http:HttpClient, private auth:AuthenticationService) { }
 
   getContentData(user:String,content_name:String):Observable<ContentResponse> {
-    const url = "http://localhost:5000/content/" + user + "/" + content_name ;
-    return this.http.get<ContentResponse>(url)
+    const url = environment["api-url"] +"/content/" + user + "/" + content_name ;
+    console.log("hitting: " + url)
+    // @ts-ignore
+    return this.http.get(url).pipe(map(res => res['payload']));
   }
 
   shipContentData(title:string,description:string,files:FileList){
@@ -28,6 +31,6 @@ export class ContentGetterService {
         .set('Authorization', this.auth.getToken());
 
     console.log("Ship")
-    return this.http.post("http://localhost:5000/content",form,{headers:headers})
+    return this.http.post(environment["api-url"] + "/content",form,{headers:headers})
   }
 }

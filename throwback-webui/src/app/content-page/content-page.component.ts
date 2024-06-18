@@ -1,6 +1,6 @@
-import {Component, inject} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
-import {ContentGetterService} from "../services/content-getter.service";
+import {ContentService} from "../services/content.service";
 import {ContentResponse} from "../objects/ContentResponse";
 import {of} from "rxjs";
 
@@ -19,7 +19,7 @@ export class ContentPageComponent {
   contentData : ContentResponse =
       new ContentResponse("","", "", new Date(),"");
 
-  constructor(private route:ActivatedRoute, private contentService:ContentGetterService,private router:Router) {
+  constructor(private route:ActivatedRoute, private contentService:ContentService, private router:Router) {
 
     console.log("content page loaded")
 
