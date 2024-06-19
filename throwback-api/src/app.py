@@ -4,7 +4,7 @@ from flask import Flask, request
 from content.content_service import ContentService, FileToSave
 from keycloak_jwt_service import KeycloakJWTService
 import jwt
-from user.user_service import CreateUserRequest, UserService
+from user.user_service import create_user_from_keycloak
 
 from werkzeug.utils import secure_filename
 
@@ -12,7 +12,8 @@ from exceptions.custom_exceptions import ContentNotFoundException
 
 app = Flask(__name__)
 content_service = ContentService()
-jwt_service = KeycloakJWTService()
+jwt_service:KeycloakJWTService = KeycloakJWTService()
+
 
 @app.after_request
 def after_request(response):
@@ -51,10 +52,8 @@ def receive_new_content():
 
 @app.route('/users', methods=['POST'])
 def handleUsers():
-    user_request:CreateUserRequest = request.get_json()
-    print(user_request)
-    user_service: UserService = UserService()
-    user_service.create_user_from_keycloak(user_request)
+    user_request = request.get_json()
+    create_user_from_keycloak(user_request)
     return blank_ok()
 
 def handle_basic_error(code:int,error):

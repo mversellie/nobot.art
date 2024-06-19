@@ -41,7 +41,7 @@ class ContentRepository:
     def save_new_content(self, width:int,height:int,extension:string,
                          creator:string, description:string, filename:string,
                          name:string,created:datetime,content_id:string,
-                         url_safe_name:string,filename_S3:string):
+                         filename_S3:string):
         database_content_to_save = ThrowbackContent(width = width,height = height,extension=extension.upper(),
                                                     creator = creator,
                                                     description = description, filename = filename,

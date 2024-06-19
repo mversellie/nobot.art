@@ -15,7 +15,7 @@ from minio import Minio
 class TestContentService(unittest.TestCase):
 
     test_uuid = uuid.uuid4()
-    test_time =  time.time()
+    test_time = time.time()
 
     def test_get_content_works(self):
         test_content_service = ContentService()
