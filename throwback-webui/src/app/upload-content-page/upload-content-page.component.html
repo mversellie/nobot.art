@@ -1,5 +1,7 @@
 <div class="px-4 py-5 my-5" xmlns="http://www.w3.org/1999/html">
-    <img id="content-frame" src="assets/img/upload_placeholder.png" width="512px" height="512px"/>
+    <div class="row" >
+    <img id="content-frame" class="text-center" src="assets/img/upload_placeholder.png" width="512px" height="512px"/>
+    </div>
     <form [formGroup]="contentForm">
         <div class="form-group">
             <label for="titlePost">Title</label>
@@ -9,7 +11,7 @@
             <label for="description">Description</label>
             <textarea formControlName="contentDescription" class="form-control" id="description" placeholder="Description" rows="4"></textarea>
         </div>
-        <div class="form-row">
+        <div class="row">
         <div class="col-4">
             <input type="checkbox" class="form-check-input" id="matureCheck">
             <label class="form-check-label" for="matureCheck">Mature</label>
