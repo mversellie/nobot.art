@@ -47,8 +47,8 @@ def receive_new_content():
     file_to_save["file_data"] = request.files.get("upload")
     file_to_save["creator"] = unlocked_token["preferred_username"]
     file_to_save["filename"] = secure_filename(request.files["upload"].filename)
-    content_service.save_content(FileToSave.dict_con(file_to_save))
-    return blank_ok()
+    body = content_service.save_content(FileToSave.dict_con(file_to_save))
+    return good_json(body)
 
 @app.route('/users', methods=['POST'])
 def handleUsers():
@@ -73,5 +73,12 @@ def blank_ok():
     response = app.response_class(status=200)
     return response
 
+def start(port):
+    if port is None:
+        port = 5000
+    app.run(port=port)
+
 if __name__ == "__main__":
-    app.run()
+    start()
+
+

@@ -1,22 +1,32 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {map, Observable} from "rxjs";
 import {AuthenticationService} from "./authentication.service";
 import {environment} from "../../environments/environment";
+import {ContentCacheService} from "./content-cache.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentService {
-  constructor(private http:HttpClient, private auth:AuthenticationService) { }
+  constructor(private http:HttpClient, private auth:AuthenticationService,private cache:ContentCacheService) {
 
-  getContentData(user:String,content_name:String):Observable<ContentResponse> {
+  }
+
+  async getContentData(user:String,content_name:String):Promise<ContentResponse> {
+
+    const endSection = user + "/" + content_name
+    const cachedContent = this.cache.cacheGet(endSection)
+    if(cachedContent != undefined){
+      console.log("cache hit on: " + endSection)
+      return Promise.resolve(cachedContent);
+    }
     const url = environment["api-url"] +"/content/" + user + "/" + content_name ;
-    console.log("hitting: " + url)
-    // @ts-ignore
-    return this.http.get(url).pipe(map(res => res['payload']));
+    const getResponse = await fetch(url);
+    const getBody = await getResponse.json()
+    this.cache.cacheStore(user + "/" + content_name,getBody)
+    return Promise.resolve(getBody)
   }
 
   shipContentData(title:string,description:string,files:FileList){

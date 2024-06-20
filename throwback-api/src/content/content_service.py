@@ -4,7 +4,8 @@ import time
 import uuid
 
 from PIL import Image
-from content.content_database import ThrowbackContent, ContentRepository
+from content.content_database import ContentRepository
+from content.content_response import ContentResponse
 from minio import Minio
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
@@ -64,7 +65,7 @@ class ContentService:
                 print("created bucket: " + self.bucket)
 
     def get_content_by_creator_and_name(self, user:string, title:string):
-        return self.content_repository.get_content_by_creator_and_name(self,user,title)
+        return self.content_repository.get_content_by_creator_and_name(user, title)
 
     def save_content(self,file:FileToSave):
         self.connect_minio()
@@ -97,8 +98,11 @@ class ContentService:
             thumbnail_byte_length=thumbnail_byte_stream.getbuffer().nbytes
             thumbnail_byte_stream.seek(0)
             self.s3_client.put_object(self.bucket,full_storage_name,thumbnail_byte_stream,thumbnail_byte_length)
-            self.content_repository.save_new_content(width=width,height=height,extension=image_format,
+            self.content_repository.save_new_content(width=width, height=height, extension=image_format,
                                                 creator = file.creator,
-                                                description = file.description, filename = file.filename,
-                                                name = file.name,created = cur_time,content_id = file_id,
-                                                        filename_S3=full_storage_name)
+                                                description = file.description, filename= file.filename,
+                                                name = file.name,created = cur_time,content_id= file_id,
+                                                        filename_S3=full_storage_name, url_safe_name=secure_filename(file.name))
+            return ContentResponse(file.name,file.creator, full_storage_name,
+                                   cur_time, file.description, secure_filename(file.name))
+

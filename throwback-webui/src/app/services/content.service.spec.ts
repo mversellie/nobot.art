@@ -9,6 +9,7 @@ import {MockAuthenticationService} from "./mock-authentication.service";
 import {ApplicationInitStatus} from "@angular/core";
 import {AuthenticationService} from "./authentication.service";
 import {environment} from "../../environments/environment";
+import {from} from "rxjs";
 
 describe('ContentService', () => {
   let service: ContentService;
@@ -17,7 +18,7 @@ describe('ContentService', () => {
 
 
   const expectedData:ContentResponse =
-      new ContentResponse("aTitle", "jack", "aTitle-jack.jpg", new Date(), "a description")
+      new ContentResponse("aTitle", "jack", "aTitle-jack.jpg", new Date(), "a description","aTitle")
   expectedData.createdDate = undefined;
 
   beforeEach(  async() => {
@@ -40,7 +41,7 @@ describe('ContentService', () => {
   it("should get data", () => {
     const username = "jack";
     const title= "aTitle"
-    service.getContentData(username, title).subscribe(
+    from(service.getContentData(username, title)).subscribe(
         (data) => {
           expect(data).toEqual(expectedData)}
     )

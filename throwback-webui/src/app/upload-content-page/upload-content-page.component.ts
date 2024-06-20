@@ -2,6 +2,9 @@ import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {ContentService} from "../services/content.service";
 import {NgOptimizedImage} from "@angular/common";
+import {ContentResponse} from "../objects/ContentResponse";
+import {ContentCacheService} from "../services/content-cache.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-upload-content-page',
@@ -19,7 +22,8 @@ export class UploadContentPageComponent {
   // @ts-ignore
   filesToUpload:FileList;
 
-  constructor(private contentService:ContentService) {
+  constructor(private contentService:ContentService,
+              private cacheService:ContentCacheService,private router:Router) {
     this.contentForm = new FormGroup({
       fileData:new FormControl(),
       contentName:new FormControl(),
@@ -33,8 +37,13 @@ export class UploadContentPageComponent {
         this.contentForm.value["contentName"],
         this.contentForm.value["contentDescription"],
         this.filesToUpload
-  ).subscribe((hi) => console.log(hi))
-  }
+  ).subscribe((hi:Object) => {
+      const response = hi as ContentResponse
+      const key = response.creator + "/" + response.url_safe_name;
+      this.cacheService.cacheStore(key,response);
+      this.router.navigate(["/" ,response.creator,response.url_safe_name]);
+    })}
+
 
   handle_file(event:any) {
     this.filesToUpload = event.files

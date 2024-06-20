@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, ParamMap, Router} from "@angular/router";
 import {ContentService} from "../services/content.service";
 import {ContentResponse} from "../objects/ContentResponse";
-import {of} from "rxjs";
+import {from, of} from "rxjs";
 
 @Component({
   selector: 'app-content-page',
@@ -16,14 +16,16 @@ export class ContentPageComponent {
   paramMapObs:ParamMap | null = null ;
   imageUrl:string = ""
 
-  contentData : ContentResponse =
-      new ContentResponse("","", "", new Date(),"");
+  contentData : ContentResponse;
 
   constructor(private route:ActivatedRoute, private contentService:ContentService, private router:Router) {
 
     console.log("content page loaded")
 
-    this.route.paramMap.subscribe( (data) => {
+    this.contentData =  new ContentResponse("","", "", new Date(),"","");
+
+
+  this.route.paramMap.subscribe( (data) => {
       this.paramMapObs = data;
     });
 
@@ -42,7 +44,7 @@ export class ContentPageComponent {
         }
       }
 
-      this.contentService.getContentData(contentUsername,contentName).subscribe(
+      from(this.contentService.getContentData(contentUsername,contentName)).subscribe(
           (data:ContentResponse) => {
             console.log(data)
             this.contentData = data;

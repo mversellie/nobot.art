@@ -20,6 +20,7 @@ class ThrowbackContent(Model):
     filename = CharField()
     filename_S3 = CharField()
     mature = BooleanField()
+    url_safe_name = CharField()
     class Meta:
         database = db
         table_name = 'throwback_content'
@@ -34,18 +35,18 @@ class ContentRepository:
             (ThrowbackContent.url_safe_name == title) & (ThrowbackContent.creator == user))
         for content in contents:
             return ContentResponse(content.name,content.creator, content.filename_S3,
-                                   content.created, content.description)
+                                   content.created, content.description, content.url_safe_name)
         raise ContentNotFoundException("Not found")
 
 
     def save_new_content(self, width:int,height:int,extension:string,
                          creator:string, description:string, filename:string,
                          name:string,created:datetime,content_id:string,
-                         filename_S3:string):
+                         filename_S3:string,url_safe_name:string):
         database_content_to_save = ThrowbackContent(width = width,height = height,extension=extension.upper(),
                                                     creator = creator,
                                                     description = description, filename = filename,
                                                     name = name,created = created,content_id = content_id,
-                                                    filename_S3= filename_S3)
+                                                    filename_S3= filename_S3,url_safe_name=url_safe_name)
         database_content_to_save.save(force_insert=True)
 
