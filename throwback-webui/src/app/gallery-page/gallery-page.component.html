@@ -1,0 +1,6 @@
+<div class="row" *ngFor="let row of galleryAsRows">
+    <div class="col-3" *ngFor="let chip of row">
+    <app-gallery-chip [title]="chip.title" [file]="chip.filename"
+                      [creator]="chip.creator" [url_safe_title]="chip.url_safe_name"/>
+    </div>
+</div>
