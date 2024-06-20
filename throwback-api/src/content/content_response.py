@@ -1,4 +1,5 @@
 import string
+from datetime import date
 
 
 class ContentResponse:
@@ -11,4 +12,13 @@ class ContentResponse:
         self.description = desc
         self.createdDate = created_date
         self.url_safe_name = url_safe_name
+
+
+def content_response_serialize(obj):
+    if isinstance(obj, date):
+        serial = obj.timestamp()
+        return serial
+
+    return obj.__dict__
+
 

@@ -1,5 +1,6 @@
 import json
 
+from content.content_response import content_response_serialize
 from flask import Flask, request
 from content.content_service import ContentService, FileToSave
 from keycloak_jwt_service import KeycloakJWTService
@@ -34,6 +35,16 @@ def content_not_found(error):
 def bad_token(error):
     return handle_basic_error(403,error)
 
+@app.route('/content/<username>', methods=['GET'])
+def get_gallery_page(username):
+    page_no = request.args.get('page')
+    page_size = request.args.get('page_size')
+    if page_no is None: page_no = 1
+    if page_size is None:page_size = 20
+    body=content_service.get_gallery_page_for_user(username,page_no,page_size)
+    added_body= {"content":body}
+    return good_json(added_body)
+
 @app.route('/content/<username>/<title>', methods=['GET'])
 def get_content_by_username_and_title(username,title):
     body=content_service.get_content_by_creator_and_name(username,title)
@@ -62,8 +73,10 @@ def handle_basic_error(code:int,error):
     return response
 
 def good_json(body):
+    out=json.dumps(body,default=content_response_serialize)
+    print(out)
     response = app.response_class(
-        response= json.dumps(body.__dict__),
+        response= out,
         status=200,
         mimetype='application/json'
     )

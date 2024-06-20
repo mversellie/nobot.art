@@ -18,7 +18,7 @@ export class ContentPageComponent {
 
   contentData : ContentResponse;
 
-  constructor(private route:ActivatedRoute, private contentService:ContentService, private router:Router) {
+  constructor(private route:ActivatedRoute, private contentService:ContentService) {
 
     console.log("content page loaded")
 

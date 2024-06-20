@@ -67,6 +67,9 @@ class ContentService:
     def get_content_by_creator_and_name(self, user:string, title:string):
         return self.content_repository.get_content_by_creator_and_name(user, title)
 
+    def get_gallery_page_for_user(self,user:string,page:int,page_size:int):
+        return self.content_repository.get_gallery_page_for_user(user,page,page_size)
+
     def save_content(self,file:FileToSave):
         self.connect_minio()
         file_image_bytes = file.file_data

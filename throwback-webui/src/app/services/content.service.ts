@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {AuthenticationService} from "./authentication.service";
 import {environment} from "../../environments/environment";
 import {ContentCacheService} from "./content-cache.service";
+import {map} from "rxjs";
 
 
 @Injectable({
@@ -27,6 +28,16 @@ export class ContentService {
     const getBody = await getResponse.json()
     this.cache.cacheStore(user + "/" + content_name,getBody)
     return Promise.resolve(getBody)
+  }
+
+  getGalleryForUser(user:String,page:string,pageSize:string){
+    const url = environment["api-url"] + "/content/" + user
+    let params = new HttpParams()
+    params.append("page",page)
+    params.append("page_size",pageSize)
+
+    // @ts-ignore
+    return this.http.get(url ,{params:params}).pipe(map(res => res['content']));
   }
 
   shipContentData(title:string,description:string,files:FileList){

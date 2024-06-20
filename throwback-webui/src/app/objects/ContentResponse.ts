@@ -1,14 +1,16 @@
+import {environment} from "../../environments/environment";
+
 export class ContentResponse{
-    title:String = "";
-    creator: String = "";
-    filename: String = "";
+    title:string = "";
+    creator: string = "";
+    filename: string = "";
     createdDate:Date|undefined = new Date();
-    description:String = "";
-    url_safe_name:String = "";
+    description:string = "";
+    url_safe_name:string = "";
 
 
 
-    constructor(title: String, creator: String, filename: String, createdDate: Date, description: String,url_safe_name:String) {
+    constructor(title: string, creator: string, filename: string, createdDate: Date, description: string,url_safe_name:string) {
         this.title = title;
         this.creator = creator;
         this.filename = filename;
@@ -21,4 +23,8 @@ export class ContentResponse{
 
 export function makeEmptyContentResponse():ContentResponse{
     return new ContentResponse("","", "", new Date(),"","");
+}
+
+export function makeThumbnailUrl(res:ContentResponse):string{
+    return environment["S3-URL"] + res.filename
 }

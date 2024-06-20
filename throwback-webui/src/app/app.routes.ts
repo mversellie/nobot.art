@@ -5,11 +5,13 @@ import {UploadContentPageComponent} from "./upload-content-page/upload-content-p
 import {loggedInGuard} from "./guards/logged-in.guard";
 import {EmptyComponent} from "./reroute-to-login/empty.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
+import {GalleryPageComponent} from "./gallery-page/gallery-page.component";
 
 export const routes: Routes = [
     {path:'login',component:EmptyComponent,canActivate:[loggedInGuard]},
     {path:'create',component:UploadContentPageComponent,canActivate:[loggedInGuard]},
     {path:':contentUsername/:contentName',component:ContentPageComponent},
+    {path:':contentUsername',component:GalleryPageComponent},
     {path:'404',component:NotFoundComponent},
     {path:'',component:HomePageComponent}
     ];

@@ -38,6 +38,17 @@ class ContentRepository:
                                    content.created, content.description, content.url_safe_name)
         raise ContentNotFoundException("Not found")
 
+    def get_gallery_page_for_user(self, user:string, page:int, page_size:int):
+        ret = []
+        contents = (ThrowbackContent.select().paginate(page,page_size)
+            .order_by(ThrowbackContent.created.desc()).where((ThrowbackContent.creator == user)))
+        for content in contents:
+            ret.append(ContentResponse(content.name,content.creator, content.filename_S3,
+                                   content.created, content.description, content.url_safe_name))
+        if len(ret) == 0 and page > 0:
+            raise ContentNotFoundException("Not found")
+        return ret
+
 
     def save_new_content(self, width:int,height:int,extension:string,
                          creator:string, description:string, filename:string,
