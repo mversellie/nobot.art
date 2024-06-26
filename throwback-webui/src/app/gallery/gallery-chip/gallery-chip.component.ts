@@ -24,6 +24,10 @@ export class GalleryChipComponent {
     return "/" + this.creator + "/" + this.url_safe_title;
   }
 
+  goToUserGallery(){
+    return "/" + this.creator
+  }
+
   getThumbnailLink(){
     return environment["S3-URL"] + this.file;
   }

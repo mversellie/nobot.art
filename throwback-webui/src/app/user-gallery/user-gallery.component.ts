@@ -1,20 +1,20 @@
-import { Component } from '@angular/core';
-import {ActivatedRoute, ParamMap} from "@angular/router";
-import {ContentResponse} from "../objects/ContentResponse";
+import {Component, Input} from '@angular/core';
 import {ContentService} from "../services/content.service";
+import {ActivatedRoute, ParamMap} from "@angular/router";
 import {of} from "rxjs";
+import {ContentResponse} from "../objects/ContentResponse";
 import {GalleryComponent} from "../gallery/gallery.component";
 
 @Component({
-  selector: 'app-home-page',
+  selector: 'app-user-gallery',
   standalone: true,
   imports: [
     GalleryComponent
   ],
-  templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  templateUrl: './user-gallery.component.html',
+  styleUrl: './user-gallery.component.css'
 })
-export class HomePageComponent {
+export class UserGalleryComponent {
   paramMapObs:ParamMap | null = null ;
   parentGalleryData:Array<ContentResponse>
   page:number = 1
@@ -28,12 +28,14 @@ export class HomePageComponent {
     if (map != null) {
       const page = map.get("page")
       this.page = Number(page)
+      const username = map.get("contentUsername")
       const page_size = map.get("page_size")
       this.pageSize = Number(page_size)
       // @ts-ignore
-      this.contentService.getLatest(page,page_size)
-          .subscribe((data) =>
-          {this.parentGalleryData = data})
+      this.contentService.getGalleryForUser(username,page,page_size)
+          .subscribe((contents) => this.parentGalleryData = contents)
     }
   }
+
+
 }

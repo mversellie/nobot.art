@@ -70,6 +70,9 @@ class ContentService:
     def get_gallery_page_for_user(self,user:string,page:int,page_size:int):
         return self.content_repository.get_gallery_page_for_user(user,page,page_size)
 
+    def get_latest(self,page:int,page_size:int):
+        return self.content_repository.get_latest(page,page_size)
+
     def save_content(self,file:FileToSave):
         self.connect_minio()
         file_image_bytes = file.file_data

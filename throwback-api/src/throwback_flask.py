@@ -50,16 +50,25 @@ def get_content_by_username_and_title(username,title):
     body=content_service.get_content_by_creator_and_name(username,title)
     return good_json(body)
 
-@app.route('/content', methods=['POST'])
-def receive_new_content():
-    jwt_token = request.headers["Authorization"].split(" ")[1]
-    unlocked_token = jwt_service.decode_jwt(jwt_token)
-    file_to_save = request.form.to_dict()
-    file_to_save["file_data"] = request.files.get("upload")
-    file_to_save["creator"] = unlocked_token["preferred_username"]
-    file_to_save["filename"] = secure_filename(request.files["upload"].filename)
-    body = content_service.save_content(FileToSave.dict_con(file_to_save))
-    return good_json(body)
+@app.route('/content', methods=['POST','GET'])
+def base_content():
+    if request.method == 'POST':
+        jwt_token = request.headers["Authorization"].split(" ")[1]
+        unlocked_token = jwt_service.decode_jwt(jwt_token)
+        file_to_save = request.form.to_dict()
+        file_to_save["file_data"] = request.files.get("upload")
+        file_to_save["creator"] = unlocked_token["preferred_username"]
+        file_to_save["filename"] = secure_filename(request.files["upload"].filename)
+        body = content_service.save_content(FileToSave.dict_con(file_to_save))
+        return good_json(body)
+    if request.method == 'GET':
+        page_no = request.args.get('page')
+        page_size = request.args.get('page_size')
+        if page_no is None: page_no = 1
+        if page_size is None:page_size = 20
+        body=content_service.get_latest(page_no,page_size)
+        added_body={"content":body}
+        return good_json(added_body)
 
 @app.route('/users', methods=['POST'])
 def handleUsers():

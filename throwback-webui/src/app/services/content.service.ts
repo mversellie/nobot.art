@@ -40,6 +40,16 @@ export class ContentService {
     return this.http.get(url ,{params:params}).pipe(map(res => res['content']));
   }
 
+  getLatest(page:string,pageSize:string){
+    const url = environment["api-url"] + "/content"
+    let params = new HttpParams()
+    params.append("page",page)
+    params.append("page_size",pageSize)
+
+    // @ts-ignore
+    return this.http.get(url ,{params:params}).pipe(map(res => res['content']));
+  }
+
   shipContentData(title:string,description:string,files:FileList){
     const form:FormData = new FormData();
     form.append("name",title)
