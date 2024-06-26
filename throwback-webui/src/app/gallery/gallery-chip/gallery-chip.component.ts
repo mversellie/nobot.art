@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {RouterLink} from "@angular/router";
 import {environment} from "../../../environments/environment";
 
 @Component({
@@ -15,10 +15,6 @@ export class GalleryChipComponent {
   @Input() file:string;
   @Input() creator:string;
   @Input() url_safe_title:string;
-
-
-  constructor(private router:Router) {
-  }
 
   goToContent(){
     return "/" + this.creator + "/" + this.url_safe_title;

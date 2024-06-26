@@ -28,6 +28,7 @@ export class AuthenticationService {
       showDebugInformation: true,
     };
     this.oauthService.configure(this.AuthCodeFlowConfig)
+    this.oauthService.setupAutomaticSilentRefresh()
     this.oauthService.loadDiscoveryDocumentAndTryLogin()
   }
 
@@ -49,6 +50,10 @@ export class AuthenticationService {
 
   getToken(){
     return "Bearer " + sessionStorage.getItem("id_token");
+  }
+
+  refreshToken() {
+    this.oauthService.refreshToken()
   }
 
 }

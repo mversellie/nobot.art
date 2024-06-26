@@ -73,6 +73,17 @@ class ContentService:
     def get_latest(self,page:int,page_size:int):
         return self.content_repository.get_latest(page,page_size)
 
+    def save_profile_pic(self,pic:FileStorage,user:string):
+        self.connect_minio()
+        with Image.open(pic) as img:
+            img.thumbnail((250,250))
+            thumbnail_byte_stream = io.BytesIO()
+            img.save(thumbnail_byte_stream, format="PNG")
+            thumbnail_byte_length=thumbnail_byte_stream.getbuffer().nbytes
+            thumbnail_byte_stream.seek(0)
+            filename = "pfp-" + user + ".png"
+            self.s3_client.put_object(self.bucket,filename,thumbnail_byte_stream,thumbnail_byte_length)
+
     def save_content(self,file:FileToSave):
         self.connect_minio()
         file_image_bytes = file.file_data

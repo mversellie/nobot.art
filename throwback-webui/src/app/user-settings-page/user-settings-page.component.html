@@ -1,0 +1,17 @@
+<div class="px-4 py-5 my-5" xmlns="http://www.w3.org/1999/html">
+    <form [formGroup]="contentForm">
+        <div class="row">
+            <div class="col-4">
+                <img id="content-frame" class="text-center" src="assets/img/upload_placeholder.png" width="512px" height="512px"/>
+            </div>
+            <div class="col-4">
+                <input type="file" (change)="handle_file($event.target)" id="upload-field">
+            </div>
+            </div>
+        <div class="row">
+        <div class="col-4">
+                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,23 +1,24 @@
 #body-id {
     display:flex;
-    height: 100%;
 }
 
 #left-menu{
 }
 
 #main-section {
-    border-width: 50px;
-}
 
-#footer-id {
-        bottom: 0;
-        width: 100%;     /* Footer height */
+    border-width: 50px;
+    height: 100%;
+    width:100%;
 }
 
 .full-vert{
     height: 100%;
     margin-top: 0px;
+}
+
+body{
+    height: 100%;
 }
 
 

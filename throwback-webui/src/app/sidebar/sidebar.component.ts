@@ -2,30 +2,31 @@ import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../services/authentication.service";
 import {UserService} from "../services/user.service";
 import {CommonModule} from "@angular/common";
+import {RouterLink} from "@angular/router";
+import {AvatarComponent} from "../avatar/avatar.component";
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [ CommonModule
+  imports: [CommonModule, RouterLink, AvatarComponent
   ],
   template: `<div class="text-bg-dark" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center text-white text-decoration-none">
-      <svg class="bi pe-none me-2" width="40" height="32"><use xlink:href="#bootstrap"></use></svg>
-      <span class="fs-4" *ngIf="!authService.isLoggedIn()">Login</span>
-      <span class="fs-4" *ngIf="authService.isLoggedIn()">{{userService.username()}}</span>
-    </a>
-    <hr>
     <ul class="nav nav-pills flex-column mb-auto">
+        <li class="nav-item" *ngIf="!authService.isLoggedIn()">
+          <a routerLink="/login" class="nav-link text-white">Login</a></li>
+        <li class="nav-item" *ngIf="authService.isLoggedIn()">
+          <app-avatar [circle]="true" username="{{userService.username()}}" />
+          <a routerLink="/{{userService.username()}}" class="nav-link text-white">
+            {{userService.username()}}</a></li>
+      <hr>
       <li class="nav-item">
-        <a href="#" class="nav-link active" aria-current="page">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
+        <a routerLink="/" class="nav-link active">
           Home
         </a>
       </li>
-      <li>
-        <a href="#" class="nav-link text-white">
-          <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-          Dashboard
+      <li *ngIf="authService.isLoggedIn()">
+        <a routerLink="/settings" class="nav-link text-white">
+          Settings
         </a>
       </li>
     </ul>

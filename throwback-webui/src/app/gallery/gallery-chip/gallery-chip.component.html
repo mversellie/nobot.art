@@ -1,5 +1,5 @@
-<div>
-        <img src="{{getThumbnailLink()}}" routerLink="{{goToContent()}}" width="250" height="250">
-        <p routerLink="{{goToContent()}}">{{title}}<p>
-        <p routerLink="{{goToUserGallery()}}">{{creator}}<p>
+<div class="gallery-chip-body">
+    <a routerLink="{{goToContent()}}"><img class="gallery-chip-image" src="{{getThumbnailLink()}}" width="250" height="250"></a>
+    <a routerLink="{{goToContent()}}"><p>{{title}}</p></a>
+    <a routerLink="{{goToUserGallery()}}"><p>{{creator}}</p></a>
 </div>

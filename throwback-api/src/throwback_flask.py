@@ -3,8 +3,10 @@ import json
 from content.content_response import content_response_serialize
 from flask import Flask, request
 from content.content_service import ContentService, FileToSave
-from keycloak_jwt_service import KeycloakJWTService
 import jwt
+
+from settings_service import SettingsService
+from user.keycloak_service import KeycloakSettings, KeycloakService
 from user.user_service import create_user_from_keycloak
 
 from werkzeug.utils import secure_filename
@@ -13,7 +15,13 @@ from exceptions.custom_exceptions import ContentNotFoundException
 
 app = Flask(__name__)
 content_service = ContentService()
-jwt_service:KeycloakJWTService = KeycloakJWTService()
+settings:SettingsService = SettingsService()
+keycloak_settings:KeycloakSettings = KeycloakSettings(settings.get('KEYCLOAK_HOST'),
+                                             settings.get("KEYCLOAK_REALM"),
+                                             settings.get("KEYCLOAK_API_CLIENT_ID"),
+                                             settings.get("KEYCLOAK_API_CLIENT_SECRET"),
+                                             settings.get("KEYCLOAK_JWKS_URI"))
+keycloak_service:KeycloakService = KeycloakService(keycloak_settings)
 
 
 @app.after_request
@@ -54,7 +62,7 @@ def get_content_by_username_and_title(username,title):
 def base_content():
     if request.method == 'POST':
         jwt_token = request.headers["Authorization"].split(" ")[1]
-        unlocked_token = jwt_service.decode_jwt(jwt_token)
+        unlocked_token = keycloak_service.decode_jwt(jwt_token)
         file_to_save = request.form.to_dict()
         file_to_save["file_data"] = request.files.get("upload")
         file_to_save["creator"] = unlocked_token["preferred_username"]
@@ -75,6 +83,14 @@ def handleUsers():
     user_request = request.get_json()
     create_user_from_keycloak(user_request)
     return blank_ok()
+
+@app.route('/users', methods=['PUT'])
+def update_user():
+    jwt_token = request.headers["Authorization"].split(" ")[1]
+    unlocked_token = keycloak_service.decode_jwt(jwt_token)
+    content_service.save_profile_pic(request.files.get("upload"),unlocked_token["preferred_username"])
+    return blank_ok()
+
 
 def handle_basic_error(code:int,error):
     print(error)
