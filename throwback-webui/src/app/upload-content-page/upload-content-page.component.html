@@ -1,13 +1,13 @@
 <div class="px-4 mt-2" xmlns="http://www.w3.org/1999/html">
 
-    <div class="form-group">
-        <label for="titlePost">Title</label>
-        <input formControlName="contentName" type="text" class="ms-auto form-control" id="titlePost" placeholder="Title">
-    </div>
-    <div class="row" >
-    <img id="content-frame" class="text-center" src="assets/img/upload_placeholder.png" width="150em" height="150em"/>
-    </div>
     <form [formGroup]="contentForm">
+        <div class="form-group">
+            <label for="titlePost">Title</label>
+            <input formControlName="contentName" class="form-control" id="titlePost" placeholder="Title">
+        </div>
+        <div class="row" >
+            <img id="content-frame" class="text-center" src="assets/img/upload_placeholder.png" width="150em" height="150em"/>
+        </div>
         <div class="vstack">
 
                 <p>Upload:</p>

@@ -1,10 +1,11 @@
 import io
 import string
-import time
 import uuid
+from datetime import datetime
 
 from PIL import Image
-from content.content_database import ContentRepository
+
+from content.content_opensearch import ContentOpenSearch
 from content.content_response import ContentResponse
 from minio import Minio
 from werkzeug.datastructures import FileStorage
@@ -49,7 +50,7 @@ class ContentService:
         #This Line is needed for intializing connection after init
         self.s3_client = None
         self.settings = SettingsService()
-        self.content_repository = ContentRepository()
+        self.content_repository = ContentOpenSearch()
         self.bucket = self.settings.get("S3_BUCKET")
 
     def connect_minio(self):
@@ -108,7 +109,7 @@ class ContentService:
                                       length=full_size_file_length)
             width = img.width
             height = img.height
-            cur_time = time.time()
+            cur_time = datetime.now()
             img.thumbnail((1280,1280))
             thumbnail_byte_stream = io.BytesIO()
             img.save(thumbnail_byte_stream, format=image_format.upper())
