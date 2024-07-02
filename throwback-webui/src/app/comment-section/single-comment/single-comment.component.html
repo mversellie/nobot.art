@@ -1,0 +1,10 @@
+
+<div class="my-5 comment vstack align-items-start text-start" >
+    <div>
+        <app-avatar [username]="comment['username']" />
+        <div><a routerLink="/{{comment['username']}}">{{comment['username']}}</a></div></div>
+    <hr/>
+    <div>{{comment["content"]}}</div>
+    <hr>
+    <div > Last updated: {{comment["posted"]}}</div>
+</div>

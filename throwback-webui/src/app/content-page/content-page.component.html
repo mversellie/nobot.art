@@ -1,25 +1,30 @@
 
-<div class="px-4 py-5 my-5 text-center">
+<div class="px-4 py-5 my-5">
+    <div class="d-flex justify-content-center">
     <img id="content-frame" [src]="imageUrl"/>
+    </div>
     <hr/>
     <div class="my-2">
         <div class="p-5 bg-body-tertiary">
-            <div class="container py-2">
-                <div class="row justify-content-start">
-                    <div class="col-4">
+            <div class="vstack">
+            <div class="vstack py-2">
+                    <div>
                         <h1>{{ contentData.title }}</h1>
                     </div>
-                </div><hr />
-                <div class="row justify-content-start">
-                    <div class="col-2">
-                        <p>{{ contentData.creator }}</p>
-                    </div>
-                </div><hr />
-                <div class="row justify-content-start">
-                    <div class="col-2">
+                        <div class="hstack">
+                        <app-avatar [username]="contentData.creator" />
+                        <div>{{contentData.creator}}</div>
+                        </div>
+                </div>
+            <hr />
+            <div>
                         <p>{{ contentData.description }}</p>
-                    </div>
             </div>
-        </div>
+                <hr/>
+                <div >
+                    <app-comment-section [threadName]="threadName" [comments]="comments" />
+                </div>
+            </div>
+            </div>
     </div>
 </div>

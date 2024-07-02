@@ -15,12 +15,14 @@ import {AvatarComponent} from "../avatar/avatar.component";
         <li class="nav-item" *ngIf="!authService.isLoggedIn()">
           <a routerLink="/login" class="nav-link text-white">Login</a></li>
         <li class="nav-item" *ngIf="authService.isLoggedIn()">
-          <app-avatar [circle]="true" username="{{userService.username()}}" />
-          <a routerLink="/{{userService.username()}}" class="nav-link text-white">
-            {{userService.username()}}</a></li>
+          <div class="hstack">
+            <div><app-avatar [toSettings]="true" [small]="true" [circle]="true" username="{{userService.username()}}" /></div>
+            <div><a routerLink="/{{userService.username()}}" class="nav-link text-white">
+              {{userService.username()}}</a></div></div>
+        </li>
       <hr>
       <li class="nav-item">
-        <a routerLink="/" class="nav-link active">
+        <a routerLink="/" class="nav-link text-white">
           Home
         </a>
       </li>

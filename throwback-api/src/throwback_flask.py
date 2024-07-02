@@ -1,10 +1,12 @@
 import json
 
+from comments.comment_service import CommentService
 from content.content_response import content_response_serialize
 from flask import Flask, request
 from content.content_service import ContentService, FileToSave
 import jwt
 
+from opensearch.opensearch_service import OpenSearchService
 from settings_service import SettingsService
 from user.keycloak_service import KeycloakSettings, KeycloakService
 from user.user_service import create_user_from_keycloak
@@ -22,6 +24,8 @@ keycloak_settings:KeycloakSettings = KeycloakSettings(settings.get('KEYCLOAK_HOS
                                              settings.get("KEYCLOAK_API_CLIENT_SECRET"),
                                              settings.get("KEYCLOAK_JWKS_URI"))
 keycloak_service:KeycloakService = KeycloakService(keycloak_settings)
+opensearch_service:OpenSearchService = OpenSearchService()
+comment_service:CommentService = CommentService(opensearch_service)
 
 
 @app.after_request
@@ -57,6 +61,19 @@ def get_gallery_page(username):
 def get_content_by_username_and_title(username,title):
     body=content_service.get_content_by_creator_and_name(username,title)
     return good_json(body)
+
+@app.route('/content/<username>/<title>/comments', methods=['POST','GET'])
+def manage_comments(username,title):
+    threadName = username + "/" + title;
+    if request.method == 'POST':
+        jwt_token = request.headers["Authorization"].split(" ")[1]
+        unlocked_token = keycloak_service.decode_jwt(jwt_token)
+        comment_service.add_a_comment(threadName,request.form.get("comment"),
+                                      unlocked_token["preferred_username"])
+        return blank_ok()
+    if request.method == 'GET':
+        comments = comment_service.get_all_comments_for_thread(threadName)
+        return good_json({"comments":comments})
 
 @app.route('/content', methods=['POST','GET'])
 def base_content():

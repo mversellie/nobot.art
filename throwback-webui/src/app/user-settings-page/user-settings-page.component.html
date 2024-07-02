@@ -1,17 +1,21 @@
 <div class="px-4 py-5 my-5" xmlns="http://www.w3.org/1999/html">
-    <form [formGroup]="contentForm">
-        <div class="row">
-            <div class="col-4">
-                <img id="content-frame" class="text-center" src="assets/img/upload_placeholder.png" width="512px" height="512px"/>
+    <form [formGroup]="contentForm" class="bg-body-secondary rounded-3">
+        <div class="hstack">
+            <div>
+                <img id="content-frame" class="m-4" src="assets/img/upload_placeholder.png" width="150em" height="150em"/>
             </div>
-            <div class="col-4">
-                <input type="file" (change)="handle_file($event.target)" id="upload-field">
+            <div class="ms-auto">
+                <div class="vstack m-3">
+                    <p>Avatar:</p>
+                <label class="btn btn-secondary" for="upload-field">
+                    upload
+                </label>
+                <input type="file" (change)="handle_file($event.target)" id="upload-field" hidden/>
+                </div>
             </div>
-            </div>
-        <div class="row">
-        <div class="col-4">
+        </div>
+        <div class="d-flex flex-row-reverse align-content-end">
                 <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
-            </div>
         </div>
     </form>
 </div>

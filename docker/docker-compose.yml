@@ -23,8 +23,8 @@ services:
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl/public.crt
     command:  start-dev
     ports:
-      - '8080:8080'
-      - '8443:8443'
+      - '8080:8080' #HTTP
+      - '8443:8443' #HTTPS
   keycloakdb:
     image: postgres:16
     volumes:
@@ -37,8 +37,8 @@ services:
     image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
     command: server /data --console-address ":9001"
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "9000:9000" #API
+      - "9001:9001" #ADMIN
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
@@ -47,6 +47,40 @@ services:
       - minio_data:/data
       - ${LOCALHOST_KEY}:/root/.minio/certs/private.key
       - ${LOCALHOST_CERT}:/root/.minio/certs/public.crt
+  opensearch:
+    image: opensearchproject/opensearch:latest
+    container_name: opensearch
+    environment:
+      discovery.type: single-node
+      node.name: opensearch
+      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
+      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD_ENV}
+    volumes:
+      - opensearch_data:/usr/share/opensearch/data
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - opensearch-net
+  opensearch-dashboards:
+    image: opensearchproject/opensearch-dashboards:latest
+    container_name: opensearch-dashboards
+    ports:
+      - 5601:5601
+    expose:
+      - "5601"
+    environment:
+      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
+    networks:
+      - opensearch-net
+    depends_on:
+      - opensearch
+
 volumes:
   postgres_data:
   minio_data:
+  opensearch_data:
+
+networks:
+  opensearch-net:
+    driver: bridge

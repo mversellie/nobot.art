@@ -2,14 +2,13 @@
 <app-header/>
 
 <div id="body-id" class="d-flex flex-nowrap">
-    <div id="sidebar-id" class="d-flex flex-column p-5 pb-0 pt-0 mt-1 flex-shrink-0 text-bg-dark">
+    <div id="sidebar-id" class="d-flex flex-column p-5 pb-0 pt-0 mt-1 flex-shrink-0 text-bg-dark d-none d-lg-block">
         <app-sidebar/>
     </div>
-    <div id="main-section" class="d-flex align-self-center flex-column p-5 pt-0 pb-0" style="width: 100%">
+    <div id="main-section" class="d-flex align-self-center flex-column  pt-0 pb-0">
         <main>
             <router-outlet />
         </main>
-        <app-footer/>
     </div>
 </div>
 </div>
