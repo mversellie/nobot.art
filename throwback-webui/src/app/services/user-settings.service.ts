@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {AuthenticationService} from "./authentication.service";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserSettingsService{
 
-  constructor(private http:HttpClient, private auth:AuthenticationService) {
+  constructor(private http:HttpClient, private userService:UserService) {
   }
 
   shipSettingsUpdate(profilePictureFiles:FileList) {
@@ -17,8 +17,14 @@ export class UserSettingsService{
     // @ts-ignore
     form.append("upload",profilePicture,profilePicture.name)
 
-    const headers = new HttpHeaders()
-        .set('Authorization', this.auth.getToken());
+    const idToken = this.userService.getToken();
+    let headers = new HttpHeaders();
+    if(idToken != null) {
+      headers = new HttpHeaders().set('Authorization', `Bearer ${idToken}`);
+    }
+
+    console.log(headers)
+
 
     return this.http.put(environment["api-url"] + "/users",form,{headers:headers})
   }

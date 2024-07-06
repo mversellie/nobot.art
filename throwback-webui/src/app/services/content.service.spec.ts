@@ -2,19 +2,14 @@ import {TestBed} from '@angular/core/testing';
 
 import { ContentService } from './content.service';
 import {ContentResponse} from "../objects/ContentResponse";
-import {provideHttpClient} from "@angular/common/http";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-
-import {MockAuthenticationService} from "./mock-authentication.service";
-import {ApplicationInitStatus} from "@angular/core";
-import {AuthenticationService} from "./authentication.service";
-import {environment} from "../../environments/environment";
-import {from} from "rxjs";
+import {HttpClient} from "@angular/common/http";
+import {UserService} from "./user.service";
+import {makeBasicContentMock} from "../mocks/ContentMocks";
 
 describe('ContentService', () => {
   let service: ContentService;
-  let httpCtrl:HttpTestingController;
-  let expectedBaseApiUrl = environment["api-url"]
+  let httpCtrl:jasmine.SpyObj<HttpClient>;
+  let userSpy:jasmine.SpyObj<UserService>;
 
 
   const expectedData:ContentResponse =
@@ -23,31 +18,33 @@ describe('ContentService', () => {
 
   beforeEach(  async() => {
     TestBed.configureTestingModule({
-      imports:[HttpClientTestingModule],providers:[
-        {provide: AuthenticationService, useClass:MockAuthenticationService},
-        provideHttpClient(),
+      providers:[
+        {provide: UserService, useValue:userSpy},
+        {provide: HttpClient, useValue: httpCtrl}
       ]});
-
-    await TestBed.inject(ApplicationInitStatus).donePromise;
     service = TestBed.inject(ContentService);
-    httpCtrl = TestBed.inject(HttpTestingController);
-
+    userSpy = jasmine.createSpyObj(['getToken'])
+    httpCtrl = jasmine.createSpyObj(['get'])
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
 
-  it("should get data", () => {
+  it("should get data", async () => {
+    //arrange
     const username = "jack";
     const title= "aTitle"
-    from(service.getContentData(username, title)).subscribe(
-        (data) => {
-          expect(data).toEqual(expectedData)}
-    )
-    const testUrl = expectedBaseApiUrl + "/content/" + username + "/" + title
-    const mockApi = httpCtrl.expectOne(testUrl);
-    mockApi.flush({body:expectedData});
+    const contentResponse =  new Response(JSON.stringify(makeBasicContentMock()),{status:200,statusText:'OK'});
+    const spy = spyOn(window,'fetch').and.returnValue(Promise.resolve(contentResponse))
+
+    //act
+    await service.getContentData(username,title)
+
+
+    //assert
+    const args = spy.calls.mostRecent().args
+    expect(args[0]).toContain(`content/${username}/${title}`)
   });
 
 

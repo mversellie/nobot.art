@@ -32,7 +32,6 @@ export class UploadContentPageComponent {
   }
 
   onSubmit(){
-    console.log(this.contentForm)
     this.contentService.shipContentData(
         this.contentForm.value["contentName"],
         this.contentForm.value["contentDescription"],

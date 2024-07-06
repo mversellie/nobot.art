@@ -25,7 +25,6 @@ export class UserSettingsPageComponent {
   }
 
   onSubmit(){
-    console.log(this.contentForm)
     this.userSettingsService.shipSettingsUpdate(this.filesToUpload
     ).subscribe((hi:Object) => {
       this.authService.refreshToken()

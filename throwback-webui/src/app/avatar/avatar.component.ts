@@ -10,26 +10,24 @@ import {environment} from "../../environments/environment";
     NgClass,
     RouterLink
   ],
-  template: '<a routerLink="{{getLink()}}">' +
-      '<img [ngClass]="getShapeClass()" [src]="imgLink" (error)="setImageNotFound()" alt="none">' +
+  template: '<a id="imageLink" routerLink="{{getLink()}}">' +
+      '<img id="profile-pic" [ngClass]="getShapeClass()" [src]="getImgLink()" (error)="setImageNotFound()" alt="none">' +
       '</a>',
   styleUrl: './avatar.component.css'
 })
-export class AvatarComponent implements OnInit,OnChanges{
+export class AvatarComponent{
 
     @Input() toSettings = false;
     @Input() username:string;
     @Input() circle = false;
     @Input() small = false;
-    imgLink:string;
+    imgLink = "/img/default-avatar.png" ;
 
-
-    ngOnInit(): void {
-        this.imgLink = environment["S3-URL"] + "pfp-" + this.username + ".png"
-    }
-
-    ngOnChanges(){
-        this.imgLink = environment["S3-URL"] + "pfp-" + this.username + ".png"
+    getImgLink(){
+        if(this.username != null) {
+            this.imgLink = environment["S3-URL"] + "pfp-" + this.username + ".png"
+        }
+        return this.imgLink
     }
 
     getShapeClass(){
@@ -57,7 +55,7 @@ export class AvatarComponent implements OnInit,OnChanges{
     }
 
     setImageNotFound(){
-      this.imgLink = "/img/default-avatar";
+      this.imgLink = "/img/default-avatar.png";
     }
 
     getLink(){

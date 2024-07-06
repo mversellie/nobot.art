@@ -1,13 +1,13 @@
 <div class="full-vert">
-<app-header/>
+<app-header #headerComp [username]="userService.username()"/>
 
 <div id="body-id" class="d-flex flex-nowrap">
     <div id="sidebar-id" class="d-flex flex-column p-5 pb-0 pt-0 mt-1 flex-shrink-0 text-bg-dark d-none d-lg-block">
-        <app-sidebar/>
+        <app-sidebar #sideComp [username]="userService.username()"/>
     </div>
     <div id="main-section" class="d-flex align-self-center flex-column  pt-0 pb-0">
         <main>
-            <router-outlet />
+            <router-outlet #routerComp />
         </main>
     </div>
 </div>

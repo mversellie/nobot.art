@@ -14,7 +14,6 @@ export class AuthenticationService {
   constructor(private oauthService: OAuthService) {
     fromEvent<StorageEvent>(window, "storage").subscribe((event:StorageEvent) => {
       if((event.storageArea === sessionStorage) && (event.key === "id_token")){
-        console.log("updating is logged in")
         this.isLoggedIn.set(!(event.newValue == undefined || false))
       }}
     )
@@ -40,7 +39,7 @@ export class AuthenticationService {
   }
 
   logout(){
-    this.oauthService.revokeTokenAndLogout().then((result) => console.log(result));
+    return this.oauthService.revokeTokenAndLogout();
   }
 
 

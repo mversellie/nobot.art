@@ -3,21 +3,11 @@ import {inject} from "@angular/core";
 import {AuthenticationService} from "../services/authentication.service";
 
 export const loggedInGuard: CanActivateFn = (route, state) => {
-  let authService = inject(AuthenticationService);
+  const loggedIn =  inject(AuthenticationService).isTokenPresentAndValid();
 
-  let pass = authService.isTokenPresentAndValid();
-
-  console.log(state.url)
-  if (state.url == "/login"){
-    if(pass) {
-      inject(Router).navigate(["/"])
-    }
-    return !pass;
+  if(!loggedIn){
+    inject(Router).navigate(["/"])
   }
 
-  if(!pass){
-    authService.login()
-  }
-
-  return pass;
+  return loggedIn
 }

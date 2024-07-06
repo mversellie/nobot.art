@@ -5,7 +5,7 @@ import {ContentResponse} from "../objects/ContentResponse";
 import {from, of} from "rxjs";
 import {CommentSectionComponent} from "../comment-section/comment-section.component";
 import {CommentService} from "../services/comment.service";
-import {Comment} from "../comment-section/CommentPojo";
+import {NobotComment} from "../comment-section/CommentPojo";
 import {AvatarComponent} from "../avatar/avatar.component";
 
 @Component({
@@ -23,13 +23,11 @@ export class ContentPageComponent {
   paramMapObs:ParamMap | null = null ;
   imageUrl:string = ""
   threadName:string = "";
-  comments:Comment[]
+  comments:NobotComment[]
 
   contentData : ContentResponse;
 
   constructor(private commentService:CommentService,private route:ActivatedRoute, private contentService:ContentService) {
-
-    console.log("content page loaded")
 
     this.contentData =  new ContentResponse("","", "", new Date(),"","");
 
@@ -65,9 +63,7 @@ export class ContentPageComponent {
 
       commentService.getContentComments(this.threadName).subscribe((data:any) => {
         this.comments = data["comments"]
-        console.log(this.comments)
       })
-
     })
   }
 }

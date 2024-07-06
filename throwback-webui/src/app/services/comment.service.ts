@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {AuthenticationService} from "./authentication.service";
 import {environment} from "../../environments/environment";
+import {UserService} from "./user.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommentService {
 
-  constructor(private http:HttpClient, private auth:AuthenticationService) {
+  constructor(private http:HttpClient, private userService:UserService) {
   }
 
   shipContentComment(comment:string, threadName:string) {
@@ -16,7 +16,7 @@ export class CommentService {
     form.append("comment",comment)
 
     const headers = new HttpHeaders()
-        .set('Authorization', this.auth.getToken());
+        .set('Authorization', `Bearer ${this.userService.getToken()}`);
 
     let url = environment["api-url"] + "/content/" + threadName + "/comments"
     return this.http.post(url,form,{headers:headers})

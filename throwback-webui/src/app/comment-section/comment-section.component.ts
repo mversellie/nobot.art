@@ -1,5 +1,5 @@
 import {Component, Input} from '@angular/core';
-import {Comment} from "./CommentPojo";
+import {NobotComment} from "./CommentPojo";
 import {SingleCommentComponent} from "./single-comment/single-comment.component";
 import {CommentWriterComponent} from "./comment-writer/comment-writer.component";
 import {NgForOf} from "@angular/common";
@@ -19,7 +19,7 @@ import {NgForOf} from "@angular/common";
   styleUrl: './comment-section.component.css'
 })
 export class CommentSectionComponent {
-  @Input() comments : Comment[];
+  @Input() comments : NobotComment[];
   @Input() threadName: string;
 
 }

@@ -1,17 +1,17 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {AuthenticationService} from "./authentication.service";
 import {environment} from "../../environments/environment";
 import {ContentCacheService} from "./content-cache.service";
 import {map} from "rxjs";
+import {UserService} from "./user.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentService {
-  constructor(private http:HttpClient, private auth:AuthenticationService,private cache:ContentCacheService) {
+  constructor(private http:HttpClient, private auth:UserService,private cache:ContentCacheService) {
 
   }
 
@@ -20,7 +20,6 @@ export class ContentService {
     const endSection = user + "/" + content_name
     const cachedContent = this.cache.cacheGet(endSection)
     if(cachedContent != undefined){
-      console.log("cache hit on: " + endSection)
       return Promise.resolve(cachedContent);
     }
     const url = environment["api-url"] +"/content/" + user + "/" + content_name ;
@@ -59,9 +58,7 @@ export class ContentService {
     form.append("upload",aFile,aFile.name)
 
     const headers = new HttpHeaders()
-        .set('Authorization', this.auth.getToken());
-
-    console.log("Ship")
+        .set('Authorization', "Bearer " + this.auth.getToken());
     return this.http.post(environment["api-url"] + "/content",form,{headers:headers})
   }
 }

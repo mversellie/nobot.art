@@ -1,4 +1,4 @@
-export class Comment{
+export class NobotComment {
     username:string;
     thread:string
     posted:Date;

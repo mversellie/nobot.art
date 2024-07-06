@@ -7,9 +7,12 @@ import {EmptyComponent} from "./reroute-to-login/empty.component";
 import {NotFoundComponent} from "./not-found/not-found.component";
 import {UserGalleryComponent} from "./user-gallery/user-gallery.component";
 import {UserSettingsPageComponent} from "./user-settings-page/user-settings-page.component";
+import {loginGuard} from "./guards/login.guard";
+import {logoutGuard} from "./guards/logout.guard";
 
 export const routes: Routes = [
-    {path:'login',component:EmptyComponent,canActivate:[loggedInGuard]},
+    {path:'login',component:EmptyComponent,canActivate:[loginGuard]},
+    {path:'logout',component:EmptyComponent,canActivate:[logoutGuard]},
     {path:'create',component:UploadContentPageComponent,canActivate:[loggedInGuard]},
     {path:'settings',component:UserSettingsPageComponent,canActivate:[loggedInGuard]},
     {path:':contentUsername/:contentName',component:ContentPageComponent},

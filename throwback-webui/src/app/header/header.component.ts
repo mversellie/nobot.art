@@ -1,12 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {AuthenticationService} from "../services/authentication.service";
-import {UserService} from "../services/user.service";
+import {Component, EventEmitter, Input} from '@angular/core';
 import {CommonModule} from "@angular/common";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ CommonModule
+  imports: [CommonModule, RouterLink
   ],
   template: `<nav class="navbar navbar-expand-md navbar-dark bg-dark">
     <div class="container-fluid">
@@ -17,11 +16,11 @@ import {CommonModule} from "@angular/common";
 
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto mb-2 mb-md-0">
-          <li class="nav-item" *ngIf="authService.isLoggedIn()==false">
-            <button class="nav-link"  (click)="authService.login()">Login</button>
+          <li class="nav-item" *ngIf="!isLoggedIn()">
+            <a class="nav-link" routerLink="/login">Login</a>
           </li>
-          <li class="nav-item" *ngIf="authService.isLoggedIn()">
-            <button class="nav-link"  (click)="authService.logout()">Log out</button>
+          <li class="nav-item" *ngIf="isLoggedIn()">
+            <a class="nav-link"  routerLink="/logout">Log out</a>
           </li>
           <li class="nav-item">
             <a class="nav-link disabled" aria-disabled="true">Disabled</a>
@@ -47,11 +46,13 @@ import {CommonModule} from "@angular/common";
   </nav>`,
   styleUrl: './header.component.css'
 })
-export class HeaderComponent implements OnInit{
+export class HeaderComponent{
 
-  constructor(public authService : AuthenticationService,public userService : UserService) {
+  @Input() username:string
+  @Input() logout:EventEmitter<void> = new EventEmitter<void>()
+
+  isLoggedIn(){
+    return this.username != ''
   }
 
-  ngOnInit() {
-  }
 }

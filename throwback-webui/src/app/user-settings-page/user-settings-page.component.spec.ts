@@ -1,15 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSettingsPageComponent } from './user-settings-page.component';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {AuthenticationService} from "../services/authentication.service";
+import {MockAuthenticationService} from "../services/mock-authentication.service";
 
 describe('UserSettingsPageComponent', () => {
   let component: UserSettingsPageComponent;
   let fixture: ComponentFixture<UserSettingsPageComponent>;
 
   beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [UserSettingsPageComponent]
-    })
+    await TestBed.configureTestingModule(
+    {
+      imports:[HttpClientTestingModule,UserSettingsPageComponent],providers:[
+      {provide: AuthenticationService, useClass:MockAuthenticationService}
+    ]})
     .compileComponents();
     
     fixture = TestBed.createComponent(UserSettingsPageComponent);

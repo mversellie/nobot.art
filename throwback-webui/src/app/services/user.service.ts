@@ -1,4 +1,4 @@
-import {computed, Injectable, Signal, WritableSignal} from '@angular/core';
+import {computed, Injectable, Signal} from '@angular/core';
 import  {jwtDecode, JwtPayload} from "jwt-decode";
 import {AuthenticationService} from "./authentication.service";
 
@@ -35,5 +35,15 @@ export class UserService {
 
   unwrapTokenData(token:any):JwtPayload{
     return jwtDecode<JwtPayload>(token)
+  }
+
+  getToken(){
+    let ret = this.idToken();
+    if(ret != null){
+      return `${ret}`
+    }
+    else{
+      return ""
+    }
   }
 }

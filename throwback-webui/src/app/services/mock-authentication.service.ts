@@ -1,13 +1,13 @@
-import {signal, WritableSignal} from '@angular/core';
+import {Injectable, signal, WritableSignal} from '@angular/core';
 
+Injectable({
+  providedIn: 'root'
+})
 export class MockAuthenticationService {
-  isLoggedIn: WritableSignal<boolean> = signal(this.isTokenPresentAndValid())
   tokenPresent:boolean = true;
   mockToken:string = "mock token data"
+  isLoggedIn: WritableSignal<boolean> = signal(this.isTokenPresentAndValid())
 
-
-  constructor() {
-  }
 
   login(){
     this.tokenPresent = true;

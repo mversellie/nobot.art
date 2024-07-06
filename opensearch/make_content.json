@@ -46,12 +46,5 @@
         "type": "keyword"
       }
     }
-  },
-  "set": {
-    "field": "is_adult",
-    "value": 0,
-    "override": false,
-    "if": "ctx.age == null",
-    "ignore_failure": true
   }
 }

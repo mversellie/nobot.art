@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {FormsModule} from "@angular/forms";
 import {CommentService} from "../../services/comment.service";
-import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-comment-writer',
@@ -21,7 +20,7 @@ export class CommentWriterComponent {
   @Input() threadName:string;
   commentDraft:string = "Enter comment";
 
-  constructor(private commentService:CommentService,private router:Router) {
+  constructor(private commentService:CommentService) {
   }
 
   onSubmit(){
