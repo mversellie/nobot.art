@@ -9,3 +9,4 @@ jwt.public
 ssl/certs/*
 ssl/index*
 ssl/serial*
+opensearch/internal_users.yml
