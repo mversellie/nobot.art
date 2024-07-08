@@ -1,12 +1,21 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {HttpInterceptorFn} from '@angular/common/http';
 import {inject} from "@angular/core";
-import {AuthenticationService} from "./authentication.service";
+import {OAuthStorage} from "angular-oauth2-oidc";
 
 export const authenticationInterceptor: HttpInterceptorFn = (req, next) => {
-  let authService = inject(AuthenticationService);
-  const authToken = authService.getToken();
-  if(authToken != "") {
-    req.headers.set("Authorization", authToken)
+  let oAuthStorage = inject(OAuthStorage);
+
+  const authToken = oAuthStorage.getItem("access_token");
+  console.log(authToken)
+
+  if(authToken != null) {
+    const nextRequest = req.clone({
+      headers: req.headers.set('Authorization', `Bearer ${authToken}`)
+    });
+    return next(nextRequest);
   }
-  return next(req);
+
+  else {
+    return next(req);
+  }
 };

@@ -6,7 +6,7 @@ export const loggedInGuard: CanActivateFn = (route, state) => {
   const loggedIn =  inject(AuthenticationService).isTokenPresentAndValid();
 
   if(!loggedIn){
-    inject(Router).navigate(["/"])
+    inject(Router).navigate(["/login"])
   }
 
   return loggedIn

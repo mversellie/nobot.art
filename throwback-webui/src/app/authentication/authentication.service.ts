@@ -1,6 +1,5 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {AuthConfig, OAuthService} from "angular-oauth2-oidc";
-import { fromEvent} from "rxjs";
+import {AuthConfig, OAuthEvent, OAuthService} from "angular-oauth2-oidc";
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -12,11 +11,6 @@ export class AuthenticationService {
   AuthCodeFlowConfig: AuthConfig;
 
   constructor(private oauthService: OAuthService) {
-    fromEvent<StorageEvent>(window, "storage").subscribe((event:StorageEvent) => {
-      if((event.storageArea === sessionStorage) && (event.key === "id_token")){
-        this.isLoggedIn.set(!(event.newValue == undefined || false))
-      }}
-    )
     this.AuthCodeFlowConfig= {
       issuer: environment["oauth-url"],
       redirectUri: window.location.origin + '/',
@@ -28,35 +22,38 @@ export class AuthenticationService {
     };
     this.oauthService.configure(this.AuthCodeFlowConfig)
     this.oauthService.setupAutomaticSilentRefresh()
+    this.oauthService.events.subscribe((event) => this.tokenEventHandler(event))
     this.oauthService.loadDiscoveryDocumentAndTryLogin()
   }
 
   login(){
     this.oauthService.initCodeFlow();
-    if(this.isTokenPresentAndValid()){
-      this.isLoggedIn.set(true)
-    }
   }
 
   logout(){
     return this.oauthService.revokeTokenAndLogout();
   }
 
-
   isTokenPresentAndValid(){
-    return !(undefined == sessionStorage.getItem("id_token") || null == sessionStorage.getItem("id_token"))
+    return this.oauthService.hasValidAccessToken();
   }
 
   getToken(){
-    const id_token = sessionStorage.getItem("id_token")
-    if(id_token == null){
-      return "";
-    }
+    const id_token = this.oauthService.getAccessToken()
     return `Bearer ${id_token}`;
   }
 
   refreshToken() {
-    this.oauthService.refreshToken()
+    return this.oauthService.refreshToken()
+  }
+
+  tokenEventHandler(event:OAuthEvent){
+    if(event.type == 'token_received' || event.type == "token_refreshed"){
+      this.isLoggedIn.set(true)
+    }
+    if(event.type == 'logout'){
+      this.isLoggedIn.set(false)
+    }
   }
 
 }

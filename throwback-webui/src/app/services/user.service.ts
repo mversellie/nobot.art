@@ -8,7 +8,7 @@ import {AuthenticationService} from "../authentication/authentication.service";
 export class UserService {
   idToken: Signal<string | null> = computed(() => {
     if(this.authService.isLoggedIn()) {
-      return sessionStorage.getItem("id_token")
+      return this.authService.getToken()
     }
     else{
       return null
@@ -38,7 +38,7 @@ export class UserService {
   }
 
   getToken(){
-    let ret = this.idToken();
+    let ret = this.authService.getToken();
     if(ret != null){
       return `${ret}`
     }

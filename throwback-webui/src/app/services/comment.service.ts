@@ -15,11 +15,8 @@ export class CommentService {
     const form:FormData = new FormData();
     form.append("comment",comment)
 
-    const headers = new HttpHeaders()
-        .set('Authorization', `Bearer ${this.userService.getToken()}`);
-
     let url = environment["api-url"] + "/content/" + threadName + "/comments"
-    return this.http.post(url,form,{headers:headers})
+    return this.http.post(url,form,)
   }
 
   getContentComments(threadName:string){
