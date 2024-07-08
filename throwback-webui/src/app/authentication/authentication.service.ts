@@ -48,7 +48,11 @@ export class AuthenticationService {
   }
 
   getToken(){
-    return "Bearer " + sessionStorage.getItem("id_token");
+    const id_token = sessionStorage.getItem("id_token")
+    if(id_token == null){
+      return "";
+    }
+    return `Bearer ${id_token}`;
   }
 
   refreshToken() {

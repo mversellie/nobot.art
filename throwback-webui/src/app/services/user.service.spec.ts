@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 
 import { UserService } from './user.service';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {AuthenticationService} from "./authentication.service";
-import {DirectGrantAuthenticationService} from "./direct-grant-authentication.service";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {DirectGrantAuthenticationService} from "../mocks/services/direct-grant-authentication.service";
 
 describe('UserService', () => {
   let service: UserService;

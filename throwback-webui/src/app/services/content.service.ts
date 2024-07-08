@@ -3,20 +3,18 @@ import {ContentResponse} from "../objects/ContentResponse";
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {environment} from "../../environments/environment";
 import {ContentCacheService} from "./content-cache.service";
-import {map} from "rxjs";
-import {UserService} from "./user.service";
+import {firstValueFrom, map} from "rxjs";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ContentService {
-  constructor(private http:HttpClient, private auth:UserService,private cache:ContentCacheService) {
+  constructor(private http:HttpClient,private cache:ContentCacheService) {
 
   }
 
   async getContentData(user:String,content_name:String):Promise<ContentResponse> {
-
     const endSection = user + "/" + content_name
     const cachedContent = this.cache.cacheGet(endSection)
     if(cachedContent != undefined){
@@ -49,7 +47,7 @@ export class ContentService {
     return this.http.get(url ,{params:params}).pipe(map(res => res['content']));
   }
 
-  shipContentData(title:string,description:string,files:FileList){
+  async shipContentData(title:string,description:string,files:FileList){
     const form:FormData = new FormData();
     form.append("name",title)
     form.append("description",description)
@@ -57,8 +55,15 @@ export class ContentService {
     // @ts-ignore
     form.append("upload",aFile,aFile.name)
 
-    const headers = new HttpHeaders()
-        .set('Authorization', "Bearer " + this.auth.getToken());
-    return this.http.post(environment["api-url"] + "/content",form,{headers:headers})
+    const contentResponse =  await firstValueFrom(this.http.post(environment["api-url"] + "/content",form));
+    // @ts-ignore
+    const creator = contentResponse["creator"] as string;
+    // @ts-ignore
+    const name = contentResponse["url_safe_name"] as string;
+    const key = `${creator}/${name}`;
+    // @ts-ignore
+    this.cache.cacheStore(key,contentResponse);
+    // @ts-ignore
+    return {creator:creator,name:name}
   }
 }

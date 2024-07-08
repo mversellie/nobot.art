@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UserSettingsPageComponent } from './user-settings-page.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {AuthenticationService} from "../services/authentication.service";
-import {MockAuthenticationService} from "../services/mock-authentication.service";
+import {AuthenticationService} from "../authentication/authentication.service";
+import {MockAuthenticationService} from "../mocks/services/mock-authentication.service";
 
 describe('UserSettingsPageComponent', () => {
   let component: UserSettingsPageComponent;

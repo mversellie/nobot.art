@@ -1,4 +1,4 @@
-#Create a environment.test.ts file from this
+#Create a environment.testing.ts file from this
 export const environment = {
     "api-url": "http://localhost:5000",
     #note the http instead of https in oauth-url

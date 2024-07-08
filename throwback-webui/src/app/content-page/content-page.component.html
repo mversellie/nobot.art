@@ -22,7 +22,7 @@
             </div>
                 <hr/>
                 <div >
-                    <app-comment-section [threadName]="threadName" [comments]="comments" />
+                    <app-comment-section (writeNewComment)="submitNewComment($event,threadName)" [threadName]="threadName" [comments]="comments" />
                 </div>
             </div>
             </div>

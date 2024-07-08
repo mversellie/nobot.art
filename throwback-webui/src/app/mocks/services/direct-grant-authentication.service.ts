@@ -1,5 +1,5 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {environment} from "../../environments/environment";
+import {environment} from "../../../environments/environment.testing";
 
 //This service should only be used in testing
 @Injectable({

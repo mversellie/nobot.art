@@ -14,7 +14,7 @@
                 <label class="btn btn-secondary" for="upload-field">
                     upload
                 </label>
-                <input type="file" (change)="handle_file($event.target)" id="upload-field" hidden/>
+                <input type="file" (change)="handleFile($event.target)" id="upload-field" hidden/>
         <div class="form-group">
             <label for="description">Description</label>
             <textarea formControlName="contentDescription" class="form-control" id="description" placeholder="Description" rows="4"></textarea>
@@ -25,7 +25,7 @@
             <label class="form-check-label" for="matureCheck">Mature</label>
         </div>
         <div class="ms-auto">
-        <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
+        <button id="submit-button" type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
         </div>
         </div>
         </div>

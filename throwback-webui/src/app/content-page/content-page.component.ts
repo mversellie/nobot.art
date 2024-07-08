@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {ActivatedRoute, ParamMap, Router} from "@angular/router";
+import {ActivatedRoute, ParamMap, Params, Router} from "@angular/router";
 import {ContentService} from "../services/content.service";
 import {ContentResponse} from "../objects/ContentResponse";
 import {from, of} from "rxjs";
@@ -20,7 +20,7 @@ import {AvatarComponent} from "../avatar/avatar.component";
 })
 export class ContentPageComponent {
 
-  paramMapObs:ParamMap | null = null ;
+  params:Params = {};
   imageUrl:string = ""
   threadName:string = "";
   comments:NobotComment[]
@@ -31,39 +31,41 @@ export class ContentPageComponent {
 
     this.contentData =  new ContentResponse("","", "", new Date(),"","");
 
-    this.route.paramMap.subscribe( (data) => {
-        this.paramMapObs = data;
+
+      this.route.params.subscribe( (data) => {
+          this.params = data;
       });
 
-      of(this.paramMapObs).subscribe( (map:ParamMap | null ) => {
-        let contentUsername = "-1";
-        let contentName = "-1";
+      of(this.params).subscribe( (map:Params ) => {
+        let contentUsername = "";
+        let contentName = "";
         if(map != null){
-          if(map.get("contentUsername") !== null){
-            // @ts-ignore
-            contentUsername = map.get("contentUsername");
+          if(map["contentUsername"] !== null){
+            contentUsername = map["contentUsername"];
           }
 
-          if(map.get("contentName") !== null){
-            // @ts-ignore
-            contentName = map.get("contentName");
-          }
-        }
-
-        this.threadName= contentUsername + "/" + contentName
-
+              if(map["contentName"] !== null){
+                  contentName = map["contentName"];
+              }
+              this.threadName= contentUsername + "/" + contentName
+            commentService.getContentComments(this.threadName).subscribe((data:any) => {
+                this.comments = data["comments"]
+            })
       from(this.contentService.getContentData(contentUsername,contentName)).subscribe(
           (data:ContentResponse) => {
-            console.log("content gotten")
-            console.log(data)
             this.contentData = data;
             this.imageUrl= "https://127.0.0.1:9000/main/" + data.filename
           }
       )
 
-      commentService.getContentComments(this.threadName).subscribe((data:any) => {
-        this.comments = data["comments"]
-      })
+      }
     })
+  }
+
+
+  submitNewComment(comment:string,threadName:string){
+    this.commentService.shipContentComment(comment,threadName).subscribe((out) =>
+    {console.log(out);
+      location.reload()})
   }
 }

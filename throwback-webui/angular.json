@@ -56,14 +56,14 @@
                 }
               ]
             },
-            "test": {
+            "testing": {
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
+                  "with": "src/environments/environment.testing.ts"
                 }
               ]
             }
@@ -79,8 +79,8 @@
             "development": {
               "buildTarget": "throwback-webui:build:development"
             },
-            "test": {
-              "buildTarget": "throwback-webui:build:test"
+            "testing": {
+              "buildTarget": "throwback-webui:build:testing"
             }
           },
           "defaultConfiguration": "development"
@@ -108,6 +108,16 @@
             ],
             "scripts": [],
             "karmaConfig": "karma.conf.js"
+          },
+          "configurations": {
+            "testing": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.testing.ts"
+                }
+              ]
+            }
           }
         }
       }

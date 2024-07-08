@@ -1,6 +1,7 @@
 export class NobotComment {
     username:string;
     thread:string
-    posted:Date;
+    posted:string;
+    created:string
     content:string
 }

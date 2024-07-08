@@ -22,8 +22,7 @@ export class UploadContentPageComponent {
   // @ts-ignore
   filesToUpload:FileList;
 
-  constructor(private contentService:ContentService,
-              private cacheService:ContentCacheService,private router:Router) {
+  constructor(private contentService:ContentService, private router:Router) {
     this.contentForm = new FormGroup({
       fileData:new FormControl(),
       contentName:new FormControl(),
@@ -31,20 +30,18 @@ export class UploadContentPageComponent {
     });
   }
 
-  onSubmit(){
-    this.contentService.shipContentData(
+  async onSubmit() {
+    console.log("submit!")
+    return this.contentService.shipContentData(
         this.contentForm.value["contentName"],
         this.contentForm.value["contentDescription"],
         this.filesToUpload
-  ).subscribe((hi:Object) => {
-      const response = hi as ContentResponse
-      const key = response.creator + "/" + response.url_safe_name;
-      this.cacheService.cacheStore(key,response);
-      this.router.navigate(["/" ,response.creator,response.url_safe_name]);
-    })}
+  ).then((creatorAndName) =>
+    { console.log("test")
+      return this.router.navigate(["/" ,creatorAndName.creator,creatorAndName.name]);})}
 
 
-  handle_file(event:any) {
+  handleFile(event:any) {
     this.filesToUpload = event.files
     const previewFile = this.filesToUpload.item(0)
     if(previewFile != null) {

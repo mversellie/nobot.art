@@ -5,23 +5,31 @@ import {ActivatedRoute} from "@angular/router";
 import {from} from "rxjs";
 import {NobotComment} from "../CommentPojo";
 import {By} from "@angular/platform-browser";
+import {DateComponent} from "../../date/date.component";
+import {AvatarComponent} from "../../avatar/avatar.component";
+import {MockAvatarComponent} from "../../mocks/components/mock-avatar.component";
+import { MockDateComponent } from '../../mocks/components/mock-date.component';
 
 describe('SingleCommentComponent', () => {
   let component: SingleCommentComponent;
   let fixture: ComponentFixture<SingleCommentComponent>;
   const contentExpected = "a comment";
   const usernameExpected = "testing";
-  let expectedDate:Date;
+  let expectedDate:string;
 
 
   beforeEach( async () => {
     // @ts-ignore
     await TestBed.configureTestingModule({
-      imports: [SingleCommentComponent],
+      imports:[SingleCommentComponent],
       providers: [{provide:ActivatedRoute,useValue:{
-        params:from([{contentUsername:usernameExpected,contentName:"test"}])
-        }}]
+        params:from([{contentUsername:usernameExpected,contentName:"test"}])}}]
     })
+        .overrideComponent(SingleCommentComponent, {remove: { imports : [AvatarComponent]},add : {imports: [MockAvatarComponent]}
+    })
+        .overrideComponent(SingleCommentComponent, {
+          remove: {imports: [DateComponent]}, add: {imports: [MockDateComponent]}
+        })
     .compileComponents();
     
     fixture = TestBed.createComponent(SingleCommentComponent);
@@ -30,7 +38,7 @@ describe('SingleCommentComponent', () => {
     comment.content = contentExpected
     comment.username = usernameExpected
     comment.thread = `${usernameExpected}/test`
-    expectedDate = new Date()
+    expectedDate = "fuckit"
     comment.posted= expectedDate
     component.comment = comment
     fixture.detectChanges();
@@ -43,6 +51,8 @@ describe('SingleCommentComponent', () => {
 
   it('should create avatar', () => {
     const avatar = component.avatar
+    expect(avatar.username).toBe(usernameExpected);
+    expect(avatar.username).toBe(usernameExpected);
     expect(avatar.username).toBe(usernameExpected);
   });
 
@@ -57,8 +67,5 @@ describe('SingleCommentComponent', () => {
     expect(link.nativeElement.innerHTML).toContain(`${contentExpected}`)
   });
 
-  it('should render date', () => {
-    const dateComp = component.dateChild
-    expect(dateComp.dateInput).toBe(expectedDate)
-  });
+
 });

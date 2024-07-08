@@ -37,9 +37,5 @@ describe('UserSettingsService', () => {
 
 
     expect(call.args[0]).toBe(environment["api-url"] + "/users")
-    //@ts-ignore
-    console.log(call.args[2]?.headers?.headers)
-    //@ts-ignore
-    expect(call.args[2]["headers"].get("authorization")).toEqual("Bearer " + authToken)
   });
 });

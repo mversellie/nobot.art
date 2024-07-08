@@ -11,7 +11,8 @@ describe('AuthenticationService', () => {
   beforeEach(() => {
     oauthSpy = jasmine.createSpyObj('OAuthService', ['configure','setupAutomaticSilentRefresh',
       'loadDiscoveryDocumentAndTryLogin','revokeTokenAndLogout','initCodeFlow','refreshToken']);
-    TestBed.configureTestingModule({ providers:[{provide: OAuthService, useValue:oauthSpy}]});
+    TestBed.configureTestingModule(
+        {providers:[{provide:OAuthService,useValue:oauthSpy}]});
     service = TestBed.inject(AuthenticationService);
   });
 

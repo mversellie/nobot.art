@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {UserSettingsService} from "../services/user-settings.service";
-import {AuthenticationService} from "../services/authentication.service";
+import {AuthenticationService} from "../authentication/authentication.service";
 
 @Component({
   selector: 'app-user-settings-page',
