@@ -6,7 +6,7 @@ import {environment} from "../../environments/environment";
   providedIn: 'root'
 })
 export class AuthenticationService {
-  isLoggedIn: WritableSignal<boolean> = signal(this.isTokenPresentAndValid())
+  isLoggedIn: WritableSignal<boolean> = signal(this.oauthService.hasValidAccessToken())
 
   AuthCodeFlowConfig: AuthConfig;
 
@@ -17,7 +17,6 @@ export class AuthenticationService {
       clientId: environment["oauth-client"],responseType: 'code',
       requireHttps:false,
       scope: 'openid offline_access',
-
       showDebugInformation: true,
     };
     this.oauthService.configure(this.AuthCodeFlowConfig)
@@ -31,11 +30,7 @@ export class AuthenticationService {
   }
 
   logout(){
-    return this.oauthService.revokeTokenAndLogout();
-  }
-
-  isTokenPresentAndValid(){
-    return this.oauthService.hasValidAccessToken();
+    return this.oauthService.logOut();
   }
 
   getToken(){
@@ -48,12 +43,7 @@ export class AuthenticationService {
   }
 
   tokenEventHandler(event:OAuthEvent){
-    if(event.type == 'token_received' || event.type == "token_refreshed"){
-      this.isLoggedIn.set(true)
-    }
-    if(event.type == 'logout'){
-      this.isLoggedIn.set(false)
-    }
+      this.isLoggedIn.set(this.oauthService.hasValidAccessToken())
   }
 
 }

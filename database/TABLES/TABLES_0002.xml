@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd
+      http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.5.xsd">
+
+    <changeSet author="Marco" id="make nobot_users threads tables">
+        <createTable tableName="nobot_private_messages">
+            <column name="pm_id" type="varchar(8)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_PM" />
+            </column>
+            <column name="username" type="varchar(80)"/>
+            <column name="created" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="title" type="varchar(80)" />
+            <column name="last_modified" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="nobot_subs">
+            <column name="sub_id" type="int">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_SUBS" />
+            </column>
+            <column name="username" type="varchar(80)">
+                <constraints nullable="false" />
+            </column>
+            <column name="subscribed" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="target" type="varchar(8)">
+                <constraints nullable="false" />
+            </column>
+            <column name="type" type="int">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+        <createTable tableName="nobot_types">
+            <column name="type_id" type="integer">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_TYPE_ID" />
+            </column>
+            <column name="name" type="varchar(80)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="Marco" id="insert first type into type table">
+        <insert tableName="nobot_types">
+            <column name="type_id" value="1" />
+            <column name="name" value="Private Message" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

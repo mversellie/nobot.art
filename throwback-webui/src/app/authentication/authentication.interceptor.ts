@@ -3,10 +3,17 @@ import {inject} from "@angular/core";
 import {OAuthStorage} from "angular-oauth2-oidc";
 
 export const authenticationInterceptor: HttpInterceptorFn = (req, next) => {
-  let oAuthStorage = inject(OAuthStorage);
+
+    if(req.url.toLowerCase().includes("logout")){
+        return next(req);
+    }
+    if(req.url.toLowerCase().includes("login")){
+        return next(req);
+    }
+
+    let oAuthStorage = inject(OAuthStorage);
 
   const authToken = oAuthStorage.getItem("access_token");
-  console.log(authToken)
 
   if(authToken != null) {
     const nextRequest = req.clone({

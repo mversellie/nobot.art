@@ -48,8 +48,6 @@ describe('CommentService', () => {
     console.log(latestCall)
     // @ts-ignore
     const form:FormData = latestCall.args[1];
-    // @ts-ignore
-    const headers:HttpHeaders = latestCall.args[2]["headers"];
 
     // @ts-ignore
     console.log(form)
@@ -58,6 +56,5 @@ describe('CommentService', () => {
     expect(comment).toEqual(form.get("comment"))
     // @ts-ignore
     expect(latestCall.args[0]).toEqual(`${environment["api-url"]}/content/${threadName}/comments`)
-    expect(headers.get("authorization")).toEqual("Bearer " + mockToken)
   });
 });

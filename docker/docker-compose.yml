@@ -57,6 +57,9 @@ services:
       OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD_ENV}
     volumes:
       - opensearch_data:/usr/share/opensearch/data
+      #Only do this if you want to change the admin password
+      #This should never be commited
+      - ../opensearch/internal_users.yml:/usr/share/opensearch/config/opensearch-security/internal_users.yml
     ports:
       - 9200:9200
       - 9600:9600
@@ -75,7 +78,6 @@ services:
       - opensearch-net
     depends_on:
       - opensearch
-
 volumes:
   postgres_data:
   minio_data:

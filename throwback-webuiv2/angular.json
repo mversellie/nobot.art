@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "atlantis-ng": {
+        "throwback-webui": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/atlantis-ng",
+                        "outputPath": "dist/throwback-webui",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": [
@@ -56,7 +56,13 @@
                             "vendorChunk": true,
                             "extractLicenses": false,
                             "sourceMap": true,
-                            "namedChunks": true
+                            "namedChunks": true,
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.development.ts"
+                                }
+                            ]
                         }
                     },
                     "defaultConfiguration": "production"
@@ -65,10 +71,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "buildTarget": "atlantis-ng:build:production"
+                            "buildTarget": "throwback-webui:build:production"
                         },
                         "development": {
-                            "buildTarget": "atlantis-ng:build:development"
+                            "buildTarget": "throwback-webui:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -76,7 +82,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "buildTarget": "atlantis-ng:build"
+                        "buildTarget": "throwback-webui:build"
                     }
                 },
                 "test": {
@@ -97,6 +103,16 @@
                             "src/styles.scss"
                         ],
                         "scripts": []
+                    },
+                    "configurations": {
+                        "testing": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.testing.ts"
+                                }
+                            ]
+                        }
                     }
                 }
             }

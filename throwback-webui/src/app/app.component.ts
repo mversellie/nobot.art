@@ -1,27 +1,16 @@
-import {Component, ViewChild} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import {FooterComponent} from "./footer/footer.component";
-import {HeaderComponent} from "./header/header.component";
-import {SidebarComponent} from "./sidebar/sidebar.component";
-import {HttpClientModule} from "@angular/common/http";
-import {CommonModule} from "@angular/common";
-import {UserService} from "./services/user.service";
+import { Component, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
+
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, FooterComponent, HeaderComponent, SidebarComponent,HttpClientModule,CommonModule],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+    selector: 'app-root',
+    templateUrl: './app.component.html'
 })
-export class AppComponent {
-  @ViewChild("sideComp") sideComponent:SidebarComponent
-  @ViewChild("headerComp") headerComponent:HeaderComponent
-  @ViewChild("routerComp") routerComp:RouterOutlet
-  userService:UserService
+export class AppComponent implements OnInit {
 
-  constructor(userServiceIn:UserService) {
-    this.userService = userServiceIn
-  }
+    constructor(private primengConfig: PrimeNGConfig) { }
 
+    ngOnInit(): void {
+        this.primengConfig.ripple = true;
+    }
 
 }

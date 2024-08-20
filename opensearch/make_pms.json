@@ -1,0 +1,25 @@
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 2,
+      "number_of_replicas": 1
+    }
+  },
+  "mappings": {
+    "properties": {
+      "content": {
+        "type": "text",
+        "index": true
+      },
+      "edited": {
+        "type": "date"
+      },
+      "username": {
+        "type": "keyword"
+      },
+      "pmId": {
+        "type": "keyword"
+      }
+    }
+  }
+}

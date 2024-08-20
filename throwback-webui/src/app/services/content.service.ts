@@ -27,11 +27,11 @@ export class ContentService {
     return Promise.resolve(getBody)
   }
 
-  getGalleryForUser(user:String,page:string,pageSize:string){
+  getGalleryForUser(user:String,page:number,pageSize:number){
     const url = environment["api-url"] + "/content/" + user
     let params = new HttpParams()
-    params.append("page",page)
-    params.append("page_size",pageSize)
+    params.append("page",page.toString())
+    params.append("page_size",pageSize.toString())
 
     // @ts-ignore
     return this.http.get(url ,{params:params}).pipe(map(res => res['content']));

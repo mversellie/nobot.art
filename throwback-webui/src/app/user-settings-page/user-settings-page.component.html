@@ -1,21 +1,41 @@
-<div class="px-4 py-5 my-5" xmlns="http://www.w3.org/1999/html">
-    <form [formGroup]="contentForm" class="bg-body-secondary rounded-3">
-        <div class="hstack">
-            <div>
-                <img id="content-frame" class="m-4" src="assets/img/upload_placeholder.png" width="150em" height="150em"/>
-            </div>
-            <div class="ms-auto">
-                <div class="vstack m-3">
-                    <p>Avatar:</p>
-                <label class="btn btn-secondary" for="upload-field">
-                    upload
-                </label>
-                <input type="file" (change)="handle_file($event.target)" id="upload-field" hidden/>
+<div class="card">
+    <span class="text-900 text-xl font-bold mb-4 block">User Settings</span>
+    <div class="grid">
+        <div class="col-12 lg:col-2">
+            <div class="text-900 font-medium text-xl mb-3">Profile</div>
+            <p class="m-0 p-0 text-600 line-height-3 mr-3">Basic Settings.</p>
+        </div>
+        <div class="col-12 lg:col-10">
+            <div class="grid formgrid p-fluid">
+                <div class="field mb-4 col-12">
+                    <label for="nickname" class="font-medium text-900">Username</label>
+                    <input disabled=true id="nickname" type="text" pInputText>
+                </div>
+                <div class="field mb-4 col-12">
+                    <label for="avatar" class="font-medium text-900">Avatar</label>
+                    <p-fileUpload mode="basic" name="avatar" url="./upload.php" accept="image/*" [maxFileSize]="1000000" styleClass="p-button-outlined p-button-plain" chooseLabel="Upload Image"></p-fileUpload>
+                </div>
+                <div class="field mb-4 col-12">
+                    <label for="bio" class="font-medium text-900">Bio</label>
+                    <textarea id="bio" type="text" pInputTextarea rows="5" [autoResize]="true"></textarea>
+                </div>
+                <div class="field mb-4 col-12 md:col-6">
+                    <label for="email" class="font-medium text-900">Email</label>
+                    <input id="email" type="text" pInputText>
+                </div>
+                <div class="field mb-4 col-12">
+                    <label for="website" class="font-medium text-900">Website</label>
+                    <p-inputGroup>
+                        <p-inputGroupAddon>
+                           <span>www</span>
+                        </p-inputGroupAddon>
+                        <input id="website" type="text" pInputText>
+                    </p-inputGroup>
+                </div>
+                <div class="col-12">
+                    <button pButton pRipple label="Save" class="w-auto mt-3"></button>
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-row-reverse align-content-end">
-                <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+    </div>
 </div>

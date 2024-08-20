@@ -1,50 +1,48 @@
-import { Component } from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {UserSettingsService} from "../services/user-settings.service";
-import {AuthenticationService} from "../authentication/authentication.service";
+import { Component, OnInit } from '@angular/core';
+import {CommonModule} from "@angular/common";
+import {FormsModule} from "@angular/forms";
+import {ButtonModule} from "primeng/button";
+import {RippleModule} from "primeng/ripple";
+import {InputTextModule} from "primeng/inputtext";
+import {DropdownModule} from "primeng/dropdown";
+import {FileUploadModule} from "primeng/fileupload";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {InputGroupModule} from "primeng/inputgroup";
+import {InputGroupAddonModule} from "primeng/inputgroupaddon";
 
 @Component({
-  selector: 'app-user-settings-page',
-  standalone: true,
-  imports: [
-    ReactiveFormsModule
-  ],
-  templateUrl: './user-settings-page.component.html',
-  styleUrl: './user-settings-page.component.css'
+    templateUrl: './user-settings-page.component.html',
+    imports: [
+        CommonModule,
+        FormsModule,
+        ButtonModule,
+        RippleModule,
+        InputTextModule,
+        DropdownModule,
+        FileUploadModule,
+        InputTextareaModule,
+        InputGroupModule,
+        InputGroupAddonModule,
+    ],
+    standalone:true
 })
-export class UserSettingsPageComponent {
-  contentForm:FormGroup ;
+export class UserSettingsPageComponent implements OnInit {
 
-  // @ts-ignore
-  filesToUpload:FileList;
+    countries: any[] = [];
 
-  constructor(private userSettingsService:UserSettingsService,private authService:AuthenticationService) {
-    this.contentForm = new FormGroup({
-      fileData:new FormControl(),
-    });
-  }
-
-  onSubmit(){
-    this.userSettingsService.shipSettingsUpdate(this.filesToUpload
-    ).subscribe((hi:Object) => {
-      this.authService.refreshToken()
-    })}
-
-
-  handle_file(event:any) {
-    this.filesToUpload = event.files
-    const previewFile = this.filesToUpload.item(0)
-    if(previewFile != null) {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(previewFile)
-      fileReader.onload = function (e) {
-        let imageElement = document.getElementById("content-frame");
-        if (this != null && this.result != null && imageElement != null) {
-          // @ts-ignore
-          imageElement.setAttribute("src", this.result)
-        }
-      }
+    ngOnInit() {
+        this.countries = [
+            {name: 'Australia', code: 'AU'},
+            {name: 'Brazil', code: 'BR'},
+            {name: 'China', code: 'CN'},
+            {name: 'Egypt', code: 'EG'},
+            {name: 'France', code: 'FR'},
+            {name: 'Germany', code: 'DE'},
+            {name: 'India', code: 'IN'},
+            {name: 'Japan', code: 'JP'},
+            {name: 'Spain', code: 'ES'},
+            {name: 'United States', code: 'US'}
+        ];
     }
-  }
 
 }
