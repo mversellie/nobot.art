@@ -10,12 +10,17 @@ import {ContentPageComponent} from "./content-page/content-page.component";
 import {UserSettingsPageComponent} from "./user-settings-page/user-settings-page.component";
 import {UserGalleryComponent} from "./user-gallery/user-gallery.component";
 import {HomePageComponent} from "./home-page/home-page.component";
+import {contentResolver} from "./resolvers/content.resolver";
+import {PrivateMessagePageComponent} from "./private-message/private-message-page.component";
+import {currentUserGuard} from "./guards/current-user.guard";
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
 };
 
 const routes: Routes = [
+    { path: 'login',component:EmptyComponent,canActivate:[loginGuard]},
+    { path: 'notfound', loadChildren: () => import('./main/components/notfound/notfound.module').then(m => m.NotfoundModule) },
     {
         path: '', component: AppLayoutComponent,
         children: [
@@ -26,14 +31,12 @@ const routes: Routes = [
             { path: 'create', component:CreatePostComponent },
             { path:'logout',component:LogoutPageComponent,canActivate:[logoutGuard]},
             { path:'settings',component:UserSettingsPageComponent},
-            { path:':contentUsername/:contentName',component:ContentPageComponent},
+            { path:':contentUsername/private-messages',component:PrivateMessagePageComponent,canActivate:[currentUserGuard]},
+            { path:':contentUsername/:contentName',component:ContentPageComponent,resolve:{content:contentResolver}},
             { path:':contentUsername',component:UserGalleryComponent},
             { path: '', component: HomePageComponent}
         ]
     },
-    { path:'login',component:EmptyComponent,canActivate:[loginGuard]},
-    { path: 'landing', loadChildren: () => import('./main/components/landing/landing.module').then(m => m.LandingModule) },
-    { path: 'notfound', loadChildren: () => import('./main/components/notfound/notfound.module').then(m => m.NotfoundModule) },
     { path: '**', redirectTo: '/notfound' }
 ];
 

@@ -28,7 +28,7 @@
     </div>
 
     <p class="pl-4 line-height-3 text-lg mb-4">
-        {{ contentData.description }}
+        <app-discourse-html-scrubber [scrub]="contentData.description"/>
     </p>
 
     <div class="pl-2">

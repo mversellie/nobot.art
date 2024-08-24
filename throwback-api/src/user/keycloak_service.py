@@ -5,6 +5,9 @@ import requests
 from requests.auth import HTTPBasicAuth
 import json
 from dotenv import load_dotenv
+
+from exceptions.custom_exceptions import KeycloakRestException
+
 load_dotenv()
 
 class KeycloakSettings:
@@ -25,6 +28,9 @@ class KeycloakService:
         self.jwks_url = settings.jwks_url
         self.jwks_client = jwt.PyJWKClient(self.jwks_url)
 
+    def is_successful(self,res):
+        return 200 <= res < 300
+
 
     def get_keycloak_token(self):
         url = self.host + "/realms/" + self.realm + "/protocol/openid-connect/token"
@@ -32,6 +38,8 @@ class KeycloakService:
         auth = HTTPBasicAuth(self.client_id, self.client_secret)
         response = requests.request("POST",url,headers=headers,data = 'grant_type=client_credentials',
                                     auth=auth)
+        if not self.is_successful(response.status_code):
+            raise KeycloakRestException(response.status_code,response.json(),url)
         return response.json()
 
     def update_keycloak_profile_pic(self,profile_pic_url:string,user_id:string):
@@ -40,7 +48,9 @@ class KeycloakService:
         user_data = { "UserRepresentation" :
                           {"attributes": {"profile_pic_url":[profile_pic_url]}}
         }
-        requests.put(url,headers = headers,data=json.dumps(user_data))
+        response = requests.put(url,headers = headers,data=json.dumps(user_data))
+        if not self.is_successful(response.status_code):
+            raise KeycloakRestException(response.status_code,response.json(),url)
 
     def decode_jwt(self,token):
         header = jwt.get_unverified_header(token)

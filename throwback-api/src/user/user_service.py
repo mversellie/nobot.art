@@ -1,27 +1,13 @@
-import string
-import uuid
-
-from user.user_database import ThrowbackUser
+from database.user_database import UserRepository
 
 
-class CreateUserRequest:
+class UserService:
+    def __init__(self,user_repository:UserRepository):
+        self.user_repo = user_repository
 
-    def __init__(self):
-        self.throwbackId: string = ""
-        self.username: string = ""
-        self.providerId: string = ""
-        self.email: string = ""
-        self.providerPlatformId = 1
+    def create_user(self,user_id,username,discourse_id):
+        self.user_repo.save_user(user_id ,username ,discourse_id)
 
-    def from_dict(dict_in):
-        ret = CreateUserRequest()
-        ret.username = dict_in["username"]
-        ret.email = dict_in["email"]
-        ret.providerId = dict_in["providerId"]
-        return ret
+    def get_user_id_using_username(self, username):
+        return self.user_repo.get_user_by_username(username)
 
-
-def create_user_from_keycloak(request_in):
-    request = CreateUserRequest.from_dict(request_in)
-    ThrowbackUser.create(provider_id =  request.providerId,throwback_id = request.providerId,
-                             email = request.email,username = request.username,provider_platform_id = 1)

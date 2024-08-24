@@ -21,18 +21,18 @@ class TestContentService(unittest.TestCase):
     def test_get_content_works(self):
         test_content_service = ContentService()
         content_mock = get_throwback_content_mock()
-        test_content_service.content_repository.get_content_by_creator_and_name = MagicMock(return_value=content_mock)
-        actual = test_content_service.get_content_by_creator_and_name(content_mock["title"],content_mock["creator"])
+        test_content_service.content_repository.get_content_by_username_and_title = MagicMock(return_value=content_mock)
+        actual = test_content_service.get_content_by_username_and_title(content_mock["title"], content_mock["creator"])
         expected = content_mock
         self.assertEqual(actual, expected)
 
     def test_get_content_not_found_exception_raised(self):
         test_content_service = ContentService()
         content_mock = get_throwback_content_mock()
-        test_content_service.content_repository.get_content_by_creator_and_name = (
+        test_content_service.content_repository.get_content_by_username_and_title = (
             MagicMock(side_effect=ContentNotFoundException("not found")))
         with self.assertRaises(ContentNotFoundException) as raised:
-            test_content_service.get_content_by_creator_and_name(content_mock["title"],content_mock["creator"])
+            test_content_service.get_content_by_username_and_title(content_mock["title"], content_mock["creator"])
 
     @patch.object(minio.Minio, 'put_object', MagicMock())
     @patch.object(minio.Minio, 'bucket_exists', MagicMock(return_value=True))

@@ -30,10 +30,8 @@ import java.sql.Timestamp;
 @Data
 @Builder
 @Jacksonized
-public class ThrowbackUserPojo {
-    private String throwbackId;
+public class NoBotUserPojo {
     private String username;
-    private String providerId;
-    private Integer providerPlatformId;
-    private String email;
+    private String userId;
+    private Integer discourseId;
 }

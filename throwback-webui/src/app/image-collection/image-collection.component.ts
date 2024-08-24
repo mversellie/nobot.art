@@ -16,4 +16,5 @@ import {ImageChipComponent} from "./image-chip/image-chip.component";
 })
 export class ImageCollectionComponent {
     @Input() images:any;
+    @Input() showCreator:boolean = true
 }

@@ -1,0 +1,49 @@
+databaseChangeLog:
+  - changeSet:
+      id: "make-user-table"
+      author: marco
+      changes:
+        - createTable:
+            tableName: nobot_users
+            columns:
+              - column:
+                  name: user_id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: username
+                  type: TEXT
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: discourse_id
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+                    unique: true
+  - changeSet:
+      id: "make-user-indexes"
+      author: marco
+      changes:
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: discourse_id
+            indexName: idx_discourse
+            schemaName: public
+            tableName: nobot_users
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: username
+            indexName: idx_username
+            schemaName: public
+            tableName: nobot_users
+

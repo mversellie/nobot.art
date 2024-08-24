@@ -18,13 +18,18 @@ services:
       HTTP_ADDRESS_FORWARDING: false
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      THROWBACK_API_URL: ${THROWBACK_API_URL}
+      NOBOT_API_URL: ${NOBOT_API_URL}
+      DISCOURSE_API_URL: ${DISCOURSE_API_URL}
+      DISCOURSE_API_USER: ${DISCOURSE_API_USER}
+      DISCOURSE_API_KEY: ${DISCOURSE_API_KEY}
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl/private.key
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl/public.crt
     command:  start-dev
     ports:
       - '8080:8080' #HTTP
       - '8443:8443' #HTTPS
+    extra_hosts:
+      - "localhost:172.17.0.1"
   keycloakdb:
     image: postgres:16
     volumes:
@@ -33,6 +38,16 @@ services:
       POSTGRES_DB: ${KC_DB_NAME}
       POSTGRES_USER: ${KC_DB_USERNAME}
       POSTGRES_PASSWORD: ${KC_DB_USERNAME}
+  nobotdb:
+    image: postgres:16
+    volumes:
+      - postgres_nobot_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: ${NOBOT_DB_NAME}
+      POSTGRES_USER: ${NOBOT_DB_USERNAME}
+      POSTGRES_PASSWORD: ${NOBOT_DB_USERNAME}
+    ports:
+      - "54382:5432"
   minio:
     image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
     command: server /data --console-address ":9001"
@@ -47,42 +62,7 @@ services:
       - minio_data:/data
       - ${LOCALHOST_KEY}:/root/.minio/certs/private.key
       - ${LOCALHOST_CERT}:/root/.minio/certs/public.crt
-  opensearch:
-    image: opensearchproject/opensearch:latest
-    container_name: opensearch
-    environment:
-      discovery.type: single-node
-      node.name: opensearch
-      OPENSEARCH_JAVA_OPTS: "-Xms512m -Xmx512m"
-      OPENSEARCH_INITIAL_ADMIN_PASSWORD: ${OPENSEARCH_INITIAL_ADMIN_PASSWORD_ENV}
-    volumes:
-      - opensearch_data:/usr/share/opensearch/data
-      #Only do this if you want to change the admin password
-      #This should never be commited
-      - ../opensearch/internal_users.yml:/usr/share/opensearch/config/opensearch-security/internal_users.yml
-    ports:
-      - 9200:9200
-      - 9600:9600
-    networks:
-      - opensearch-net
-  opensearch-dashboards:
-    image: opensearchproject/opensearch-dashboards:latest
-    container_name: opensearch-dashboards
-    ports:
-      - 5601:5601
-    expose:
-      - "5601"
-    environment:
-      OPENSEARCH_HOSTS: '["https://opensearch:9200"]'
-    networks:
-      - opensearch-net
-    depends_on:
-      - opensearch
 volumes:
   postgres_data:
+  postgres_nobot_data:
   minio_data:
-  opensearch_data:
-
-networks:
-  opensearch-net:
-    driver: bridge

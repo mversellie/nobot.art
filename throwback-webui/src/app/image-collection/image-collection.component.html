@@ -1,9 +1,7 @@
-<div class="card">
-    <p class="mt-0 p-0 mb-5 text-700 text-2xl">Exclusive Selection</p>
+
     <div class="grid -mt-3 -ml-3 -mr-3">
-        <div class="col-12 md:col-6 lg:col-4" *ngFor="let image of images">
+        <div class="col-12 md:col-6 lg:col-2" *ngFor="let image of images">
             <app-image-chip [title]="image.title" [file]="image.filename"
-                            [creator]="image.creator" [url_safe_title]="image.url_safe_name"/>
+                            [creator]="image.creator" [url_safe_title]="image.url_safe_name" [showCreator]="showCreator"/>
         </div>
     </div>
-</div>

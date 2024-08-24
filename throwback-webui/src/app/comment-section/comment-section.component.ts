@@ -8,6 +8,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {NobotComment} from "../objects/CommentPojo";
 import {environment} from "../../environments/environment";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {DiscourseHtmlScrubberComponent} from "../discourse-html-scrubber/discourse-html-scrubber.component";
 
 @Component({
     selector: 'app-comments',
@@ -20,7 +21,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
         EditorModule,
         ReactiveFormsModule,
         InputTextareaModule,
-        FormsModule
+        FormsModule,
+        DiscourseHtmlScrubberComponent
     ],
     templateUrl: './comment-section.component.html'
 })

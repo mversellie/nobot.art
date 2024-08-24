@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
-import { Comment } from 'src/app/main/api/blog';
-import {ActivatedRoute, Params, RouterLink, RouterModule} from "@angular/router";
+import {Component} from '@angular/core';
+import {ActivatedRoute, Params, RouterLink} from "@angular/router";
 import {CommentSectionComponent} from "../comment-section/comment-section.component";
 import {InputTextModule} from "primeng/inputtext";
 import {SidebarModule} from "primeng/sidebar";
@@ -17,9 +16,9 @@ import {CommonModule} from "@angular/common";
 import {NobotComment} from "../objects/CommentPojo";
 import {ContentResponse} from "../objects/ContentResponse";
 import {CommentService} from "../services/comment.service";
-import {ContentService} from "../services/content.service";
-import {from, of} from "rxjs";
+import {of} from "rxjs";
 import {AvatarComponent} from "../avatar/avatar.component";
+import {DiscourseHtmlScrubberComponent} from "../discourse-html-scrubber/discourse-html-scrubber.component";
 
 @Component({
     standalone: true,
@@ -40,10 +39,11 @@ import {AvatarComponent} from "../avatar/avatar.component";
         RouterLink,
         RouterLink,
         AvatarComponent,
+        DiscourseHtmlScrubberComponent,
     ],
     templateUrl: './content-page.component.html'
 })
-export class ContentPageComponent {
+export class ContentPageComponent{
 
     title:string = "aTitle"
     description:string = "this is a really really long description"
@@ -56,13 +56,17 @@ export class ContentPageComponent {
 
     contentData : ContentResponse;
 
-    constructor(private commentService:CommentService,private route:ActivatedRoute, private contentService:ContentService) {
-
+    constructor(private commentService:CommentService,private route:ActivatedRoute) {
         this.contentData =  new ContentResponse("","", "", new Date(),"","");
-
 
         this.route.params.subscribe( (data) => {
             this.params = data;
+        });
+
+        this.route.data.subscribe( ({content}) => {
+            this.contentData = content;
+            this.imageUrl= "https://127.0.0.1:9000/main/" + content.filename
+            this.username = content.creator
         });
 
         of(this.params).subscribe( (map:Params ) => {
@@ -71,6 +75,7 @@ export class ContentPageComponent {
             if(map != null){
                 if(map["contentUsername"] !== null){
                     contentUsername = map["contentUsername"];
+                    this.username = contentUsername
                 }
 
                 if(map["contentName"] !== null){
@@ -80,13 +85,6 @@ export class ContentPageComponent {
                 commentService.getContentComments(this.threadName).subscribe((data:any) => {
                     this.comments = data["comments"]
                 })
-                from(this.contentService.getContentData(contentUsername,contentName)).subscribe(
-                    (data:ContentResponse) => {
-                        this.contentData = data;
-                        this.imageUrl= "https://127.0.0.1:9000/main/" + data.filename
-                        this.username = data.creator
-                    }
-                )
             }
         })
     }

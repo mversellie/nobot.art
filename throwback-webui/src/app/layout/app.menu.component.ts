@@ -1,5 +1,5 @@
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserService} from "../services/user.service";
 
 @Component({
     selector: 'app-menu',
@@ -8,6 +8,9 @@ import { Component } from '@angular/core';
 export class AppMenuComponent implements OnInit {
 
     model: any[] = [];
+
+    constructor(private user:UserService) {
+    }
 
     ngOnInit() {
         this.model = [
@@ -29,29 +32,12 @@ export class AppMenuComponent implements OnInit {
                                 icon: 'pi pi-fw pi-image',
                                 routerLink: ['/apps/blog/list']
                             },
-                            {
-                                label: 'Detail',
-                                icon: 'pi pi-fw pi-list',
-                                routerLink: ['/apps/blog/detail']
-                            },
-
                         ]
                     },
                     {
-                        label: 'Chat',
+                        label: 'Private Messages',
                         icon: 'pi pi-fw pi-comments',
-                        routerLink: ['/apps/chat']
-                    }
-                ]
-            },
-            {
-                label: 'Pages',
-                icon: 'pi pi-fw pi-briefcase',
-                items: [
-                    {
-                        label: 'Empty',
-                        icon: 'pi pi-fw pi-circle-off',
-                        routerLink: ['/pages/empty']
+                        routerLink: ['/' + this.user.username() + '/private-messages']
                     }
                 ]
             },

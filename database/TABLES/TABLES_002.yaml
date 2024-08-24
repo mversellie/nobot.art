@@ -1,0 +1,110 @@
+databaseChangeLog:
+  - changeSet:
+      id: "make-content-table"
+      author: marco
+      changes:
+        - createTable:
+            tableName: nobot_content
+            columns:
+              - column:
+                  name: content_id
+                  type: VARCHAR(36)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: creator_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: url_safe_name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: filename_S3
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: filename
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: extension
+                  type: TEXT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created
+                  type: TIMESTAMP
+                  constraints:
+                    nullable: false
+              - column:
+                  name: height
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: width
+                  type: INTEGER
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adult
+                  type: BOOLEAN
+                  defaultOnNull: false
+  - changeSet:
+      id: "make-content-indexes"
+      author: marco
+      changes:
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: name
+            indexName: idx_name
+            schemaName: public
+            tableName: nobot_content
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: creator_id
+            indexName: idx_creator_id
+            schemaName: public
+            tableName: nobot_content
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: created
+            indexName: idx_created
+            schemaName: public
+            tableName: nobot_content
+  - changeSet:
+      id: "addkey-constraints"
+      author: marco
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: creator_id
+            baseTableName: nobot_content
+            baseTableSchemaName: public
+            constraintName: fk_user
+            referencedColumnNames: user_id
+            referencedTableName: nobot_users
+            referencedTableSchemaName: public
+        - addUniqueConstraint:
+            columnNames: "creator_id, url_safe_name"
+            constraintName: "unique_url_path"
+            tableName: nobot_content

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit, signal, WritableSignal} from '@angular/core';
 import {environment} from "../../environments/environment";
 import {NgClass} from "@angular/common";
 import {RouterLink} from "@angular/router";
@@ -8,34 +8,35 @@ import {RouterLink} from "@angular/router";
   standalone: true,
   imports: [
       NgClass,RouterLink],
-    template: '<a routerLink="getLink()">' +
-        '<img [attr.id]="imgId" [ngClass]="imgClass" [src]="getImgLink()" (error)="setImageNotFound()" alt="none">' +
-        '</a>'
+    template: '<a [routerLink]="userPageLink" [class]="" [class.disabled]="disableLink">' +
+        '<img [attr.id]="imgId" [ngClass]="imgClass" [src]="imgLink()" (error)="setImageNotFound()" [alt]="username">' +
+        '</a>',
+    styleUrl: 'avatar.component.css'
 })
-export class AvatarComponent {
+export class AvatarComponent implements OnInit {
+    ngOnInit(): void {
+        this.getImgLink();
+        this.userPageLink = this.disableLink ? "" : '/' + this.username
+    }
 
     @Input() username:string = "";
     @Input() imgClass:string = ""
     @Input() imgId:string = ""
-    @Input() toSettings:boolean = false
-    imgLink = "/img/default-avatar.png" ;
+    @Input() disableLink:boolean = false
+    imgLink:WritableSignal<string> = signal("/img/default-avatar.png") ;
+    userPageLink = ""
 
     getImgLink(){
         if(this.username != null && this.username != "") {
-            this.imgLink = environment["S3-URL"] + "pfp-" + this.username + ".png"
+            this.imgLink.set( environment["S3-URL"] + "pfp-" + this.username + ".png")
         }
-        return this.imgLink
     }
 
     setImageNotFound(){
-        this.imgLink = "/img/default-avatar.png";
+        this.imgLink.set("assets/img/default-avatar.png");
     }
 
-    getLink(){
-        if(this.toSettings){
-            return '/settings'
-        }
-
-        return '/' + this.username
+    updateImg(newImage:string){
+        this.imgLink.set(newImage)
     }
 }

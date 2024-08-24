@@ -42,19 +42,19 @@
 
                 <ul  class="topbar-menu active-topbar-menu p-4 w-15rem z-5 ng-hidden border-round">
                     <li *ngIf="authService.isLoggedIn()" role="menuitem" class="m-0 mb-3">
-                        <a href="#" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                        <a routerLink="/settings" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
                             <i class="pi pi-fw pi-cog mr-2"></i>
                             <span>Settings</span>
                         </a>
                     </li>
                     <li *ngIf="authService.isLoggedIn()" role="menuitem" class="m-0">
-                        <a href="/logout" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                        <a routerLink="/logout" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
                             <i class="pi pi-fw pi-sign-out mr-2"></i>
                             <span>Logout</span>
                         </a>
                     </li>
                     <li *ngIf="!authService.isLoggedIn()" role="menuitem" class="m-0">
-                        <a href="/login" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
+                        <a routerLink="/login" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
                             <i class="pi pi-fw pi-sign-out mr-2"></i>
                             <span>Login</span>
                         </a>

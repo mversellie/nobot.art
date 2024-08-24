@@ -33,6 +33,9 @@ import { CalendarModule } from 'primeng/calendar';
         AppMenuComponent,
         AppMenuitemComponent
     ],
+    exports: [
+        AppMenuitemComponent
+    ],
     imports: [
         BrowserModule,
         FormsModule,
