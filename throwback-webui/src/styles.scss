@@ -17,3 +17,21 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/flags/flags.css";
 @import "assets/demo/styles/badges.scss";
 @import "assets/demo/styles/code.scss";
+
+
+@font-face {
+  font-family: "modeseven";
+  src: url(assets/fonts/Modeseven-L3n5.ttf);
+}
+
+div {
+  font-family: modeseven, serif !important;
+}
+
+input {
+  font-family: modeseven, serif !important;
+}
+
+button {
+  font-family: modeseven, serif !important;
+}

@@ -1,0 +1,25 @@
+<div class="flex flex-column h-full">
+    <div class="p-3 md:px-4 lg:px-6 lg:py-4 mt-2 overflow-y-auto" style="max-height: 53vh;" #chatWindow [scrollTop]="chatWindow.scrollHeight">
+        <div *ngFor="let message of thread.replies">
+            <div class="grid grid-nogutter mb-4">
+                <div class="mr-3 mt-1">
+                   <app-avatar [username]="message.username" [imgClass]="'w-3rem h-3rem border-circle shadow-4'"/>
+                </div>
+                <div class="col mt-3">
+                    <p class="text-900 font-semibold mb-3">{{message.username}}</p>
+                    <span class="text-700 inline-block font-medium border-1 surface-border p-3 white-space-normal border-round" style="word-break: break-word; max-width:80%;">
+                        <app-discourse-html-scrubber [scrub]="message.content"/></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form [formGroup]="privateMessageForm" (ngSubmit)="sendMessage()" class="p-3 md:p-4 lg:p-6 flex
+    flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3">
+            <input id="message" formControlName="content" type="text" pInputTextarea
+                   placeholder="Type a message" class="flex-1 w-full sm:w-auto border-round"  (keydown.enter)="sendMessage()"/>
+            <div class="flex w-full sm:w-auto gap-3">
+                <button pButton pRipple type="submit" label="Send" icon="pi pi-send" class="w-full sm:w-auto"></button>
+            </div>
+    </form>
+
+</div>

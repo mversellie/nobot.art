@@ -10,8 +10,9 @@ class CommentService:
         self.service = comment_service
 
     def add_a_comment(self, content_id:string, content:string, username:string):
-        topic_id = self.service.get_topic_id_from_external_id(content_id)
-        self.service.make_new_comment(topic_id, content, username)
+        topic_id = self.service.get_topic_from_external_id(content_id)
+        self.service.make_new_post(topic_id, content, username)
 
     def get_all_comments_for_thread(self, content_id:string):
-        return self.service.get_comments_for_content(content_id)
+        comments_raw = self.service.get_data_for_topic(content_id, True,"burgerspace")
+        return comments_raw[1:len(comments_raw) + 1] if len(comments_raw) > 1 else []

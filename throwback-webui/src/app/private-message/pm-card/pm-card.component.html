@@ -1,0 +1,12 @@
+<div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none
+    hover:surface-hover transition-colors transition-duration-150"
+    (keydown.enter)="select()" (click)="select()" tabindex="0">
+    <div class="flex align-items-center">
+        <div class="relative md:mr-3">
+            <app-avatar [username]="message.user" [imgClass]="'w-3rem h-3rem border-circle shadow-4'"/>
+        </div>
+        <div class="flex-column hidden md:flex">
+            <span class="text-900 font-semibold block">{{message.title}}</span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,5 @@
+<div class="w-full flex row-gap-4 flex-column surface-border p-4">
+    <div class="flex flex-row gap-4 md:flex-column overflow-auto">
+        <app-pm-card *ngFor="let message of privateMessageChoices;let i = index " [message]="message" [messageIndex]="i"/>
+    </div>
+</div>

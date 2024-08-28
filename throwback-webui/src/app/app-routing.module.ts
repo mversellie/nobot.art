@@ -12,7 +12,7 @@ import {UserGalleryComponent} from "./user-gallery/user-gallery.component";
 import {HomePageComponent} from "./home-page/home-page.component";
 import {contentResolver} from "./resolvers/content.resolver";
 import {PrivateMessagePageComponent} from "./private-message/private-message-page.component";
-import {currentUserGuard} from "./guards/current-user.guard";
+import {loggedInGuard} from "./guards/logged-in.guard";
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
@@ -28,10 +28,10 @@ const routes: Routes = [
             { path: 'profile', data: { breadcrumb: 'User Management' }, loadChildren: () => import('./main/components/profile/profile.module').then(m => m.ProfileModule) },
             { path: 'documentation', data: { breadcrumb: 'Documentation' }, loadChildren: () => import('./main/components/documentation/documentation.module').then(m => m.DocumentationModule) },
             { path: 'apps', data: { breadcrumb: 'Apps' }, loadChildren: () => import('./main/components/apps/apps.module').then(m => m.AppsModule) },
-            { path: 'create', component:CreatePostComponent },
+            { path: 'create', component:CreatePostComponent,canActivate:[loggedInGuard] },
             { path:'logout',component:LogoutPageComponent,canActivate:[logoutGuard]},
-            { path:'settings',component:UserSettingsPageComponent},
-            { path:':contentUsername/private-messages',component:PrivateMessagePageComponent,canActivate:[currentUserGuard]},
+            { path:'settings',component:UserSettingsPageComponent,canActivate:[loggedInGuard]},
+            { path:'private-messages',component:PrivateMessagePageComponent,canActivate:[loggedInGuard]},
             { path:':contentUsername/:contentName',component:ContentPageComponent,resolve:{content:contentResolver}},
             { path:':contentUsername',component:UserGalleryComponent},
             { path: '', component: HomePageComponent}

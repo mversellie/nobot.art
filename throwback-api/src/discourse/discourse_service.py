@@ -21,6 +21,7 @@ class DiscourseService:
         self.api = self.settings.get("DISCOURSE_API")
         self.host = self.settings.get("DISCOURSE_HOST")
         self.create_topic_endpoint = self.host + "/posts"
+        self.get_topic_endpoint=self.host + "/t"
         self.http = urllib3.PoolManager()
 
     def make_new_art_topic(self,art_id:string,description:string,username:string):
@@ -31,7 +32,7 @@ class DiscourseService:
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
 
-    def make_new_comment(self, topic_id:string, content:string, username:string):
+    def make_new_post(self, topic_id:string, content:string, username:string):
         body = {"topic_id": topic_id, "raw": content}
         headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
         response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
@@ -39,15 +40,21 @@ class DiscourseService:
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
 
 
-    def get_comments_for_content(self,content_id:string):
-        endpoint = self.host + "/t/external_id/" +  content_id + ".json"
-        response = self.http.request("GET",endpoint,fields={"include_raw": True})
+    def get_data_for_topic(self, content_id:string, is_external_id,username):
+        if is_external_id:
+            endpoint = self.host + "/t/external_id/" +  content_id + ".json"
+        else:
+            endpoint = self.host + "/t/" + content_id + ".json"
+        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        print(headers)
+        print(endpoint)
+        response = self.http.request("GET",endpoint,headers=headers)
+
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),endpoint)
         comments_raw =  response.json()["post_stream"]["posts"]
-        comments_less_desc = comments_raw[1:len(comments_raw) + 1] if len(comments_raw) > 1 else []
         comments:List = []
-        for post in comments_less_desc:
+        for post in comments_raw:
             temp_comment:CommentResponse = CommentResponse()
             temp_comment.created = post["created_at"]
             temp_comment.content = post["cooked"]
@@ -62,12 +69,66 @@ class DiscourseService:
             raise DiscourseException(response.status,response.json(),endpoint)
         return response.json()["post_stream"]["posts"][0]["cooked"]
 
-    def get_topic_id_from_external_id(self,external_id):
+    def get_topic_from_external_id(self, external_id):
         endpoint = self.host + "/t/external_id/" +  external_id + ".json"
         response = self.http.request("GET",endpoint)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),endpoint)
         return response.json()["id"]
+
+    def get_private_messages_for_user(self,username):
+        found_topics = {}
+        topics_compacted = []
+
+        endpoint = self.host + "/topics/private-messages/" +  username + ".json"
+        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        response = self.http.request("GET",endpoint,headers=headers)
+        print(response.json())
+        if not self.is_successful(response):
+            raise DiscourseException(response.status,response.json(),endpoint)
+        if len(response.json()["topic_list"]["topics"]) > 0:
+            users = response.json()["users"]
+            users_as_map = {}
+
+            for aUser in users:
+                users_as_map[aUser["id"]] = aUser["username"]
+            for topic in response.json()["topic_list"]["topics"]:
+                topic_id = topic["id"]
+                if topic_id in found_topics:
+                    continue
+                other_guy= ""
+                for user_in_topic in topic["participants"]:
+                    temp_username = users_as_map[user_in_topic["user_id"]]
+                    if temp_username != username:
+                        other_guy = temp_username
+                        break
+                compacted_topic = {"title": topic["title"], "username": other_guy, "id": topic_id}
+                found_topics[topic_id] = True
+                topics_compacted.append(compacted_topic)
+
+        endpoint = self.host + "/topics/private-messages-sent/" +  username + ".json"
+        response = self.http.request("GET",endpoint,headers=headers)
+        if not self.is_successful(response):
+            raise DiscourseException(response.status,response.json(),endpoint)
+        if len(response.json()["topic_list"]["topics"]) > 0:
+            users = response.json()["users"]
+            users_as_map = {}
+            for aUser in users:
+                users_as_map[aUser["id"]] = aUser["username"]
+            for topic in response.json()["topic_list"]["topics"]:
+                topic_id = topic["id"]
+                if topic_id in found_topics:
+                    continue
+                other_guy= ""
+                for user_in_topic in topic["posters"]:
+                    temp_username = users_as_map[user_in_topic["user_id"]]
+                    if temp_username != username:
+                        other_guy = temp_username
+                        break
+                compacted_topic = {"title": topic["title"], "username": other_guy, "id": topic_id}
+                found_topics[topic_id] = True
+                topics_compacted.append(compacted_topic)
+        return topics_compacted
 
 
 

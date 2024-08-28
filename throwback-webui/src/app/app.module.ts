@@ -16,8 +16,7 @@ import {provideOAuthClient} from "angular-oauth2-oidc";
     ],
     providers: [
         shortProvideHttp()
-        ,provideOAuthClient(),
-        importProvidersFrom(HttpClientModule)
+        ,provideOAuthClient()
     ],
     bootstrap: [AppComponent]
 })

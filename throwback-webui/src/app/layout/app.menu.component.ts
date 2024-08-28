@@ -37,7 +37,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Private Messages',
                         icon: 'pi pi-fw pi-comments',
-                        routerLink: ['/' + this.user.username() + '/private-messages']
+                        routerLink: ['/private-messages']
                     }
                 ]
             },
