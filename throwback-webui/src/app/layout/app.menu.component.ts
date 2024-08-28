@@ -24,32 +24,11 @@ export class AppMenuComponent implements OnInit {
                         routerLink: ['/create']
                     },
                     {
-                        label: 'Blog',
-                        icon: 'pi pi-fw pi-comment',
-                        items: [
-                            {
-                                label: 'List',
-                                icon: 'pi pi-fw pi-image',
-                                routerLink: ['/apps/blog/list']
-                            },
-                        ]
-                    },
-                    {
                         label: 'Private Messages',
                         icon: 'pi pi-fw pi-comments',
                         routerLink: ['/private-messages']
-                    }
-                ]
-            },
-            {
-                label: 'User Management',
-                icon: 'pi pi-fw pi-user',
-                items: [
-                    {
-                        label: 'List',
-                        icon: 'pi pi-fw pi-list',
-                        routerLink: ['profile/list']
                     },
+
                     {
                         label: 'Settings',
                         icon: 'pi pi-fw pi-plus',
