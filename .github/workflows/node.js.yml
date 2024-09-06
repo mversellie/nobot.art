@@ -35,12 +35,11 @@ jobs:
     - run: |
         npm ci
         npm run build
-        ls
-        ls dist
-        ls dist/throwback-webui
     - name: clone static
       run: |
         git clone "https://mversellie:${{ secrets.WEBUI_PAT_TOKEN }}@github.com/mversellie/nobot.art-static.git"
+        pwd
+        ls
     - name: copy files to repo
       run: |
         cp -r dist/throwback-webui/* nobot.art-static
