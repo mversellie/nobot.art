@@ -41,7 +41,8 @@ jobs:
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
-        git commit -a -m dist/throwback-webui/*
+        cd dist/throwback-webui
+        git commit -a -m *
     - name: Push changes to app engine
       uses: ad-m/github-push-action@master
       with:
