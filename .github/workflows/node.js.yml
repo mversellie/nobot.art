@@ -5,10 +5,10 @@ name: WEBUI CI
 
 on:
   push:
-    branches: [ "release" ]
+    branches: [ "master" ]
     paths: throwback-webui/*
   pull_request:
-    branches: [ "release" ]
+    branches: [ "master" ]
     paths: throwback-webui/*
 
 jobs:
@@ -17,7 +17,6 @@ jobs:
     strategy:
       matrix:
         node-version: [18.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
     - uses: actions/checkout@v4
@@ -37,15 +36,15 @@ jobs:
       with:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
-        token: ${{ secrets.PAT_TOKEN }}
+        token: ${{ secrets.WEBUI_PAT_TOKEN }}
     - name: Commit files
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
-        git commit -a -m dists/*
+        git commit -a -m dist/throwback-webui/*
     - name: Push changes to app engine
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.PAT_TOKEN }}
+        github_token: ${{ secrets.WEBUI_PAT_TOKEN }}
         repository: mversellie/nobot.art-static
         force: true
