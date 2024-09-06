@@ -21,8 +21,8 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Move into correct directory and retrieve environment secret
+      working-directory: ./throwback_webui/environments
       run: |
-        cd throwback_webui
         echo ${ENV_FILE} > environments/environment.ts
       env:
         ENV_FILE: ${{secrets.ENVIRONMENT_TS}}
@@ -33,16 +33,17 @@ jobs:
         cache: 'npm'
     - run: |
         npm run build
+      working-directory: ./throwback_webui
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
         fetch-depth: 0
         token: ${{ secrets.WEBUI_PAT_TOKEN }}
     - name: Commit files
+      working-directory: ./throwback_webui/dist/throwback-webui
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
-        cd dist/throwback-webui
         git commit -a -m *
     - name: Push changes to app engine
       uses: ad-m/github-push-action@master
