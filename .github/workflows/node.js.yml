@@ -20,10 +20,13 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - run: |
+        ls
+        pwd
     - name: Move into correct directory and retrieve environment secret
       working-directory: throwback_webui/src/environments
       run: |
-        echo ${ENV_FILE} > environments/environment.ts
+        echo ${ENV_FILE} > environment.ts
       env:
         ENV_FILE: ${{secrets.ENVIRONMENT_TS}}
     - name: Use Node.js ${{ matrix.node-version }}
