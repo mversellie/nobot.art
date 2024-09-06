@@ -38,6 +38,7 @@ jobs:
         cache: 'npm'
         cache-dependency-path: throwback-webui
     - run: |
+        npm ci
         npm run build
     - uses: actions/checkout@v4
       with:
