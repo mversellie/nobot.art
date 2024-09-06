@@ -44,12 +44,12 @@ jobs:
       run: |
         cp -r dist/throwback-webui/* nobot.art-static
     - name: Commit files
-      working-directory: throwback-webui/nobot.art.static
+      working-directory: throwback-webui/nobot.art-static
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
         git commit -a -m *
     - name: Pushing to app platform repo
-      working-directory: throwback-webui/nobot.art.static
+      working-directory: throwback-webui/nobot.art-static
       run: |
         git push
