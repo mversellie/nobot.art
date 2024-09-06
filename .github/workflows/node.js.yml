@@ -6,8 +6,10 @@ name: Node.js CI
 on:
   push:
     branches: [ "release" ]
+    paths: throwback-webui/*
   pull_request:
     branches: [ "release" ]
+    paths: throwback-webui/*
 
 jobs:
   build:  
