@@ -39,7 +39,7 @@ jobs:
         ls dist
         ls dist/throwback-webui
     - name: clone static
-    - run: |
+      run: |
         git clone "https://mversellie:${{ secrets.WEBUI_PAT_TOKEN }}@github.com/mversellie/nobot.art-static.git"
     - name: copy files to repo
       run: |
