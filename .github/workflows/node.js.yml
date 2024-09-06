@@ -38,24 +38,19 @@ jobs:
         ls
         ls dist
         ls dist/throwback-webui
-    - uses: actions/checkout@v4
-      with:
-        ref: ${{ github.head_ref }}
-        repository: mversellie/nobot.art-static
-        fetch-depth: 0
-        token: ${{ secrets.WEBUI_PAT_TOKEN }}
+    - name: clone static
     - run: |
-        echo "after clone"
-        ls
+        git clone "https://mversellie:${{ secrets.WEBUI_PAT_TOKEN }}@github.com/mversellie/nobot.art-static.git"
+    - name: copy files to repo
+      run: |
+        cp -r dist/throwback-webui/* nobot.art-static
     - name: Commit files
-      working-directory: throwback-webui/dist/throwback-webui
+      working-directory: throwback-webui/nobot.art.static
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
         git commit -a -m *
-    - name: Push changes to app engine
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.WEBUI_PAT_TOKEN }}
-        repository: mversellie/nobot.art-static
-        force: true
+    - name: Pushing to app platform repo
+      working-directory: throwback-webui/nobot.art.static
+      run: |
+        git push
