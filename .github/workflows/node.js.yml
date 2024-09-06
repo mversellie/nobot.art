@@ -48,6 +48,7 @@ jobs:
       run: |
         git config --local user.email "gitbot@nobot.art"
         git config --local user.name "Gitbot"
+        git add --all
         git commit -a -m "pushing latest app version"
     - name: Pushing to app platform repo
       working-directory: throwback-webui/nobot.art-static
