@@ -43,6 +43,7 @@ jobs:
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
+        repository: mversellie/nobot.art-static
         fetch-depth: 0
         token: ${{ secrets.WEBUI_PAT_TOKEN }}
     - name: Commit files
