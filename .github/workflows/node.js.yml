@@ -6,13 +6,8 @@ name: WEBUI CI
 on:
   push:
     branches: [ "master" ]
-    paths: throwback-webui/*
   pull_request:
     branches: [ "master" ]
-    paths: throwback-webui/*
-
-
-
 jobs:
   build:  
     runs-on: ubuntu-latest
@@ -40,12 +35,18 @@ jobs:
     - run: |
         npm ci
         npm run build
+        ls
+        ls dist
+        ls dist/throwback-webui
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
         repository: mversellie/nobot.art-static
         fetch-depth: 0
         token: ${{ secrets.WEBUI_PAT_TOKEN }}
+    - run: |
+        echo "after clone"
+        ls
     - name: Commit files
       working-directory: throwback-webui/dist/throwback-webui
       run: |
