@@ -11,18 +11,20 @@ on:
     branches: [ "master" ]
     paths: throwback-webui/*
 
+
+
 jobs:
   build:  
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: throwback-webui
     strategy:
       matrix:
         node-version: [18.x]
 
     steps:
     - uses: actions/checkout@v4
-    - run: |
-        ls
-        pwd
     - name: Move into correct directory and retrieve environment secret
       working-directory: throwback-webui/src/environments
       run: |
@@ -36,7 +38,6 @@ jobs:
         cache: 'npm'
     - run: |
         npm run build
-      working-directory: throwback-webui
     - uses: actions/checkout@v4
       with:
         ref: ${{ github.head_ref }}
