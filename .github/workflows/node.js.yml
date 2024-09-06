@@ -10,11 +10,7 @@ on:
     branches: [ "release" ]
 
 jobs:
-  build:
-    defaults:
-      run:
-        working-directory: 'throwback-webui' # Here the path to the folder where package-lock.json is located.
-    
+  build:  
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -28,5 +24,22 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm run build --if-present
-    - run: npm test
+    - run: |
+        cd throwback-webui
+        npm run build
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+        fetch-depth: 0
+        token: ${{ secrets.PAT_TOKEN }}
+    - name: Commit files
+      run: |
+        git config --local user.email "test@test.com"
+        git config --local user.name "Test"
+        git commit -a -m "Add changes"
+    - name: Push changes to app engine
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.PAT_TOKEN }}
+        repository: Test/test
+        force: true
