@@ -21,7 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Move into correct directory and retrieve environment secret
-      working-directory: throwback_webui/environments
+      working-directory: throwback_webui/src/environments
       run: |
         echo ${ENV_FILE} > environments/environment.ts
       env:
