@@ -21,7 +21,7 @@ def get_private_messages_for_user():
         return good_json(added_body)
 
 @private_messages_controller.route('/private-messages/<pm_id>', methods=['GET'])
-def get_or_send_a_private_message(pm_id):
+def get_a_private_message(pm_id):
     jwt_token = request.headers["Authorization"].split(" ")[1]
     unlocked_token = keycloak_service.decode_jwt(jwt_token)
     if request.method == "POST":
@@ -32,9 +32,17 @@ def get_or_send_a_private_message(pm_id):
     return good_json(added_body)
 
 @private_messages_controller.route('/private-messages/<pm_id>', methods=['POST'])
-def send_a_private_message(pm_id):
+def reply_to_a_private_message(pm_id):
     jwt_token = request.headers["Authorization"].split(" ")[1]
     unlocked_token = keycloak_service.decode_jwt(jwt_token)
     content = request.json["content"]
     private_message_service.reply_to_private_message(unlocked_token["preferred_username"],pm_id,content)
+    return blank_ok()
+
+
+@private_messages_controller.route('/private-messages/<pm_id>', methods=['DELETE'])
+def delete_a_private_message(pm_id):
+    jwt_token = request.headers["Authorization"].split(" ")[1]
+    unlocked_token = keycloak_service.decode_jwt(jwt_token)
+    private_message_service.delete_a_private_message(unlocked_token["preferred_username"],pm_id)
     return blank_ok()

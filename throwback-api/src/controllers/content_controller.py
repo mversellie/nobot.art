@@ -1,12 +1,10 @@
 from flask import Blueprint, request
 from content.content_service import ContentService, FileToSave
 from controllers.web_helpers import good_json, make_keycloak_quick
-from discourse.discourse_service import DiscourseService
 from user.keycloak_service import KeycloakService
 from werkzeug.utils import secure_filename
 
 content_controller = Blueprint('content_controller',__name__)
-discourse_service:DiscourseService = DiscourseService
 content_service = ContentService()
 keycloak_service:KeycloakService = make_keycloak_quick()
 

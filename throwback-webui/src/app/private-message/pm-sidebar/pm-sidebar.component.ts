@@ -1,13 +1,13 @@
 import {Component, Input, Output} from '@angular/core';
-import {PmCardComponent} from ".././pm-card/pm-card.component";
+import {PmCardComponent} from "./pm-card/pm-card.component";
 import {FormsModule} from "@angular/forms";
 import {NgForOf} from "@angular/common";
 import {PrivateMessageChoiceData} from "../private-message-choice-data";
 import {PrivateMessageService} from "../private-message.service";
 
 @Component({
-    selector: 'app-chat-sidebar',
-    templateUrl: './chat-sidebar.component.html',
+    selector: 'app-pm-sidebar',
+    templateUrl: './pm-sidebar.component.html',
     imports: [
         PmCardComponent,
         FormsModule,
@@ -15,7 +15,7 @@ import {PrivateMessageService} from "../private-message.service";
     ],
     standalone: true
 })
-export class ChatSidebarComponent {
+export class PmSidebarComponent {
     @Input() privateMessageChoices:PrivateMessageChoiceData[]
 
     constructor(private privateMessageService:PrivateMessageService) {

@@ -1,8 +1,8 @@
 import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
-import { PrivateMessageService } from '../private-message.service';
+import { PrivateMessageService } from '../../private-message.service';
 import {NgClass, NgForOf} from "@angular/common";
-import {PrivateMessageChoiceData} from "../private-message-choice-data";
-import {AvatarComponent} from "../../avatar/avatar.component";
+import {PrivateMessageChoiceData} from "../../private-message-choice-data";
+import {AvatarComponent} from "../../../avatar/avatar.component";
 
 @Component({
     selector: 'app-pm-card',

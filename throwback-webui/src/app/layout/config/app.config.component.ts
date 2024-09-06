@@ -101,14 +101,6 @@ export class AppConfigComponent implements OnInit {
         ];
     }
 
-    onConfigButtonClick() {
-        this.layoutService.showConfigSidebar();
-    }
-
-    changeColorScheme(colorScheme: ColorScheme) {
-        this.colorScheme = colorScheme;
-    }
-
     changeTheme(theme: string) {
         this.theme = theme;
     }

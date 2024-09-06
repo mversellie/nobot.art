@@ -41,10 +41,6 @@ export class AppBreadcrumbComponent {
     deactivateSearch() {
         this.searchActive = false;
     }
-
-    onConfigButtonClick() {
-        this.layoutService.showConfigSidebar();
-    }
     
     onSidebarButtonClick() {
         this.layoutService.showSidebar();

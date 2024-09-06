@@ -11,25 +11,11 @@
     </div>
     <div class="topbar-end">
         <ul class="topbar-menu  ">
-            <li class="hidden lg:block">
-                <div class="topbar-search" [ngClass]="{'topbar-search-active': searchActive}">
-                    <button pButton icon="pi pi-search" class="topbar-searchbutton p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0" type="button" (click)="activateSearch()"></button>
-                    <div class="search-input-wrapper">
-                        <span class="p-input-icon-right">
-                            <input #searchinput type="text" pInputText placeholder="Search" (blur)="deactivateSearch()" (keydown.escape)="deactivateSearch()"/>
-                            <i class="pi pi-search"></i>
-                        </span>
-                    </div>
-                </div>
-            </li>
 
-            <li class="ml-3">
-                <button pButton type="button" icon="pi pi-cog" class="p-button-text p-button-secondary text-color-secondary p-button-rounded flex-shrink-0" (click)="onConfigButtonClick()"></button>
-            </li>
 
             <li #profile class="profile-item topbar-item " >
-                <a pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple class="cursor-pointer">
-                    <img class="border-circle" [src]="getAvatarImgLink(this.userService.username())">
+                <a *ngIf="authService.isLoggedIn()" pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple class="cursor-pointer">
+                    <app-avatar [username]="this.userService.username()" [imgClass]="'border-circle'" [disableLink]="true"/>
                 </a>
 
                 <ul  class="topbar-menu active-topbar-menu p-4 w-15rem z-5 ng-hidden border-round">

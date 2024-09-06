@@ -16,4 +16,7 @@ class PrivateMessageService:
     def reply_to_private_message(self,username:string,id:string,content:string):
         return self.discourseService.make_new_post(id, content, username)
 
+    def delete_a_private_message(self,username:string,id:string):
+        self.discourseService.delete_topic_by_id_with_user(id,username)
+
 

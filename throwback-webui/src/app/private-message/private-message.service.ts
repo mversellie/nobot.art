@@ -1,8 +1,7 @@
 import {Injectable, signal, WritableSignal} from '@angular/core';
-import {PrivateMessageChoiceData} from "./private-message-choice-data";
+import {PrivateMessageChoiceData, PrivateMessageReply} from "./private-message-choice-data";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import {PrivateMessageReply} from "./private-message-reply";
 import {UserService} from "../services/user.service";
 
 @Injectable(

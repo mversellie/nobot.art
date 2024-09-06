@@ -19,6 +19,7 @@ import {CommentService} from "../services/comment.service";
 import {of} from "rxjs";
 import {AvatarComponent} from "../avatar/avatar.component";
 import {DiscourseHtmlScrubberComponent} from "../discourse-html-scrubber/discourse-html-scrubber.component";
+import {environment} from "../../environments/environment";
 
 @Component({
     standalone: true,
@@ -65,7 +66,7 @@ export class ContentPageComponent{
 
         this.route.data.subscribe( ({content}) => {
             this.contentData = content;
-            this.imageUrl= "https://127.0.0.1:9000/main/" + content.filename
+            this.imageUrl= environment["S3-URL"] + content.filename
             this.username = content.creator
         });
 

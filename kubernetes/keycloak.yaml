@@ -1,0 +1,115 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: keycloak
+spec:
+  selector:
+    matchLabels:
+      app: keycloak
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: keycloak
+    spec:
+      volumes:
+        - name: ssl-vol
+          secret:
+            secretName: keycloak-tls
+            items:
+              - key: tls.key
+                path: key.pem
+              - key: tls.crt
+                path: cert.pem
+      containers:
+        - name: nobot-keycloak-container
+          image: registry.digitalocean.com/nobot-art/keycloak:latest
+          volumeMounts:
+            - mountPath: "/ssl"
+              name: ssl-vol
+              readOnly: true
+          ports:
+            - containerPort: 8080
+            - containerPort: 8443
+          env:
+            - name: NOBOT_API_URL
+              value: http://nobot-art-main-api-service.default.svc.cluster.local
+            - name: KC_DB
+              value: postgres
+            - name: KC_DB_URL_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: host
+            - name: KC_DB_URL_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: database
+            - name: KC_DB_URL_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: port
+            - name: KC_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: password
+            - name: KC_DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-db-secret
+                  key: username
+            - name: KEYCLOAK_ADMIN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: username
+            - name: KEYCLOAK_ADMIN_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-secret
+                  key: password
+            - name: KC_HOSTNAME
+              value: "auth.nobot.art"
+            - name: KC_PROXY
+              value: "edge"
+            - name: KC_HTTP_ENABLED
+              value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: keycloak-service
+spec:
+  selector:
+    app: keycloak
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 8080
+    - protocol: TCP
+      name: https
+      port: 443
+      targetPort: 8443
+  type: NodePort
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+spec:
+  secretName: keycloak-tls
+  subject:
+    organizations:
+      - "nobot-art"
+  usages:
+    - server auth
+    - client auth
+  dnsNames:
+    - auth.nobot.art
+  issuerRef:
+    name: letsencrypt-prod
+    kind: Issuer

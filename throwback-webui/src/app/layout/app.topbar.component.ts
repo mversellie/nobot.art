@@ -39,11 +39,4 @@ export class AppTopbarComponent {
         this.layoutService.onMenuToggle();
     }
 
-    onConfigButtonClick() {
-        this.layoutService.showConfigSidebar();
-    }
-
-    onSidebarButtonClick() {
-        this.layoutService.showSidebar();
-    }
 }

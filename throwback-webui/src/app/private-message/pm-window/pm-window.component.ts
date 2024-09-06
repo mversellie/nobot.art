@@ -12,8 +12,8 @@ import {AvatarComponent} from "../../avatar/avatar.component";
 import {InputTextareaModule} from "primeng/inputtextarea";
 
 @Component({
-    selector: 'app-chat-box',
-    templateUrl: './chat-box.component.html',
+    selector: 'app-pm-window',
+    templateUrl: './pm-window.component.html',
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         FormsModule,
@@ -29,7 +29,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     ],
     standalone: true
 })
-export class ChatBoxComponent {
+export class PmWindowComponent {
 
     privateMessageForm:FormGroup ;
 

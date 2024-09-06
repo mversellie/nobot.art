@@ -32,6 +32,15 @@ class DiscourseService:
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
 
+    def make_new_username_and_get_user_id(self,username:string,external_id,email:string):
+        body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email}
+        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
+        if not self.is_successful(response):
+            raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
+        return response.json()["user_id"]
+
+
     def make_new_post(self, topic_id:string, content:string, username:string):
         body = {"topic_id": topic_id, "raw": content}
         headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
@@ -75,6 +84,13 @@ class DiscourseService:
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),endpoint)
         return response.json()["id"]
+
+    def delete_topic_by_id_with_user(self, discourse_id,username):
+        endpoint = self.host + "/t/" +  discourse_id + ".json"
+        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        response = self.http.request("DELETE",endpoint,headers=headers)
+        if not self.is_successful(response):
+            raise DiscourseException(response.status,response.json(),endpoint)
 
     def get_private_messages_for_user(self,username):
         found_topics = {}

@@ -59,7 +59,7 @@ class ContentService:
 
     def connect_minio(self):
         if self.s3_client is None:
-            self.s3_client = Minio('localhost:9000',
+            self.s3_client = Minio(self.settings.get("S3_URL"),
                                    access_key=self.settings.get("S3_ACCESS"),
                                    secret_key=self.settings.get("S3_SECRET"))
             bucket_exists = self.s3_client.bucket_exists(self.bucket)
@@ -123,11 +123,11 @@ class ContentService:
             thumbnail_byte_stream.seek(0)
             self.s3_client.put_object(self.bucket,full_storage_name,thumbnail_byte_stream,thumbnail_byte_length)
             creator_id=file.creator_id
+            self.discourse_service.make_new_art_topic(file_id,file.description,file.creator)
             self.content_repository.save_new_content(width=width, height=height, extension=image_format,
                                                      creator_id=creator_id, filename= file.filename,
                                                      name = file.name, created = cur_time, content_id= file_id,
                                                      filename_S3=full_storage_name, url_safe_name=secure_filename(file.name))
-            self.discourse_service.make_new_art_topic(file_id,file.description,file.creator)
             return ContentResponse(file.name,file.creator, full_storage_name,
                                    cur_time, file.description, secure_filename(file.name),file_id)
 

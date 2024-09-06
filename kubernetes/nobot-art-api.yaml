@@ -1,0 +1,119 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nobot-main-api
+spec:
+  selector:
+    matchLabels:
+      app: nobot-main-api
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: nobot-main-api
+    spec:
+      containers:
+        - name: nobot-main-api
+          image: registry.digitalocean.com/nobot-art/nobot-art-api:latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: DATABASE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-database-secret
+                  key: host
+            - name: DATABASE_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-database-secret
+                  key: port
+            - name: DATABASE_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-database-secret
+                  key: databaseName
+            - name: DATABASE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-database-secret
+                  key: username
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-database-secret
+                  key: password
+            - name: S3_URL
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-s3
+                  key: url
+            - name: S3_BUCKET
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-s3
+                  key: bucket
+            - name: S3_ACCESS
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-s3
+                  key: access-key
+            - name: S3_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-s3
+                  key: secret-key
+            - name: KEYCLOAK_REALM
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-keycloak-secret
+                  key: realm
+            - name: KEYCLOAK_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-keycloak-secret
+                  key: host
+            - name: KEYCLOAK_JWKS_URI
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-keycloak-secret
+                  key: jwksUrl
+            - name: KEYCLOAK_API_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-keycloak-secret
+                  key: apiClientId
+            - name: KEYCLOAK_API_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-keycloak-secret
+                  key: apiClientSecret
+            - name: DISCOURSE_API
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-discourse-secret
+                  key: apiKey
+            - name: DISCOURSE_API_SERVICE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-discourse-secret
+                  key: username
+            - name: DISCOURSE_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-discourse-secret
+                  key: host
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: nobot-main-api-service
+spec:
+  selector:
+    app: nobot-main-api
+  ports:
+    - protocol: TCP
+      name: http
+      port: 80
+      targetPort: 5000
+  type: NodePort
