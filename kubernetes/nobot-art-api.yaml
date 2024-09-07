@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: nobot-main-api
-          image: registry.digitalocean.com/nobot-art/nobot-art-api:latest
+          image: <IMAGE>
           ports:
             - containerPort: 5000
           env:

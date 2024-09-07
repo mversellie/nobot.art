@@ -23,7 +23,7 @@ spec:
                 path: cert.pem
       containers:
         - name: nobot-keycloak-container
-          image: registry.digitalocean.com/nobot-art/keycloak:latest
+          image: <IMAGE>
           volumeMounts:
             - mountPath: "/ssl"
               name: ssl-vol
