@@ -1,0 +1,31 @@
+name: Database Migration
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - database/**
+      - '.github/workflows/database-migration.yml'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - database/**
+      - '.github/workflows/database-migration.yml'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Pull liquibase.properties from secrets
+        run: |
+          echo ${ENV_FILE} > liquibase.properties
+        env:
+          ENV_FILE: ${{secrets.LIQUIBASE_PROPS}}
+      - name: Execute database migration
+        run: mvn -B liquibase:update
