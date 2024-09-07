@@ -16,9 +16,9 @@ export class AppComponent implements OnInit {
         const config: AppConfig = {
             ripple: true,
             menuMode: 'static',
-            colorScheme: 'light',
-            theme: 'indigo',
-            scale: 14
+            colorScheme: 'dark',
+            theme: 'magenta',
+            scale: 15
         };
 
         this.layoutService.config.set(config)
