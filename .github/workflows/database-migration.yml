@@ -25,6 +25,8 @@ jobs:
       - name: Pull liquibase.properties from secrets
         run: |
           echo ${ENV_FILE} > liquibase.properties
+          pwd
+          ls
         env:
           ENV_FILE: ${{secrets.LIQUIBASE_PROPS}}
       - name: Execute database migration
