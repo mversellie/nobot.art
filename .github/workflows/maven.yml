@@ -32,10 +32,24 @@ jobs:
     - name: Build with Maven
       working-directory: keycloak/throwback-keycloak-listener
       run: mvn -B package --file pom.xml
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_KUBERNETES_ACCESS_TOKEN }}
+    - name: Log in to DigitalOcean Container Registry with short-lived credentials
+      run: doctl registry login --expiry-seconds 1200
     - name: Upload using docker
       run: |
-        echo ${ENV_FILE} > ../.docker/config.json
-        docker login
-        bash ./build-docker.sh
-      env:
-        ENV_FILE: ${{secrets.DO_DOCKER_CREDS_RW}}
+        bash ./build-docker.sh 2.1
+        
+    - name: Save DigitalOcean kubeconfig with short-lived credentials
+      run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
+    
+    - name: Deploy to DigitalOcean Kubernetes
+      working-directory: kubernetes
+      run: kubectl apply -f keycloak.yaml
+    
+    - name: Verify deployment
+      run: kubectl rollout status deployment/keycloak
+
+    
