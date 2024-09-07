@@ -25,16 +25,12 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: maven
-      - name: Pull liquibase.properties from secrets
-        run: |
-          du liquibase.properties
-          echo ${ENV_FILE} > liquibase.properties
-          cat liquibase.properties
-          echo ${LIQUIBASE_COMMAND_URL}
-          pwd
-          ls
-        env:
-          ENV_FILE: ${{secrets.LIQUIBASE_PROPS}}
+      - name: delete liquibase file
+        run: rm -f liquibase.properties
       - name: Execute database migration
         run: mvn -B liquibase:update
+        env:
+          LIQUIBASE_COMMAND_INIT_PROJECT_CHANGELOG_FILE: ${{env.LIQUIBASE_COMMAND_INIT_PROJECT_CHANGELOG_FILE}}
+          LIQUIBASE_COMMAND_PASSWORD: ${{env.LIQUIBASE_COMMAND_PASSWORD}}
+          LIQUIBASE_COMMAND_URL: ${{env.LIQUIBASE_COMMAND_URL}}
+          LIQUIBASE_COMMAND_USERNAME: ${{env.LIQUIBASE_COMMAND_USERNAME}}
