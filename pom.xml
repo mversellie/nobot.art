@@ -22,8 +22,7 @@
         <artifactId>liquibase-maven-plugin</artifactId>
         <version>4.28.0</version>
         <configuration>
-            <propertyFileWillOverride>true</propertyFileWillOverride>
-            <propertyFile>./liquibase.properties</propertyFile>
+            <propertyFile>liquibase.properties</propertyFile>
         </configuration>
         <dependencies>
             <dependency>
