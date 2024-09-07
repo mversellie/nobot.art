@@ -1,0 +1,40 @@
+name: Nobot.art API
+
+on:
+  push:
+    branches: [ "master" ]
+    paths:
+      - throwback-api/**
+      - kubernetes/**
+      - '.github/workflows/throwback-api-deploy.yml'
+  pull_request:
+    branches: [ "master" ]
+    paths:
+      - throwback-api/**
+      - kubernetes/**
+      - '.github/workflows/throwback-api-deploy.yml'
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: throwback-api
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_KUBERNETES_ACCESS_TOKEN }}
+      - name: Log in to DigitalOcean Container Registry with short-lived credentials
+        run: doctl registry login --expiry-seconds 1200
+      - name: Upload using docker
+        run: |
+          bash ./build-docker.sh $GITHUB_SHA
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
+      - name: Deploy to DigitalOcean Kubernetes
+        working-directory: kubernetes
+        run: kubectl apply -f *.yaml
+      - name: Verify deployment
+        run: kubectl rollout status deployment/nobot-main-api

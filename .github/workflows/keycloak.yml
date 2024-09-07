@@ -1,19 +1,18 @@
-# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
-
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
-
-name: Java CI with Maven
+name: Keycloak
 
 on:
   push:
     branches: [ "master" ]
+    paths:
+      - keycloak/**
+      - kubernetes/**
+      - '.github/workflows/keycloak.yml'
   pull_request:
     branches: [ "master" ]
-
+    paths:
+      - keycloak/**
+      - kubernetes/**
+      - '.github/workflows/keycloak.yml'
 jobs:
   build:
     defaults:
@@ -40,16 +39,11 @@ jobs:
       run: doctl registry login --expiry-seconds 1200
     - name: Upload using docker
       run: |
-        bash ./build-docker.sh 2.1
-        
+        bash ./build-docker.sh $GITHUB_SHA
     - name: Save DigitalOcean kubeconfig with short-lived credentials
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
-    
     - name: Deploy to DigitalOcean Kubernetes
       working-directory: kubernetes
-      run: kubectl apply -f keycloak.yaml
-    
+      run: kubectl apply -f *.yaml
     - name: Verify deployment
       run: kubectl rollout status deployment/keycloak
-
-    

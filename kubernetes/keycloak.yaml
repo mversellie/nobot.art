@@ -33,7 +33,7 @@ spec:
             - containerPort: 8443
           env:
             - name: NOBOT_API_URL
-              value: http://nobot-art-main-api-service.default.svc.cluster.local
+              value: http://nobot-main-api-service.default.svc.cluster.local
             - name: KC_DB
               value: postgres
             - name: KC_DB_URL_HOST

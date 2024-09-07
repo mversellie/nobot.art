@@ -8,10 +8,12 @@ on:
     branches: [ "master" ]
     paths:
       - throwback-webui/**
+      - '.github/workflows/webui.yml'
   pull_request:
     branches: [ "master" ]
     paths:
       - throwback-webui/**
+      - '.github/workflows/webui.yml'
 
 jobs:
   build:  

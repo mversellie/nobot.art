@@ -1,6 +1,6 @@
 #!/bin/bash
 HOST="registry.digitalocean.com/nobot-art"
-VERSION=2.1
+VERSION=$1
 TAG_PREFIX="$HOST/keycloak"
 TAG_VERSION="$TAG_PREFIX:$VERSION"
 TAG_LATEST="$TAG_PREFIX:latest"
