@@ -1,0 +1,41 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  build:
+    defaults:
+      run:
+        working-directory: keycloak
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Build with Maven
+      working-directory: keycloak/throwback-keycloak-listener
+      run: mvn -B package --file pom.xml
+    - name: Upload using docker
+      run: |
+        echo ${ENV_FILE} > ../.docker/config.json
+        docker login
+        bash ./build-docker.sh
+      env:
+        ENV_FILE: ${{secrets.DO_DOCKER_CREDS_RW}}
