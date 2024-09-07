@@ -40,7 +40,7 @@ jobs:
     - name: Upload using docker
       run: |
         docker build -t ${{ secrets.REGISTRY_NAME }}/keycloak:$(echo $GITHUB_SHA | head -c7) .
-        docker push ${{ secrets.REGISTRY_NAME }}/keycloak:$(echo $GITHUB_SHA | head -c7) .
+        docker push ${{ secrets.REGISTRY_NAME }}/keycloak:$(echo $GITHUB_SHA | head -c7)
     - name: Save DigitalOcean kubeconfig with short-lived credentials
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
     - name: Update Kubernetes File
