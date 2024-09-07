@@ -25,8 +25,6 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: delete liquibase file
-        run: rm -f liquibase.properties
       - name: Execute database migration
         run: mvn -B liquibase:update
         env:
