@@ -45,7 +45,7 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
     - name: Update Kubernetes File
       working-directory: kubernetes
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/keycloak:'${TAG}'|' $GITHUB_WORKSPACE/config/keycloak.yaml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/keycloak:'${TAG}'|' keycloak.yaml
     - name: Deploy to DigitalOcean Kubernetes
       working-directory: ${{ github.workspace }}
       run: kubectl apply -f kubernetes

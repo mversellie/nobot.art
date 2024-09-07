@@ -37,7 +37,7 @@ jobs:
       run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 ${{ secrets.CLUSTER_NAME }}
     - name: Update Kubernetes File
       working-directory: kubernetes
-      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/nobot-art-api:'${TAG}'|' $GITHUB_WORKSPACE/config/nobot-art-api.yaml
+      run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/nobot-art-api:'${TAG}'|' nobot-art-api.yaml
     - name: Deploy to DigitalOcean Kubernetes
       working-directory: ${{ github.workspace }}
       run: kubectl apply -f kubernetes
