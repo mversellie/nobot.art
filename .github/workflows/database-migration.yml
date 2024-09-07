@@ -26,6 +26,7 @@ jobs:
       - name: Pull liquibase.properties from secrets
         run: |
           echo ${ENV_FILE} > liquibase.properties
+          echo ${LIQUIBASE_COMMAND_URL}
           pwd
           ls
         env:
