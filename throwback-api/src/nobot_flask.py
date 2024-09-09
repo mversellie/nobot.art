@@ -1,3 +1,5 @@
+import logging
+
 import jwt
 from flask import Flask
 from flask_cors import CORS
@@ -10,6 +12,7 @@ from controllers.web_helpers import handle_basic_error
 from exceptions.custom_exceptions import DiscourseException, ContentNotFoundException, KeycloakRestException
 
 app = Flask(__name__)
+app.logger.setLevel(logging.DEBUG)
 CORS(app)
 app.register_blueprint(content_controller)
 app.register_blueprint(comment_controller)
@@ -40,7 +43,7 @@ def bad_token(error):
 def start(port):
     if port is None:
         port = 80
-    app.run(port=port,host="0.0.0.0",debug=True)
+    app.run(port=port,host="0.0.0.0")
 
 if __name__ == "__main__":
     start(80)
