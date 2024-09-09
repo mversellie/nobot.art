@@ -5,13 +5,12 @@ on:
     branches: [ "master" ]
     paths:
       - keycloak/**
-      - kubernetes/**
+      - kubernetes/keycloak.yaml
       - '.github/workflows/keycloak.yml'
   pull_request:
     branches: [ "master" ]
     paths:
       - keycloak/**
-      - kubernetes/**
       - '.github/workflows/keycloak.yml'
 jobs:
   build:

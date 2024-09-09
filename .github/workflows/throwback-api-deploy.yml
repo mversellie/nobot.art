@@ -5,13 +5,12 @@ on:
     branches: [ "master" ]
     paths:
       - throwback-api/**
-      - kubernetes/**
       - '.github/workflows/throwback-api-deploy.yml'
   pull_request:
     branches: [ "master" ]
     paths:
       - throwback-api/**
-      - kubernetes/**
+      - kubernetes/nobot-art-api.yaml
       - '.github/workflows/throwback-api-deploy.yml'
 
 jobs:
