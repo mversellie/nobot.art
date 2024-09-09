@@ -5,6 +5,8 @@ from typing import List
 import urllib3
 
 from comments.comment_response import CommentResponse
+from controllers.users_controller import settings_service
+from controllers.web_helpers import settings
 from exceptions.custom_exceptions import DiscourseException
 from settings_service import SettingsService
 
@@ -35,10 +37,10 @@ class DiscourseService:
 
     def make_new_username_and_get_user_id(self,username:string,external_id,email:string):
         body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email}
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":settings_service.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api,"Content-Type":"application/json"}
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
+            raise DiscourseException(response.status,response.json(),self.create_user_endpoint)
         return response.json()["user_id"]
 
 
