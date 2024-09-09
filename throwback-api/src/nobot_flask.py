@@ -42,8 +42,8 @@ def bad_token(error):
 
 def start(port):
     if port is None:
-        port = 80
+        port = 5000
     app.run(port=port,host="0.0.0.0")
 
 if __name__ == "__main__":
-    start(80)
+    start(5000)
