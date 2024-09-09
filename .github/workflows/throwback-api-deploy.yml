@@ -13,7 +13,6 @@ on:
       - throwback-api/**
       - kubernetes/nobot-art-api.yaml
       - '.github/workflows/throwback-api-deploy.yml'
-
 jobs:
   build:
     defaults:
