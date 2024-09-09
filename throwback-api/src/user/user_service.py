@@ -8,8 +8,14 @@ class UserService:
         self.discourse_service = discourse_repository
 
     def create_user(self,user_id,username,email):
-        discourse_id = self.discourse_service.make_new_username_and_get_user_id(username, user_id, email)
-        self.user_repo.save_user(user_id ,username ,discourse_id)
+        print("inside the service")
+        try:
+            discourse_id = self.discourse_service.make_new_username_and_get_user_id(username, user_id, email)
+            self.user_repo.save_user(user_id ,username ,discourse_id)
+        except Exception as exy:
+            print(exy)
+            raise exy
+
 
     def get_user_id_using_username(self, username):
         return self.user_repo.get_user_by_username(username)

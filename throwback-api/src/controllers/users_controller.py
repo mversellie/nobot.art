@@ -20,6 +20,7 @@ settings_service = SettingsService()
 
 @users_controller.route('/users', methods=['POST'])
 def createUser():
+    print("inside create user")
     user_request = request.get_json()
     auth_token = request.headers["Authorization"].split(" ")[1]
     if auth_token != settings_service.get("KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN"):
