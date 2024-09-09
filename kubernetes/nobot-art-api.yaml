@@ -16,7 +16,7 @@ spec:
         - name: nobot-main-api
           image: <IMAGE>
           ports:
-            - containerPort: 5000
+            - containerPort: 80
           env:
             - name: DATABASE_HOST
               valueFrom:
@@ -115,5 +115,5 @@ spec:
     - protocol: TCP
       name: http
       port: 80
-      targetPort: 5000
+      targetPort: 80
   type: NodePort
