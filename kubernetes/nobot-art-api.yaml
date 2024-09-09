@@ -103,6 +103,11 @@ spec:
                 secretKeyRef:
                   name: main-api-discourse-secret
                   key: host
+            - name: KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-to-nobot-access-token
+                  key: token
 ---
 apiVersion: v1
 kind: Service

@@ -67,6 +67,7 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
             StringEntity body = new StringEntity(bodyToSend);
             post.setEntity(body);
             post.addHeader("content-type", "application/json");
+            post.addHeader("Authorization", "Basic " + System.getenv("KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN"));
             HttpResponse res = httpClient.execute(post);
             System.out.println("response is: " + res.getEntity().getContent());
         }

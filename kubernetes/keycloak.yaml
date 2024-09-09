@@ -71,6 +71,11 @@ spec:
                 secretKeyRef:
                   name: keycloak-secret
                   key: password
+            - name: KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: keycloak-to-nobot-access-token
+                  key: token
             - name: KC_LOG_LEVEL
               value: DEBUG
             - name: KC_HOSTNAME
