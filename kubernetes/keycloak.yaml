@@ -71,6 +71,8 @@ spec:
                 secretKeyRef:
                   name: keycloak-secret
                   key: password
+            - name: KC_LOG_LEVEL
+              value: DEBUG
             - name: KC_HOSTNAME
               value: "auth.nobot.art"
             - name: KC_PROXY
@@ -90,10 +92,6 @@ spec:
       name: http
       port: 80
       targetPort: 8080
-    - protocol: TCP
-      name: https
-      port: 443
-      targetPort: 8443
   type: NodePort
 ---
 apiVersion: cert-manager.io/v1
