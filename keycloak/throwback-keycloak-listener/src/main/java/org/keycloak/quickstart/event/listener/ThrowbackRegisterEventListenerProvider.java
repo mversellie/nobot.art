@@ -2,6 +2,7 @@
 package org.keycloak.quickstart.event.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -66,7 +67,8 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
             StringEntity body = new StringEntity(bodyToSend);
             post.setEntity(body);
             post.addHeader("content-type", "application/json");
-            httpClient.execute(post);
+            HttpResponse res = httpClient.execute(post);
+            System.out.println("response is: " + res.getEntity().getContent());
         }
 
         catch(Exception e){
