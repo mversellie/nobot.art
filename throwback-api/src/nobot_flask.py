@@ -43,7 +43,7 @@ def create_app():
     return app
 
 def start(port):
-    create_app().run(port=port)
+    create_app().run(port=port,host="0.0.0.0")
 
 if __name__ == "__main__":
     start(5000)
