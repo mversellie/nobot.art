@@ -50,9 +50,8 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
     }
 
     private void shipUserToNoBot(UserModel userData) {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-
         try {
+            HttpClient httpClient = HttpClientBuilder.create().build();
             NoBotUserPojo userDataToSend =
                     NoBotUserPojo.builder()
                             .userId(userData.getId())
@@ -61,6 +60,7 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
                             .build();
             String throwbackApiLocation = System.getenv("NOBOT_API_URL");
             String registerUrl = throwbackApiLocation + "/users";
+            System.out.println("Shipping to:" + registerUrl);
             HttpPost post = new HttpPost(registerUrl);
             String bodyToSend = new ObjectMapper().writeValueAsString(userDataToSend);
             StringEntity body = new StringEntity(bodyToSend);
