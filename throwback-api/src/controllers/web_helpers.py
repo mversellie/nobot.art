@@ -16,6 +16,7 @@ def make_keycloak_quick():
     return KeycloakService(keycloak_settings)
 
 def handle_basic_error(code:int,error):
+    print(error)
     response = Response("",status=code)
     return response
 
