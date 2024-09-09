@@ -34,4 +34,5 @@ public class NoBotUserPojo {
     private String username;
     private String userId;
     private String email;
+    private String password;
 }
