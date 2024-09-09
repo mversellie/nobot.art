@@ -6,6 +6,7 @@ on:
     paths:
       - throwback-api/**
       - '.github/workflows/throwback-api-deploy.yml'
+      - kubernetes/nobot-art-api.yam
   pull_request:
     branches: [ "master" ]
     paths:

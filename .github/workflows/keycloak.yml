@@ -12,6 +12,7 @@ on:
     paths:
       - keycloak/**
       - '.github/workflows/keycloak.yml'
+      - kubernetes/keycloak.yaml
 jobs:
   build:
     defaults:
