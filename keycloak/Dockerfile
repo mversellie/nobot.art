@@ -7,4 +7,5 @@ ENV PYTHONUNBUFFERED=1
 
 COPY throwback-keycloak-listener/target/throwback-listener.jar /opt/keycloak/providers/nobot-register-listener.jar
 ENTRYPOINT ["/opt/keycloak/bin/kc.sh"]
-CMD ["start", "--https-certificate-file=/ssl/cert.pem","--https-certificate-key-file=/ssl/key.pem"]
+#CMD ["start", "--https-certificate-file=/ssl/cert.pem","--https-certificate-key-file=/ssl/key.pem"]
+CMD ["python", "nobot_flask"]
