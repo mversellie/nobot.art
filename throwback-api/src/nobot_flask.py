@@ -18,7 +18,7 @@ app.register_blueprint(content_controller)
 app.register_blueprint(comment_controller)
 app.register_blueprint(users_controller)
 app.register_blueprint(private_messages_controller)
-
+print("Starting application")
 @app.errorhandler(404)
 def not_found_error(error):
     return handle_basic_error(404,error)
