@@ -21,6 +21,7 @@ class DiscourseService:
         self.api = self.settings.get("DISCOURSE_API")
         self.host = self.settings.get("DISCOURSE_HOST")
         self.create_topic_endpoint = self.host + "/posts"
+        self.create_user_endpoint = self.host + "/users.json"
         self.get_topic_endpoint=self.host + "/t"
         self.http = urllib3.PoolManager()
 
@@ -35,7 +36,7 @@ class DiscourseService:
     def make_new_username_and_get_user_id(self,username:string,external_id,email:string):
         body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email}
         headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
-        response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
+        response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
         return response.json()["user_id"]
