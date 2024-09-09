@@ -39,6 +39,7 @@ class DiscourseService:
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_user_endpoint)
+        print(response.json())
         return response.json()["user_id"]
 
 
