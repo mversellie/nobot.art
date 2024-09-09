@@ -48,7 +48,7 @@ jobs:
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/keycloak:'${TAG}'|' keycloak.yaml
     - name: Deploy to DigitalOcean Kubernetes
       working-directory: ${{ github.workspace }}
-      run: kubectl apply -f kubernetes
+      run: kubectl apply -f kubernetes/keycloak.yaml
     - name: Verify deployment
       run: kubectl rollout status deployment/keycloak
 

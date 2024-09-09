@@ -39,6 +39,6 @@ jobs:
       run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|${{ secrets.REGISTRY_NAME }}/nobot-art-api:'${TAG}'|' nobot-art-api.yaml
     - name: Deploy to DigitalOcean Kubernetes
       working-directory: ${{ github.workspace }}
-      run: kubectl apply -f kubernetes
+      run: kubectl apply -f kubernetes/nobot-art-api.yaml
     - name: Verify deployment
       run: kubectl rollout status deployment/nobot-main-api
