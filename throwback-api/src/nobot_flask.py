@@ -14,14 +14,6 @@ app.register_blueprint(comment_controller)
 app.register_blueprint(users_controller)
 app.register_blueprint(private_messages_controller)
 
-
-@app.after_request
-def after_request(response):
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
-    return response
-
 @app.errorhandler(404)
 def not_found_error(error):
     return handle_basic_error(404,error)
@@ -46,7 +38,7 @@ def bad_token(error):
 def start(port):
     if port is None:
         port = 80
-    app.run(port=port,host="0.0.0.0")
+    app.run(port=port,host="0.0.0.0",cors="*")
 
 if __name__ == "__main__":
     start(80)
