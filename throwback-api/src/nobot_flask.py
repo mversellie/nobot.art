@@ -11,39 +11,39 @@ from controllers.users_controller import users_controller
 from controllers.web_helpers import handle_basic_error
 from exceptions.custom_exceptions import DiscourseException, ContentNotFoundException, KeycloakRestException
 
-app = Flask(__name__)
-app.logger.setLevel(logging.DEBUG)
-CORS(app)
-app.register_blueprint(content_controller)
-app.register_blueprint(comment_controller)
-app.register_blueprint(users_controller)
-app.register_blueprint(private_messages_controller)
-print("Starting application")
-@app.errorhandler(404)
-def not_found_error(error):
-    return handle_basic_error(404,error)
+def create_app():
+    app = Flask(__name__)
+    app.logger.setLevel(logging.DEBUG)
+    CORS(app)
+    app.register_blueprint(content_controller)
+    app.register_blueprint(comment_controller)
+    app.register_blueprint(users_controller)
+    app.register_blueprint(private_messages_controller)
 
-@app.errorhandler(ContentNotFoundException)
-def content_not_found(error):
-    return handle_basic_error(404,error)
+    @app.errorhandler(404)
+    def not_found_error(error):
+        return handle_basic_error(404,error)
 
-@app.errorhandler(DiscourseException)
-def discourse_issue(error):
-    return handle_basic_error(error.error_code,error.message)
+    @app.errorhandler(ContentNotFoundException)
+    def content_not_found(error):
+        return handle_basic_error(404,error)
 
-@app.errorhandler(KeycloakRestException)
-def keycloak_issue(error):
-    print(error)
-    return handle_basic_error(error.error_code,error.message)
+    @app.errorhandler(DiscourseException)
+    def discourse_issue(error):
+        return handle_basic_error(error.error_code,error.message)
 
-@app.errorhandler(jwt.exceptions.InvalidTokenError)
-def bad_token(error):
-    return handle_basic_error(403,error)
+    @app.errorhandler(KeycloakRestException)
+    def keycloak_issue(error):
+        print(error)
+        return handle_basic_error(error.error_code,error.message)
+
+    @app.errorhandler(jwt.exceptions.InvalidTokenError)
+    def bad_token(error):
+        return handle_basic_error(403,error)
+    return app
 
 def start(port):
-    if port is None:
-        port = 5000
-    app.run(port=port,host="0.0.0.0")
+    create_app().run(port=port)
 
 if __name__ == "__main__":
     start(5000)

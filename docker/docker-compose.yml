@@ -24,6 +24,7 @@ services:
       DISCOURSE_API_KEY: ${DISCOURSE_API_KEY}
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl/private.key
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl/public.crt
+      KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN: ${KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN}
     command:  start-dev
     ports:
       - '8080:8080' #HTTP
