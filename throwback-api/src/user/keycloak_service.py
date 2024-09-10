@@ -19,6 +19,7 @@ class KeycloakSettings:
 
 class KeycloakService:
     def __init__(self,settings:KeycloakSettings):
+        self.http =urllib3.PoolManager()
         self.client_id= settings.client_id
         self.client_secret= settings.client_secret
         self.realm= settings.realm
@@ -26,7 +27,6 @@ class KeycloakService:
         self.token = self.get_keycloak_token()
         self.jwks_url = settings.jwks_url
         self.jwks_client = jwt.PyJWKClient(self.jwks_url)
-        self.http = urllib3.PoolManager()
 
     def is_successful(self,res):
         return 200 <= res < 300
@@ -38,8 +38,8 @@ class KeycloakService:
         headers = urllib3.make_headers(basic_auth=auth_string)
         headers['Content-Type'] = 'application/x-www-form-urlencoded'
         response = self.http.request("POST",url,headers=headers, body='grant_type=client_credentials')
-        if not self.is_successful(response.status_code):
-            raise KeycloakRestException(response.status_code,response.data,url)
+        if not self.is_successful(response.status):
+            raise KeycloakRestException(response.status,response.data,url)
         return response.data
 
     def update_keycloak_profile_pic(self,profile_pic_url:string,user_id:string):
