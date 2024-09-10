@@ -27,9 +27,8 @@ class DiscourseService:
     def make_new_art_topic(self,art_id:string,description:string,username:string):
         body = {"external_id": art_id, "raw": description, "title": art_id,
                 "category":str(self.DRAWING_CATEGORY)}
-        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret}
         response = requests.post(self.create_topic_endpoint,data=body,headers=headers)
-        print(response)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_topic_endpoint)
 
@@ -39,18 +38,17 @@ class DiscourseService:
         great_email = username + "@nowhere.local"
         body = {"external_id": [{"keycloak":external_id}], "username": username,"email":great_email,
                 "password":random_password,"approved":True,"active":True}
-        headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret, "Content-Type": "application/json"}
+        headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret}
+
         response = requests.post(self.create_user_endpoint,data=body,headers=headers)
-        print(response)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_user_endpoint)
-        print(response)
         return response.json()["user_id"]
 
 
     def make_new_post(self, topic_id:string, content:string, username:string):
         body = {"topic_id": topic_id, "raw": content}
-        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret}
         response = requests.post(self.create_topic_endpoint,data =body,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_topic_endpoint)
@@ -61,9 +59,7 @@ class DiscourseService:
             endpoint = self.host + "/t/external_id/" +  content_id + ".json"
         else:
             endpoint = self.host + "/t/" + content_id + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
-        print(headers)
-        print(endpoint)
+        headers = {"Api-Username":username,"Api-Key":self.api_secret}
         response = requests.get(endpoint,headers=headers)
 
         if not self.is_successful(response):
@@ -94,7 +90,7 @@ class DiscourseService:
 
     def delete_topic_by_id_with_user(self, discourse_id,username):
         endpoint = self.host + "/t/" +  discourse_id + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret}
         response = requests.delete(endpoint,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),endpoint)
@@ -104,9 +100,8 @@ class DiscourseService:
         topics_compacted = []
 
         endpoint = self.host + "/topics/private-messages/" +  username + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret}
         response = requests.get(endpoint,headers=headers)
-        print(response.json())
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),endpoint)
         if len(response.json()["topic_list"]["topics"]) > 0:
