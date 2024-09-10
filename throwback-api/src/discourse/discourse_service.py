@@ -32,7 +32,7 @@ class DiscourseService:
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
+            raise DiscourseException(response.status,response.data,self.create_topic_endpoint)
 
     def make_new_username_and_get_user_id(self,username:string,external_id):
         random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
@@ -43,9 +43,9 @@ class DiscourseService:
         headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),self.create_user_endpoint)
-        print(response.json())
-        return response.json()["user_id"]
+            raise DiscourseException(response.status,response.data,self.create_user_endpoint)
+        print(response.data)
+        return response.data["user_id"]
 
 
     def make_new_post(self, topic_id:string, content:string, username:string):
@@ -53,7 +53,7 @@ class DiscourseService:
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
+            raise DiscourseException(response.status,response.data,self.create_topic_endpoint)
 
 
     def get_data_for_topic(self, content_id:string, is_external_id,username):
@@ -67,8 +67,8 @@ class DiscourseService:
         response = self.http.request("GET",endpoint,headers=headers)
 
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
-        comments_raw =  response.json()["post_stream"]["posts"]
+            raise DiscourseException(response.status,response.data,endpoint)
+        comments_raw =  response.data["post_stream"]["posts"]
         comments:List = []
         for post in comments_raw:
             temp_comment:CommentResponse = CommentResponse()
@@ -82,22 +82,22 @@ class DiscourseService:
         endpoint = self.host + "/t/external_id/" +  content_id + ".json"
         response = self.http.request("GET",endpoint)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
-        return response.json()["post_stream"]["posts"][0]["cooked"]
+            raise DiscourseException(response.status,response.data,endpoint)
+        return response.data["post_stream"]["posts"][0]["cooked"]
 
     def get_topic_from_external_id(self, external_id):
         endpoint = self.host + "/t/external_id/" +  external_id + ".json"
         response = self.http.request("GET",endpoint)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
-        return response.json()["id"]
+            raise DiscourseException(response.status,response.data,endpoint)
+        return response.data["id"]
 
     def delete_topic_by_id_with_user(self, discourse_id,username):
         endpoint = self.host + "/t/" +  discourse_id + ".json"
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("DELETE",endpoint,headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
+            raise DiscourseException(response.status,response.data,endpoint)
 
     def get_private_messages_for_user(self,username):
         found_topics = {}
@@ -106,16 +106,16 @@ class DiscourseService:
         endpoint = self.host + "/topics/private-messages/" +  username + ".json"
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("GET",endpoint,headers=headers)
-        print(response.json())
+        print(response.data)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
-        if len(response.json()["topic_list"]["topics"]) > 0:
-            users = response.json()["users"]
+            raise DiscourseException(response.status,response.data,endpoint)
+        if len(response.data["topic_list"]["topics"]) > 0:
+            users = response.data["users"]
             users_as_map = {}
 
             for aUser in users:
                 users_as_map[aUser["id"]] = aUser["username"]
-            for topic in response.json()["topic_list"]["topics"]:
+            for topic in response.data["topic_list"]["topics"]:
                 topic_id = topic["id"]
                 if topic_id in found_topics:
                     continue
@@ -132,13 +132,13 @@ class DiscourseService:
         endpoint = self.host + "/topics/private-messages-sent/" +  username + ".json"
         response = self.http.request("GET",endpoint,headers=headers)
         if not self.is_successful(response):
-            raise DiscourseException(response.status,response.json(),endpoint)
-        if len(response.json()["topic_list"]["topics"]) > 0:
-            users = response.json()["users"]
+            raise DiscourseException(response.status,response.data,endpoint)
+        if len(response.data["topic_list"]["topics"]) > 0:
+            users = response.data["users"]
             users_as_map = {}
             for aUser in users:
                 users_as_map[aUser["id"]] = aUser["username"]
-            for topic in response.json()["topic_list"]["topics"]:
+            for topic in response.data["topic_list"]["topics"]:
                 topic_id = topic["id"]
                 if topic_id in found_topics:
                     continue
