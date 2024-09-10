@@ -28,7 +28,7 @@ class DiscourseService:
         body = {"external_id": art_id, "raw": description, "title": art_id,
                 "category":str(self.DRAWING_CATEGORY)}
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
-        response = requests.post(self.create_topic_endpoint,body,headers=headers)
+        response = requests.post(self.create_topic_endpoint,data =body,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_topic_endpoint)
 
@@ -39,7 +39,7 @@ class DiscourseService:
         body = {"external_id": [{"keycloak":external_id}], "username": username,"email":great_email,
                 "password":random_password,"approved":True,"active":True}
         headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret, "Content-Type": "application/json"}
-        response = requests.post(self.create_user_endpoint,body,headers=headers)
+        response = requests.post(self.create_user_endpoint,data = body,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_user_endpoint)
         print(response.json())
@@ -49,7 +49,7 @@ class DiscourseService:
     def make_new_post(self, topic_id:string, content:string, username:string):
         body = {"topic_id": topic_id, "raw": content}
         headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
-        response = requests.post(self.create_topic_endpoint,body,headers=headers)
+        response = requests.post(self.create_topic_endpoint,data =body,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_topic_endpoint)
 
