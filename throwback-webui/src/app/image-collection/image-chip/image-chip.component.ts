@@ -30,7 +30,7 @@ export class ImageChipComponent {
     }
 
     getThumbnailLink(){
-        return environment["S3-URL"] + this.file;
+        return environment["S3-URL"] + "/" + this.file;
     }
 
 

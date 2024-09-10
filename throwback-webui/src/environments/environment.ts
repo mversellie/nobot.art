@@ -1,6 +1,6 @@
 export const environment = {
-    "api-url": "https://api.keycloak.art",
-    "oauth-url": "https://auth.keycloak.art/realms/nobot-art",
-    "oauth-client": "nobot-spa",
-    "S3-URL":"https://content.nobot.art",
+    "api-url": "https://api.nobot.art",
+    "oauth-url": "https://auth.nobot.art/realms/nobot-art",
+    "oauth-client": "throwback-spa",
+    "S3-URL":"https://content.nobot.art"
 };

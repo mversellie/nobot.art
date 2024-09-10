@@ -26,5 +26,5 @@ export function makeEmptyContentResponse():ContentResponse{
 }
 
 export function makeThumbnailUrl(res:ContentResponse):string{
-    return environment["S3-URL"] + res.filename
+    return environment["S3-URL"] + "/" + res.filename
 }

@@ -41,7 +41,7 @@ export class CommentSectionComponent {
     getImgLink(username:string){
         let imgLink = "/img/default-avatar.png" ;
         if(username != null) {
-            imgLink = environment["S3-URL"] + "pfp-" + username + ".png"
+            imgLink = environment["S3-URL"] + "/pfp-" + username + ".png"
         }
         return imgLink
     }

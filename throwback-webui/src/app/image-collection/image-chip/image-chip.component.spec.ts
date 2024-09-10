@@ -33,7 +33,7 @@ describe('ImageChipComponent', () => {
 
  it('thumbnail should work', () => {
         const img = fixture.debugElement.query(By.css("#thumbnail a img"))
-        expect(img.attributes["src"]).toBe(environment["S3-URL"] + "testing_test.png")
+        expect(img.attributes["src"]).toBe(environment["S3-URL"] + "/testing_test.png")
         const link = fixture.debugElement.query(By.css("#thumbnail a"))
         expect(link.attributes["href"]).toContain(`/testing/test`)
     });

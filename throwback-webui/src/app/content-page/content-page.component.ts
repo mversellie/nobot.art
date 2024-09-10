@@ -66,7 +66,7 @@ export class ContentPageComponent{
 
         this.route.data.subscribe( ({content}) => {
             this.contentData = content;
-            this.imageUrl= environment["S3-URL"] + content.filename
+            this.imageUrl= environment["S3-URL"] + "/" + content.filename
             this.username = content.creator
         });
 

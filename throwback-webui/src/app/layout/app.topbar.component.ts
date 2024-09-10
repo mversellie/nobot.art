@@ -27,7 +27,7 @@ export class AppTopbarComponent {
 
     getAvatarImgLink(username:String){
         if(username != null && username != '') {
-            this.avatarImgLink = environment["S3-URL"] + "pfp-" + username + ".png"
+            this.avatarImgLink = environment["S3-URL"] + "/pfp-" + username + ".png"
         }
         return this.avatarImgLink
     }

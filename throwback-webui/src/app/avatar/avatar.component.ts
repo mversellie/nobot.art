@@ -28,7 +28,7 @@ export class AvatarComponent implements OnInit {
 
     getImgLink(){
         if(this.username != null && this.username != "") {
-            this.imgLink.set( environment["S3-URL"] + "pfp-" + this.username + ".png")
+            this.imgLink.set( environment["S3-URL"] + "/pfp-" + this.username + ".png")
         }
     }
 
