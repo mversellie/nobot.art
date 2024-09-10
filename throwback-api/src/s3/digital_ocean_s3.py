@@ -1,6 +1,7 @@
 from s3.abstract_s3 import AbstractS3Client
 from settings_service import SettingsService
 import boto3
+from botocore.config import Config
 
 class DigitalOceanS3(AbstractS3Client):
     def __init__(self):
@@ -15,7 +16,8 @@ class DigitalOceanS3(AbstractS3Client):
                         region_name=self.settings.get("S3_REGION"),
                         endpoint_url=self.settings.get("S3_URL"),
                         aws_access_key_id=self.settings.get("S3_ACCESS"),
-                        aws_secret_access_key=self.settings.get("S3_SECRET"))
+                        aws_secret_access_key=self.settings.get("S3_SECRET"),
+                        config=Config(signature_version='s3v4'))
 
     def upload_file(self,filename,data,filesize):
         if self.s3_client is None:
