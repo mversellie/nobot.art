@@ -4,6 +4,7 @@ ENV PYTHONUNBUFFERED=1
 
 COPY src .
 COPY requirements.txt  requirements.txt
+RUN pip install pyjwt[crypto]
 RUN pip install -r ./requirements.txt
 RUN pip install psycopg2-binary
 EXPOSE 5000
