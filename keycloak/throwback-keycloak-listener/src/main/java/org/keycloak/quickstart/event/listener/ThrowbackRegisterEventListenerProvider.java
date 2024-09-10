@@ -57,7 +57,6 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
                     NoBotUserPojo.builder()
                             .userId(userData.getId())
                             .username(userData.getUsername())
-                            .email(userData.getEmail())
                             .build();
             String throwbackApiLocation = System.getenv("NOBOT_API_URL");
             String registerUrl = throwbackApiLocation + "/users";

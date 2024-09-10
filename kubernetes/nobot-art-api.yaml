@@ -108,6 +108,8 @@ spec:
                 secretKeyRef:
                   name: keycloak-to-nobot-access-token
                   key: token
+            - name: S3_PROVIDER
+              value: DO_SPACES
 ---
 apiVersion: v1
 kind: Service

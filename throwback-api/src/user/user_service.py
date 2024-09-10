@@ -7,10 +7,10 @@ class UserService:
         self.user_repo = user_repository
         self.discourse_service = discourse_repository
 
-    def create_user(self,user_id,username,email):
+    def create_user(self,user_id,username):
         print("inside the service")
         try:
-            discourse_id = self.discourse_service.make_new_username_and_get_user_id(username, user_id, email)
+            discourse_id = self.discourse_service.make_new_username_and_get_user_id(username, user_id)
             self.user_repo.save_user(user_id ,username ,discourse_id)
         except Exception as exy:
             print(exy)

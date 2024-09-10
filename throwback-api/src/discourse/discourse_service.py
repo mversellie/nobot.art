@@ -34,9 +34,12 @@ class DiscourseService:
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
 
-    def make_new_username_and_get_user_id(self,username:string,external_id,email:string):
+    def make_new_username_and_get_user_id(self,username:string,external_id):
         random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-        body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email,"password":random_password}
+        #I am not writing a discourse plugin to disable approval/welcome emails.  Keycloak can handle those.
+        great_email = username + "@nowhere.local"
+        body = {"external_id": [{"keycloak":external_id}], "username": username,"email":great_email,
+                "password":random_password,"approved":True,"active":True}
         headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api,"Content-Type":"application/json"}
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
