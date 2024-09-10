@@ -229,7 +229,7 @@
                         </execution>
                     </executions>
                     <configuration>
-                        <!-- Needed when running tests on OpenJDK 17 -->
+                        <!-- Needed when running tests on OpenJDK 17  -->
                         <argLine>--add-opens=java.base/java.lang=ALL-UNNAMED</argLine>
                         <failIfNoSpecifiedTests>false</failIfNoSpecifiedTests>
                         <includes>
