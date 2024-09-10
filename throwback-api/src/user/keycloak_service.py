@@ -1,7 +1,7 @@
 
 import string
 import jwt
-import urllib3
+import requests
 import json
 from dotenv import load_dotenv
 
@@ -19,7 +19,6 @@ class KeycloakSettings:
 
 class KeycloakService:
     def __init__(self,settings:KeycloakSettings):
-        self.http =urllib3.PoolManager()
         self.client_id= settings.client_id
         self.client_secret= settings.client_secret
         self.realm= settings.realm
@@ -34,13 +33,11 @@ class KeycloakService:
 
     def get_keycloak_token(self):
         url = self.host + "/realms/" + self.realm + "/protocol/openid-connect/token"
-        auth_string = self.client_id + ":" + self.client_secret
-        headers = urllib3.make_headers(basic_auth=auth_string)
-        headers['Content-Type'] = 'application/x-www-form-urlencoded'
-        response = self.http.request("POST",url,headers=headers, body='grant_type=client_credentials')
-        if not self.is_successful(response.status):
-            raise KeycloakRestException(response.status,response.data,url)
-        return response.data
+        headers = {'Content-Type':'application/x-www-form-urlencoded'}
+        response = requests.post(url,headers=headers, data='grant_type=client_credentials',auth=(self.client_id,self.client_secret))
+        if not self.is_successful(response.status_code):
+            raise KeycloakRestException(response.status_code,response.json(),url)
+        return response.json()
 
     def update_keycloak_profile_pic(self,profile_pic_url:string,user_id:string):
         url = self.host +  "/realms/" + self.realm + "/users/" + user_id
@@ -49,8 +46,8 @@ class KeycloakService:
                           {"attributes": {"profile_pic_url":[profile_pic_url]}}
         }
         response = self.http.request("PUT", url,headers = headers,body=json.dumps(user_data))
-        if not self.is_successful(response.status):
-            raise KeycloakRestException(response.status,response.data,url)
+        if not self.is_successful(response.status_code):
+            raise KeycloakRestException(response.status_code,response.json(),url)
 
     def decode_jwt(self,token):
         header = jwt.get_unverified_header(token)
