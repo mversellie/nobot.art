@@ -23,5 +23,8 @@ class DigitalOceanS3(AbstractS3Client):
         if self.s3_client is None:
             self.connect()
         self.s3_client.upload_fileobj(data,self.bucket,filename)
-        resource = self.session.resource("s3",endpoint_url = self.settings.get("S3_URL"),region_name = self.settings.get("S3_REGION"))
+        resource = self.session.resource("s3",endpoint_url = self.settings.get("S3_URL"),
+                                         region_name = self.settings.get("S3_REGION"),
+                                         aws_access_key_id=self.settings.get("S3_ACCESS"),
+                                         aws_secret_access_key=self.settings.get("S3_SECRET"))
         resource.Object(self.bucket,filename).Acl().put(ACL='public-read')

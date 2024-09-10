@@ -19,7 +19,7 @@ class DiscourseService:
 
     def __init__(self):
         self.settings = SettingsService()
-        self.api = self.settings.get("DISCOURSE_API")
+        self.api_secret = self.settings.get("DISCOURSE_API")
         self.host = self.settings.get("DISCOURSE_HOST")
         self.create_topic_endpoint = self.host + "/posts"
         self.create_user_endpoint = self.host + "/users.json"
@@ -29,7 +29,7 @@ class DiscourseService:
     def make_new_art_topic(self,art_id:string,description:string,username:string):
         body = {"external_id": art_id, "raw": description, "title": art_id,
                 "category":str(self.DRAWING_CATEGORY)}
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
@@ -40,7 +40,7 @@ class DiscourseService:
         great_email = username + "@nowhere.local"
         body = {"external_id": [{"keycloak":external_id}], "username": username,"email":great_email,
                 "password":random_password,"approved":True,"active":True}
-        headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_user_endpoint)
@@ -50,7 +50,7 @@ class DiscourseService:
 
     def make_new_post(self, topic_id:string, content:string, username:string):
         body = {"topic_id": topic_id, "raw": content}
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("POST",self.create_topic_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
@@ -61,7 +61,7 @@ class DiscourseService:
             endpoint = self.host + "/t/external_id/" +  content_id + ".json"
         else:
             endpoint = self.host + "/t/" + content_id + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         print(headers)
         print(endpoint)
         response = self.http.request("GET",endpoint,headers=headers)
@@ -94,7 +94,7 @@ class DiscourseService:
 
     def delete_topic_by_id_with_user(self, discourse_id,username):
         endpoint = self.host + "/t/" +  discourse_id + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("DELETE",endpoint,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status,response.json(),endpoint)
@@ -104,7 +104,7 @@ class DiscourseService:
         topics_compacted = []
 
         endpoint = self.host + "/topics/private-messages/" +  username + ".json"
-        headers = {"Api-Username":username,"Api-Key":self.api,"Content-Type":"application/json"}
+        headers = {"Api-Username":username,"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = self.http.request("GET",endpoint,headers=headers)
         print(response.json())
         if not self.is_successful(response):

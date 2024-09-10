@@ -20,15 +20,14 @@ settings_service = SettingsService()
 
 @users_controller.route('/users', methods=['POST','PUT'])
 def user_change():
-    print("inside create user")
-    user_request = request.get_json()
     auth_token = request.headers["Authorization"].split(" ")[1]
     if request.method == "POST":
+        user_request = request.get_json()
         if auth_token != settings_service.get("KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN"):
             print("keycloak authorization token set wrong in listener")
             return handle_basic_error(403,"keycloak authorization token set wrong in listener")
 
-        user_service.create_user(user_request["userId"],user_request["username"],user_request["email"])
+        user_service.create_user(user_request["userId"],user_request["username"])
         #delete_new_user_private_messages(username)
     if request.method == "PUT":
         unlocked_token = keycloak_service.decode_jwt(auth_token)

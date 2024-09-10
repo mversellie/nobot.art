@@ -43,7 +43,11 @@ export class AuthenticationService {
   }
 
   tokenEventHandler(event:OAuthEvent){
-      this.isLoggedIn.set(this.oauthService.hasValidAccessToken())
+    let reload = ["token_received"]
+    if(reload.includes(event.type)){
+      this.isLoggedIn.set(this.oauthService.hasValidAccessToken());
+      window.location.reload();
+    }
   }
 
 }
