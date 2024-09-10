@@ -41,10 +41,10 @@ class DiscourseService:
                 "password":random_password,"approved":True,"active":True}
         headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api_secret, "Content-Type": "application/json"}
         response = requests.post(self.create_user_endpoint,data=body,headers=headers)
-        print(response.json())
+        print(response)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),self.create_user_endpoint)
-        print(response.json())
+        print(response)
         return response.json()["user_id"]
 
 
