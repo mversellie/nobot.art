@@ -1,5 +1,6 @@
 import json
 import string
+import random
 from typing import List
 
 import urllib3
@@ -34,7 +35,8 @@ class DiscourseService:
             raise DiscourseException(response.status,response.json(),self.create_topic_endpoint)
 
     def make_new_username_and_get_user_id(self,username:string,external_id,email:string):
-        body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email}
+        random_password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+        body = {"external_id": [{"keycloak":external_id}], "username": username,"email":email,"password":random_password}
         headers = {"Api-Username":self.settings.get("DISCOURSE_API_SERVICE_USERNAME"),"Api-Key":self.api,"Content-Type":"application/json"}
         response = self.http.request("POST",self.create_user_endpoint,body=json.dumps(body),headers=headers)
         if not self.is_successful(response):

@@ -2,7 +2,6 @@
 package org.keycloak.quickstart.event.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.text.RandomStringGenerator;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
@@ -54,18 +53,14 @@ public class ThrowbackRegisterEventListenerProvider implements EventListenerProv
     private void shipUserToNoBot(UserModel userData) {
         try {
             HttpClient httpClient = HttpClientBuilder.create().build();
-            RandomStringGenerator passwordGenerator = RandomStringGenerator.builder().withinRange('a', 'z').build();
-            String uselessPassword =  passwordGenerator.generate(30);
             NoBotUserPojo userDataToSend =
                     NoBotUserPojo.builder()
                             .userId(userData.getId())
                             .username(userData.getUsername())
                             .email(userData.getEmail())
-                            .password(uselessPassword)
                             .build();
             String throwbackApiLocation = System.getenv("NOBOT_API_URL");
             String registerUrl = throwbackApiLocation + "/users";
-            System.out.println("Shipping to:" + registerUrl);
             HttpPost post = new HttpPost(registerUrl);
             String bodyToSend = new ObjectMapper().writeValueAsString(userDataToSend);
             StringEntity body = new StringEntity(bodyToSend);
