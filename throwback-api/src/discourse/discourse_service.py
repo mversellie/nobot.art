@@ -125,7 +125,7 @@ class DiscourseService:
                 topics_compacted.append(compacted_topic)
 
         endpoint = self.host + "/topics/private-messages-sent/" +  username + ".json"
-        response = requests.get("GET",endpoint,headers=headers)
+        response = requests.get(endpoint,headers=headers)
         if not self.is_successful(response):
             raise DiscourseException(response.status_code,response.json(),endpoint)
         if len(response.json()["topic_list"]["topics"]) > 0:
