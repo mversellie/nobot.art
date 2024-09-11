@@ -28,7 +28,6 @@ def user_change():
             return handle_basic_error(403,"keycloak authorization token set wrong in listener")
 
         user_service.create_user(user_request["userId"],user_request["username"])
-        delete_new_user_private_messages(user_request["username"])
     if request.method == "PUT":
         unlocked_token = keycloak_service.decode_jwt(auth_token)
         content_service.save_profile_pic(request.files.get("upload"),unlocked_token["preferred_username"])

@@ -107,7 +107,7 @@ class DiscourseService:
         if len(response.json()["topic_list"]["topics"]) > 0:
             users = response.json()["users"]
             users_as_map = {}
-
+            is_disco=False
             for aUser in users:
                 users_as_map[aUser["id"]] = aUser["username"]
             for topic in response.json()["topic_list"]["topics"]:
@@ -117,12 +117,16 @@ class DiscourseService:
                 other_guy= ""
                 for user_in_topic in topic["participants"]:
                     temp_username = users_as_map[user_in_topic["user_id"]]
+                    if temp_username == "discobot":
+                        is_disco=True
+                        break
                     if temp_username != username:
                         other_guy = temp_username
                         break
-                compacted_topic = {"title": topic["title"], "username": other_guy, "id": topic_id}
-                found_topics[topic_id] = True
-                topics_compacted.append(compacted_topic)
+                if not is_disco:
+                    compacted_topic = {"title": topic["title"], "username": other_guy, "id": topic_id}
+                    found_topics[topic_id] = True
+                    topics_compacted.append(compacted_topic)
 
         endpoint = self.host + "/topics/private-messages-sent/" +  username + ".json"
         response = requests.get(endpoint,headers=headers)
