@@ -103,6 +103,11 @@ spec:
                 secretKeyRef:
                   name: main-api-discourse-secret
                   key: host
+            - name: DISCOURSE_GENERIC_USER
+              valueFrom:
+                secretKeyRef:
+                  name: main-api-discourse-secret
+                  key: genericUser
             - name: KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN
               valueFrom:
                 secretKeyRef:
