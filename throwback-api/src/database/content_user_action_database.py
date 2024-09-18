@@ -28,7 +28,7 @@ class NobotContentUserActionRepository:
                 .count())
 
     def get_content_views(self,content_id):
-        return NobotContentUserAction.select().count()
+        return NobotContentUserAction.select().where(NobotContentUserAction.content_id == content_id).count()
 
     def get_user_content_action_status(self,user_id,content_id):
         content_row =  (NobotContentUserAction.select()
