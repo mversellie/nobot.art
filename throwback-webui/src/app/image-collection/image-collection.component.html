@@ -2,6 +2,7 @@
     <div class="grid -mt-3 -ml-3 -mr-3">
         <div class="col-12 md:col-6 lg:col-2" *ngFor="let image of images">
             <app-image-chip [title]="image.title" [file]="image.filename"
-                            [creator]="image.creator" [url_safe_title]="image.url_safe_name" [showCreator]="showCreator"/>
+                            [creator]="image.creator" [url_safe_title]="image.url_safe_name" [showCreator]="showCreator"
+                            [views]="getViews(image)" [likes]="getLikes(image)"/>
         </div>
     </div>

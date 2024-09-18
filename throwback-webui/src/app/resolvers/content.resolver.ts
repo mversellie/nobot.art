@@ -11,11 +11,13 @@ export const contentResolver: ResolveFn<ContentResponse> = (route, state) => {
   if(username != null && contentName != null) {
     return inject(ContentService).getContentData(username, contentName).then(d => d)
         .catch((error) => {
+            console.log(error)
           routerIn.navigateByUrl("/notfound")
           //Not reachable but typescript will complain
           return genUselessContentRes();
         });
   }
+  console.log("something went wrong here")
   //Not reachable because username and contentname always defined
     routerIn.navigateByUrl("/notfound")
   return of(genUselessContentRes());

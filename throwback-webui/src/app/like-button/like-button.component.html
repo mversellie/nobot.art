@@ -1,0 +1,1 @@
+<span *ngIf="authService.isLoggedIn()"><p-button [ngStyle]="getLikeButtonStyle" icon="pi pi-heart" [rounded]="true" (onClick)="onClick.emit()" [outlined]="!isLiked"/></span>

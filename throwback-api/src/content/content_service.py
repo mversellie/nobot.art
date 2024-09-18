@@ -6,7 +6,7 @@ from datetime import datetime
 from PIL import Image
 
 from database.content_database import ContentRepository
-from content.content_response import ContentResponse
+from content.content_response import ContentResponse, ContentUserMetaData
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
@@ -65,6 +65,12 @@ class ContentService:
         return self.content_repository.get_gallery_page_for_user(username, page, page_size)
 
     def get_latest(self,page:int,page_size:int):
+        body = self.content_repository.get_latest(page,page_size)
+        for content in body:
+            temp_content = content
+            if content.userMeta is None:
+                temp_content.userMeta = ContentUserMetaData(0,0,0,0)
+
         return self.content_repository.get_latest(page,page_size)
 
     def save_profile_pic(self,pic:FileStorage,user:string):

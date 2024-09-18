@@ -1,0 +1,68 @@
+databaseChangeLog:
+  - changeSet:
+      id: "make meta tables"
+      author: marco
+      changes:
+        - createTable:
+            tableName: nobot_content_user_action
+            columns:
+              - column:
+                  name: content_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: viewer_id
+                  type: VARCHAR(36)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: like_diff
+                  type: INTEGER
+                  constraints:
+                    default: 0
+              - column:
+                  name: last_viewed
+                  type: date
+                  defaultValueComputed: "CURRENT_DATE"
+              - column:
+                  name: last_like_change
+                  type: date
+                  constraints:
+                    nullable: true
+  - changeSet:
+      id: "make-meta-keys"
+      author: marco
+      changes:
+        - addPrimaryKey:
+            columnNames: "content_id, viewer_id"
+            constraintName: "nobot_content_user_action_pk"
+            tableName: nobot_content_user_action
+            validate: true
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: viewer_id
+            indexName: idx_nobot_content_user_action_viewer_id
+            schemaName: public
+            tableName: nobot_content_user_action
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: content_id
+            indexName: idx_nobot_content_user_action_content_id
+            schemaName: public
+            tableName: nobot_content_user_action
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: like_diff
+            indexName: idx_nobot_content_user_action_like_diff
+            schemaName: public
+            tableName: nobot_content_user_action

@@ -9,6 +9,12 @@ from exceptions.custom_exceptions import KeycloakRestException
 
 load_dotenv()
 
+class KeycloakUserData:
+    def __init__(self,username,user_id,is_authed):
+        self.preferred_username=username
+        self.user_id=user_id
+        self.is_authed=is_authed
+
 class KeycloakSettings:
     def __init__(self, host, realm,id,secret,jwks_url):
         self.host = host
@@ -54,3 +60,17 @@ class KeycloakService:
         kid = header["kid"]
         key = self.jwks_client.get_signing_key(kid).key
         return jwt.decode(token,key,algorithms=["RS256"],options={"verify_aud":False})
+
+    def extract_user_data(self,request):
+        print(request.headers)
+        #use IP address for temporary user_id for view or tracking
+        try:
+            jwt_token = request.headers["Authorization"].split(" ")[1]
+            unlocked_token = self.decode_jwt(jwt_token)
+            return KeycloakUserData(unlocked_token["preferred_username"],unlocked_token["sub"],True)
+        except KeyError:
+            if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+                temp_id= request.environ['REMOTE_ADDR']
+            else:
+                temp_id= request.environ['HTTP_X_FORWARDED_FOR']
+            return KeycloakUserData(temp_id,temp_id,False)

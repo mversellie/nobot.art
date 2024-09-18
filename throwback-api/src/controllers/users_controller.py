@@ -20,17 +20,16 @@ settings_service = SettingsService()
 
 @users_controller.route('/users', methods=['POST','PUT'])
 def user_change():
-    auth_token = request.headers["Authorization"].split(" ")[1]
     if request.method == "POST":
+        auth_token = request.headers["Authorization"].split(" ")[1]
         user_request = request.get_json()
         if auth_token != settings_service.get("KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN"):
-            print("keycloak authorization token set wrong in listener")
             return handle_basic_error(403,"keycloak authorization token set wrong in listener")
 
         user_service.create_user(user_request["userId"],user_request["username"])
     if request.method == "PUT":
-        unlocked_token = keycloak_service.decode_jwt(auth_token)
-        content_service.save_profile_pic(request.files.get("upload"),unlocked_token["preferred_username"])
+        unlocked_token = keycloak_service.extract_user_data(request)
+        content_service.save_profile_pic(request.files.get("upload"),unlocked_token.preferred_username)
     return blank_ok()
 
 def delete_new_user_private_messages(username:string):

@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {ContentResponse} from "../objects/ContentResponse";
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {environment} from "../../environments/environment";
 import {ContentCacheService} from "./content-cache.service";
-import {firstValueFrom, map} from "rxjs";
+import {firstValueFrom, lastValueFrom, map} from "rxjs";
 
 
 @Injectable({
@@ -21,10 +21,11 @@ export class ContentService {
       return Promise.resolve(cachedContent);
     }
     const url = environment["api-url"] +"/content/" + user + "/" + content_name ;
-    const getResponse = await fetch(url);
-    const getBody = await getResponse.json()
-    this.cache.cacheStore(user + "/" + content_name,getBody)
-    return Promise.resolve(getBody)
+    const getResponse = await lastValueFrom(this.http.get(url));
+    // @ts-ignore
+    this.cache.cacheStore(user + "/" + content_name,getResponse)
+    // @ts-ignore
+    return Promise.resolve(getResponse)
   }
 
   getGalleryForUser(user:String,page:number,pageSize:number){
@@ -65,5 +66,10 @@ export class ContentService {
     this.cache.cacheStore(key,contentResponse);
     // @ts-ignore
     return {creator:creator,name:name}
+  }
+
+  likeOrUnlike(like:boolean,user:string,contentName:string){
+    let action = like?"like":"unlike"
+    return this.http.post(environment["api-url"] + "/content/" + user + "/" + contentName + "/act",{"action":action})
   }
 }

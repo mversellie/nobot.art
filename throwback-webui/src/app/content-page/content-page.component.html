@@ -9,10 +9,8 @@
                     <i class="pi pi-clock text-primary mr-2"></i>
                     <span class="text-900">2d ago</span>
                 </span>
-                <span class="inline-flex align-items-center py-2 px-3 font-medium border-1 surface-border border-round">
-                    <i class="pi pi-eye text-primary mr-2"></i>
-                    <span class="text-900">124</span>
-                </span>
+                    <p-tag [style]="{background:'transparent',color:'green'}" class="p-out" icon="pi pi-eye" value="{{viewCount}}"  />
+                    <app-like-button [isLiked]="isLiked" (onClick)="likeOrUnlike()" />
             </div>
         </div>
         <div class="flex flex-column align-items-center justify-content-center">

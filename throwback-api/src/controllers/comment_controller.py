@@ -18,10 +18,9 @@ keycloak_service:KeycloakService = make_keycloak_quick()
 def manage_comments(username,title):
     content_id = content_service.get_content_by_username_and_title(username, title).content_id
     if request.method == 'POST':
-        jwt_token = request.headers["Authorization"].split(" ")[1]
-        unlocked_token = keycloak_service.decode_jwt(jwt_token)
+        unlocked_token = keycloak_service.extract_user_data(request)
         comment_service.add_a_comment(content_id,request.form.get("comment"),
-                                      unlocked_token["preferred_username"])
+                                      unlocked_token.preferred_username)
         return blank_ok()
     if request.method == 'GET':
         comments = comment_service.get_all_comments_for_thread(content_id)
