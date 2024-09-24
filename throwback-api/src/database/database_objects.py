@@ -8,6 +8,8 @@ class ThrowbackUser(Model):
     user_id = CharField(primary_key=True)
     username = CharField(unique=True)
     discourse_id = CharField(unique=True)
+    bio = CharField()
+    header_text = CharField()
     class Meta:
         database=db
         table_name = 'nobot_users'

@@ -62,7 +62,6 @@ class KeycloakService:
         return jwt.decode(token,key,algorithms=["RS256"],options={"verify_aud":False})
 
     def extract_user_data(self,request):
-        print(request.headers)
         #use IP address for temporary user_id for view or tracking
         try:
             jwt_token = request.headers["Authorization"].split(" ")[1]

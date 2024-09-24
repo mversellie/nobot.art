@@ -12,3 +12,9 @@ class UserRepository:
 
     def save_user(self, user_id:string, username:string,discourse_id:string):
         ThrowbackUser.create(user_id = user_id, username = username,discourse_id=discourse_id)
+
+    def update_bio(self, bio:string,user_id:string):
+        ThrowbackUser.update(bio = bio).where(ThrowbackUser.user_id == user_id).execute()
+
+    def update_header(self, header:string,user_id:string):
+        ThrowbackUser.update(header = header).where(ThrowbackUser.user_id == user_id).execute()

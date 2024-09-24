@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: "additional data for users"
+      author: marco
+      changes:
+        - addColumn:
+            tableName: nobot_users
+            columns:
+              - column:
+                  name: bio
+                  type: text
+              - column:
+                  name: header_text
+                  type: text

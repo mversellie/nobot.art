@@ -6,6 +6,7 @@ services:
       - ${LOCALHOST_KEY}:/opt/keycloak/ssl/private.key
       - ${LOCALHOST_CERT}:/opt/keycloak/ssl/public.crt
     environment:
+      DISCOURSE_API_SERVICE_USERNAME: ${DISCOURSE_API_SERVICE_USERNAME}
       KC_LOG_LEVEL: info
       KC_DB: postgres
       KC_DB_URL: jdbc:postgresql://keycloakdb:5432/${KC_DB_NAME}
@@ -19,9 +20,6 @@ services:
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
       NOBOT_API_URL: ${NOBOT_API_URL}
-      DISCOURSE_API_URL: ${DISCOURSE_API_URL}
-      DISCOURSE_API_USER: ${DISCOURSE_API_USER}
-      DISCOURSE_API_KEY: ${DISCOURSE_API_KEY}
       KC_HTTPS_CERTIFICATE_KEY_FILE: /opt/keycloak/ssl/private.key
       KC_HTTPS_CERTIFICATE_FILE: /opt/keycloak/ssl/public.crt
       KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN: ${KEYCLOAK_TO_NOBOT_API_ACCESS_TOKEN}
@@ -49,21 +47,22 @@ services:
       POSTGRES_PASSWORD: ${NOBOT_DB_USERNAME}
     ports:
       - "54382:5432"
-  minio:
-    image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
-    command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000" #API
-      - "9001:9001" #ADMIN
-    environment:
-      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
-    hostname: localhost
-    volumes:
-      - minio_data:/data
-      - ${LOCALHOST_KEY}:/root/.minio/certs/private.key
-      - ${LOCALHOST_CERT}:/root/.minio/certs/public.crt
+  #This is left behind for legacy testing with minio uncomment it and the volume to run minio
+  #minio:
+  #  image: quay.io/minio/minio:RELEASE.2024-06-06T09-36-42Z
+  #  command: server /data --console-address ":9001"
+  #  ports:
+  #    - "9000:9000" #API
+  #    - "9001:9001" #ADMIN
+  #  environment:
+  #    MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+  #    MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+  #  hostname: localhost
+  #  volumes:
+  #    - minio_data:/data
+  #    - ${LOCALHOST_KEY}:/root/.minio/certs/private.key
+  #    - ${LOCALHOST_CERT}:/root/.minio/certs/public.crt
 volumes:
   postgres_data:
   postgres_nobot_data:
-  minio_data:
+  #minio_data:

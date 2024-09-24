@@ -5,11 +5,13 @@ from datetime import datetime
 
 from PIL import Image
 
+from content.content_user_meta_service import ContentUserMetaService
 from database.content_database import ContentRepository
 from content.content_response import ContentResponse, ContentUserMetaData
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
 
+from database.content_user_action_database import NobotContentUserActionRepository
 from discourse.discourse_service import DiscourseService
 from s3.nobot_s3_service import Nobot_S3Service
 from settings_service import SettingsService
@@ -54,7 +56,7 @@ class ContentService:
         self.settings = SettingsService()
         self.content_repository = ContentRepository()
         self.discourse_service = DiscourseService()
-        self.bucket = self.settings.get("S3_BUCKET")
+        self.meta_service= ContentUserMetaService(NobotContentUserActionRepository())
 
     def get_content_by_username_and_title(self, user:string, title:string):
         ret = self.content_repository.get_content_by_username_and_content_name(user, title)
@@ -66,22 +68,13 @@ class ContentService:
 
     def get_latest(self,page:int,page_size:int):
         body = self.content_repository.get_latest(page,page_size)
+        res = []
         for content in body:
             temp_content = content
             if content.userMeta is None:
                 temp_content.userMeta = ContentUserMetaData(0,0,0,0)
-
-        return self.content_repository.get_latest(page,page_size)
-
-    def save_profile_pic(self,pic:FileStorage,user:string):
-        with Image.open(pic) as img:
-            img.thumbnail((250,250))
-            thumbnail_byte_stream = io.BytesIO()
-            img.save(thumbnail_byte_stream, format="PNG")
-            thumbnail_byte_length=thumbnail_byte_stream.getbuffer().nbytes
-            thumbnail_byte_stream.seek(0)
-            filename = "pfp-" + user + ".png"
-            self.s3_service.upload_a_file(filename,thumbnail_byte_stream,thumbnail_byte_length)
+            res.append(temp_content)
+        return res
 
     def save_content(self,file:FileToSave):
         file_image_bytes = file.file_data
@@ -118,6 +111,7 @@ class ContentService:
                                                      creator_id=creator_id, filename= file.filename,
                                                      name = file.name, created = cur_time, content_id= file_id,
                                                      filename_S3=full_storage_name, url_safe_name=secure_filename(file.name))
+            self.meta_service.view_content(creator_id,file_id)
             return ContentResponse(file.name,file.creator, full_storage_name,
                                    cur_time, file.description, secure_filename(file.name),file_id)
 

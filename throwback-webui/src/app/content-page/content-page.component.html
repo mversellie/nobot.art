@@ -5,10 +5,6 @@
     <div class="flex justify-content-between flex-column-reverse md:flex-row align-items-center">
         <div>
             <div class="flex flex-wrap justify-content-center md:justify-content-start gap-3">
-                <span class="inline-flex align-items-center py-2 px-3 font-medium border-1 surface-border border-round">
-                    <i class="pi pi-clock text-primary mr-2"></i>
-                    <span class="text-900">2d ago</span>
-                </span>
                     <p-tag [style]="{background:'transparent',color:'green'}" class="p-out" icon="pi pi-eye" value="{{viewCount}}"  />
                     <app-like-button [isLiked]="isLiked" (onClick)="likeOrUnlike()" />
             </div>

@@ -10,7 +10,7 @@
             <div class="grid formgrid p-fluid" ng>
                 <div class="field mb-4 col-12">
                     <label for="nickname" class="font-medium text-900">Username</label>
-                    <input [disabled]="true" formControlName="username" id="nickname" type="text" pInputText>
+                    <input formControlName="username" [attr.disabled]="true" id="nickname" type="text" pInputText>
                 </div>
                 <div class="field mb-4 col-12">
                     <label class="font-medium text-900">Avatar</label>
@@ -23,7 +23,7 @@
                 </div>
                 <div class="field mb-4 col-12 md:col-6">
                     <label for="email" class="font-medium text-900">Email</label>
-                    <input id="email" formControlName="email" type="text" pInputText>
+                    <input id="email" formControlName="email" type="text" [attr.disabled]="true" pInputText>
                 </div>
                 <div class="col-12">
                     <button type="submit" pButton pRipple label="Save" class="w-auto mt-3"></button>
