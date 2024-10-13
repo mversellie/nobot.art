@@ -18,6 +18,11 @@
                     <p-fileUpload mode="basic" #fileUploader (onSelect)="handleFile($event)" accept="image/*" [maxFileSize]="1000000" styleClass="p-button-outlined p-button-plain" chooseLabel="Upload Image"></p-fileUpload>
                 </div>
                 <div class="field mb-4 col-12">
+                    <label class="font-medium text-900">Banner Image</label>
+                    <div class="col-12"><app-avatar [disableLink]="true" #previewAvatar [imgClass]="'current-avi'" [username]="userService.username()"/></div>
+                    <p-fileUpload mode="basic" #fileUploader (onSelect)="handleFile($event)" accept="image/*" [maxFileSize]="1000000" styleClass="p-button-outlined p-button-plain" chooseLabel="Upload Image"></p-fileUpload>
+                </div>
+                <div class="field mb-4 col-12">
                     <label for="bio" class="font-medium text-900">Bio</label>
                     <textarea id="bio" formControlName="bio" type="text" pInputTextarea rows="5" [autoResize]="true"></textarea>
                 </div>

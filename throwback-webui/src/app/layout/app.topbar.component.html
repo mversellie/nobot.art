@@ -14,9 +14,9 @@
     </div>
     <div class="topbar-end">
         <ul class="topbar-menu  ">
+            <li *ngIf="!authService.isLoggedIn()"><a routerLink="/login">Login</a></li>
 
-
-            <li #profile class="profile-item topbar-item " >
+            <li *ngIf="authService.isLoggedIn()" #profile class="profile-item topbar-item " >
                 <a *ngIf="authService.isLoggedIn()" pStyleClass="@next" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout" [hideOnOutsideClick]="true" pRipple class="cursor-pointer">
                     <app-avatar [username]="this.userService.username()" [imgClass]="'border-circle'" [disableLink]="true"/>
                 </a>
@@ -32,12 +32,6 @@
                         <a routerLink="/logout" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
                             <i class="pi pi-fw pi-sign-out mr-2"></i>
                             <span>Logout</span>
-                        </a>
-                    </li>
-                    <li *ngIf="!authService.isLoggedIn()" role="menuitem" class="m-0">
-                        <a routerLink="/login" class="flex align-items-center hover:text-primary-500 transition-duration-200" pStyleClass="@grandparent" enterFromClass="ng-hidden" enterActiveClass="px-scalein" leaveToClass="ng-hidden" leaveActiveClass="px-fadeout">
-                            <i class="pi pi-fw pi-sign-out mr-2"></i>
-                            <span>Login</span>
                         </a>
                     </li>
                 </ul>

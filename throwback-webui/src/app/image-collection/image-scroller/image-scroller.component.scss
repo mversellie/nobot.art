@@ -1,0 +1,17 @@
+.image-scroller-window {
+  overflow-x:scroll;
+  height: 472px;
+  width: 100%;
+  align-items: center;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  scroll-behavior: smooth;
+}
+
+.image-scroller-item {
+  align-items: center;
+}
+
+.image-scroller-window::-webkit-scrollbar {
+  display: none;
+}

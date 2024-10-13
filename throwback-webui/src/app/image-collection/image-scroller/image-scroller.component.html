@@ -1,0 +1,7 @@
+<div class="image-scroller-window flex">
+    <div *ngFor="let item of images;" class="image-scroller-item px-3 ">
+        <app-image-chip [title]="item.title" [file]="item.filename"
+                        [creator]="item.creator" [url_safe_title]="item.url_safe_name" [showCreator]="showCreator"
+                        [views]="getViews(item)" [likes]="getLikes(item)"/>
+    </div>
+</div>

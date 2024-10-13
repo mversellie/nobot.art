@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {RouterLink} from "@angular/router";
 import {environment} from "../../../environments/environment";
-import {NgIf} from "@angular/common";
+import {NgClass, NgIf} from "@angular/common";
 import {TagModule} from "primeng/tag";
 
 @Component({
@@ -10,7 +10,8 @@ import {TagModule} from "primeng/tag";
     imports: [
         RouterLink,
         NgIf,
-        TagModule
+        TagModule,
+        NgClass
     ],
   templateUrl: './image-chip.component.html',
   styleUrl: './image-chip.component.scss'
@@ -34,7 +35,7 @@ export class ImageChipComponent {
     }
 
     getThumbnailLink(){
-        return environment["S3-URL"] + "/" + this.file;
+        return environment["S3-URL"] + "/full-" + this.file;
     }
 
 

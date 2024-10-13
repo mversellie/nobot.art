@@ -1,21 +1,23 @@
-<div class="shadow-2 surface-card border-round">
-        <div id="thumbnail" class="relative mb-0 md:mb-3 lg:mb-3 xlg:mb-3 ">
+<div class="shadow-2 surface-card border-round relative same-content-size" >
+        <div id="thumbnail" class="mb-0 md:mb-3 lg:mb-3 xl:mb-3 xl:mt-1 md:mt-1 lg:mt-1">
             <a [routerLink]="goToContent()">
-                <img [src]="getThumbnailLink()" class="w-full" /></a>
+                <img class="thumbnail-img xl:mt-3 md:mt-3 lg:mt-3 " [src]="getThumbnailLink()" /></a>
         </div>
-        <span class="hidden lg:inline xl:inline md:inline">
-        <div id="contentTitle" class="flex justify-content-center align-items-center mb-3">
+        <div class="flex flex-column inline responsive-meta justify-content-center align-items-center lg:mb-3 xl:mb-3 mb-0">
+        <div id="contentTitle" class="justify-content-center align-items-center mt-4 mb-3">
             <a [routerLink]="goToContent()">
                 <span class="text-900 font-medium text-xl">
                 {{title}}</span></a>
         </div>
-        <a class="flex justify-content-center align-items-center" *ngIf="showCreator" id="creatorLink" [routerLink]="goToUserGallery()">
-        <p class="mt-0 mb-3 text-700 line-height-3">
-            {{creator}}
-        </p></a>
-        <div id="meta-section" class="flex justify-content-center align-items-center mb-3">
+            <div class="flex-grow-1"></div>
+            <div id="meta-section" class="mb-1 flex justify-content-center align-items-center lg:mb-3 xl:mb-3">
+            <a *ngIf="showCreator" id="creatorLink" [routerLink]="goToUserGallery()">
+                <p class="text-700 line-height-3">
+                    {{creator}}
+                </p></a>
+                <div class="flex-grow-1"></div>
             <p-tag [style]="{background:'transparent',color:'green'}" class="p-out" icon="pi pi-eye" value="{{views}}"  />
             <p-tag [style]="{background:'transparent',color:'crimson'}" icon="pi pi-heart" value="{{likes}}"/>
         </div>
-        </span>
+        </div>
     </div>

@@ -1,7 +1,8 @@
 import {Component, Input} from '@angular/core';
-import {NgForOf, NgStyle} from "@angular/common";
-import {ImageChipData} from "./image-chip/ImageChipData";
+import {NgClass, NgForOf, NgStyle} from "@angular/common";
 import {ImageChipComponent} from "./image-chip/image-chip.component";
+import {ScrollerModule} from "primeng/scroller";
+import {ImageScrollerComponent} from "./image-scroller/image-scroller.component";
 
 @Component({
   selector: 'app-image-collection',
@@ -9,7 +10,10 @@ import {ImageChipComponent} from "./image-chip/image-chip.component";
     imports: [
         NgStyle,
         NgForOf,
-        ImageChipComponent
+        ImageChipComponent,
+        NgClass,
+        ScrollerModule,
+        ImageScrollerComponent
     ],
   templateUrl: './image-collection.component.html'
 })

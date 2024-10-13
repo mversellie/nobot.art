@@ -1,8 +1,10 @@
-
-    <div class="flex flex-row flex-wrap">
-        <div class="flex col-6 md:col-2 lg:col-2 pb-1 pt-0 px-1 align-items-center justify-content-center" *ngFor="let image of images">
+   <span class="grid hidden md:flex flex-row flex-wrap px-1">
+        <div class="flex col-6 md:col-4 lg:col-3 pb-1 pt-0 align-items-center justify-content-center" *ngFor="let image of images">
             <app-image-chip [title]="image.title" [file]="image.filename"
                             [creator]="image.creator" [url_safe_title]="image.url_safe_name" [showCreator]="showCreator"
                             [views]="getViews(image)" [likes]="getLikes(image)"/>
         </div>
-    </div>
+    </span>
+   <span class="md:hidden">
+    <app-image-scroller [images]="images" [showCreator]="showCreator"/>
+   </span>
